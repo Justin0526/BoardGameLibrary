@@ -15,10 +15,6 @@ string Game::getName() const {
 	return this->name;
 }
 
-void Game::setName(string name) {
-	this->name = name;
-}
-
 int Game::getMinPlayer() const {
 	return this->minPlayer;
 }
