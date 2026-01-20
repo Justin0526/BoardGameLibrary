@@ -124,10 +124,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Assignment\DSA Assignment\model\Admin.cpp" />
+    <ClCompile Include="..\..\..\Assignment\DSA Assignment\model\Game.cpp" />
+    <ClCompile Include="..\..\..\Assignment\DSA Assignment\model\Member.cpp" />
+    <ClCompile Include="..\..\..\Assignment\DSA Assignment\model\User.cpp" />
     <ClCompile Include="BoardGames.cpp" />
     <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Assignment\DSA Assignment\model\Admin.h" />
+    <ClInclude Include="..\..\..\Assignment\DSA Assignment\model\Game.h" />
+    <ClInclude Include="..\..\..\Assignment\DSA Assignment\model\Member.h" />
+    <ClInclude Include="..\..\..\Assignment\DSA Assignment\model\User.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HashTable.h" />
     <ClInclude Include="LinkedList.h" />
