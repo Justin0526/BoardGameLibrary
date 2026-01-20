@@ -21,16 +21,13 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Assignment\DSA Assignment\model\Admin.cpp">
+    <ClCompile Include="User.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Assignment\DSA Assignment\model\Game.cpp">
+    <ClCompile Include="Member.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Assignment\DSA Assignment\model\Member.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Assignment\DSA Assignment\model\User.cpp">
+    <ClCompile Include="Admin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,17 +41,14 @@
     <ClInclude Include="HashTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Assignment\DSA Assignment\model\Admin.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="User.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Assignment\DSA Assignment\model\Game.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Member.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Assignment\DSA Assignment\model\Member.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Assignment\DSA Assignment\model\User.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Admin.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

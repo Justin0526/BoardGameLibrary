@@ -124,21 +124,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Assignment\DSA Assignment\model\Admin.cpp" />
-    <ClCompile Include="..\..\..\Assignment\DSA Assignment\model\Game.cpp" />
-    <ClCompile Include="..\..\..\Assignment\DSA Assignment\model\Member.cpp" />
-    <ClCompile Include="..\..\..\Assignment\DSA Assignment\model\User.cpp" />
+    <ClCompile Include="Admin.cpp" />
     <ClCompile Include="BoardGames.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Member.cpp" />
+    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Assignment\DSA Assignment\model\Admin.h" />
-    <ClInclude Include="..\..\..\Assignment\DSA Assignment\model\Game.h" />
-    <ClInclude Include="..\..\..\Assignment\DSA Assignment\model\Member.h" />
-    <ClInclude Include="..\..\..\Assignment\DSA Assignment\model\User.h" />
+    <ClInclude Include="Admin.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HashTable.h" />
     <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="Member.h" />
+    <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="data\games.csv">
