@@ -9,6 +9,9 @@
 #include "Game.h"
 #include "LinkedList.h"
 #include "HashTable.h"
+#include "User.h"
+#include "Admin.h"
+#include "Member.h"
 
 using namespace std;
 
@@ -16,6 +19,14 @@ void displayMenu() {
     cout << "\n--------Tabletop Games Club--------" << endl;
     cout << "1. Login as Administrator\n";
     cout << "2. Login as member\n";
+    cout << "3. Display all games\n";
+    cout << "0 to exit\n";
+}
+
+void adminMenu() {
+    cout << "\n--------Admin--------" << endl;
+    cout << "1. Add a new board game\n";
+    cout << "2. Remove a board game\n";
     cout << "0 to exit\n";
 }
 
@@ -117,37 +128,19 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
 
 int main()
 {
-    for (auto& p : filesystem::directory_iterator(filesystem::current_path())) {
-        cout << p.path().filename().string() << endl;
-    }
-
+    // Initialise games
     List<Game> games;
     HashTable<string, List<Game>::NodePtr> gameTable; // Store address of the linked list node in the hash table
     loadGamesFromCSV("games.csv", games, gameTable);
-    
-    List<Game>::NodePtr node = gameTable.get("Zooloretto");
-    if (node != nullptr) {
-        cout << node << endl;
-        cout << node->item.getName() << endl;
 
-        // Delete node from linked list
-        games.remove(node);
+    // Admins
+    Admin admin(1, "Justin", "Justin");
 
-        // Remove key from hash table
-        gameTable.remove("Zooloretto");
+    // Members
+    List<Member> members;
+    Member mem1(1, "Test member 1", "Test1");
+    members.add(mem1);
 
-        node = gameTable.get("Zooloretto");
-        if (node == nullptr) {
-            cout << "deleted!";
-        }
-        else {
-            cout << node << endl;
-            cout << node->item.getName() << endl;
-        }
-    }
-    games.print();
-
-    
     int option = -1;
     
     while (option != 0) {
@@ -156,13 +149,31 @@ int main()
         cin >> option;
         if (option == 0)
             cout << "Bye Bye!" << endl;
-        else if (option == 1)
-            cout << "Admin options (Justin)\n";
+        else if (option == 1) {
+            int adminOption = -1;
+
+            while (adminOption != 0) {
+                adminMenu();
+                cout << "Enter your option: ";
+                cin >> adminOption;
+                if (adminOption == 0)
+                    cout << "Exiting to main menu...\n";
+                else if (adminOption == 1)
+                    admin.addGame(games, gameTable);
+                else if (adminOption == 2)
+                    admin.removeGame(games, gameTable);
+                else
+                    cout << "Invalid admin operation!\n";
+            }  
+        }
         else if (option == 2)
             cout << "User options (Khaleel)\n";
+        else if (option == 3)
+            games.print();
         else
             cout << "Invalid option!\n";
     }
+
 }
 
 
