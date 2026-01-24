@@ -19,7 +19,7 @@ void displayMenu() {
     cout << "\n--------Tabletop Games Club--------" << endl;
     cout << "1. Login as Administrator\n";
     cout << "2. Login as member\n";
-    cout << "3. Display all games\n";
+    cout << "3. Display games\n";
     cout << "4. Display all members\n";
     cout << "0. EXIT\n";
 }
@@ -29,6 +29,13 @@ void adminMenu() {
     cout << "1. Add a new board game\n";
     cout << "2. Remove a board game\n";
     cout << "3. Add a new member\n";
+    cout << "0. EXIT\n";
+}
+
+void displayGameMenu() {
+    cout << "\n--------Display Board games--------" << endl;
+    cout << "1. Default\n";
+    cout << "2. Display a list of games that can be played by a given number of players\n";
     cout << "0. EXIT\n";
 }
 
@@ -154,6 +161,7 @@ int main()
 
         if (option == 0)
             cout << "Bye Bye!" << endl;
+
         else if (option == 1) {
             int adminOption = -1;
 
@@ -161,6 +169,8 @@ int main()
                 adminMenu();
                 cout << "Enter your option: ";
                 cin >> adminOption;
+                cout << endl;
+
                 if (adminOption == 0)
                     cout << "Exiting to main menu...\n";
                 else if (adminOption == 1)
@@ -175,8 +185,28 @@ int main()
         }
         else if (option == 2)
             cout << "User options (Khaleel)\n";
-        else if (option == 3)
-            games.print();
+
+        else if (option == 3) {
+            int displayOption = -1;
+            while (displayOption != 0) {
+                displayGameMenu();
+                cout << "Enter your option: ";
+                cin >> displayOption;
+                cout << endl;
+
+                if (displayOption == 0)
+                    cout << "Exiting to main menu...\n";
+
+                else if (displayOption == 1) {
+                    cout << "Name | MinPlayer | MaxPlayer | MaxPlayTime | MinPlayTime | YearPublished\n";
+                    games.print();
+                }
+
+                else if (displayOption == 2)
+                    admin.displayGamesPlayableByNPlayers(games);
+            }
+        }
+           
         else if (option == 4)
             members.print();
         else
