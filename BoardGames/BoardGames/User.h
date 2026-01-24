@@ -2,6 +2,7 @@
 #define USER_H
 
 #include <string>
+#include <iostream>
 using namespace std;
 
 class User {
@@ -21,5 +22,7 @@ public:
     string getName() const;
     string getRole() const;
 };
+
+ostream& operator<<(std::ostream& os, const User& u);
 
 #endif

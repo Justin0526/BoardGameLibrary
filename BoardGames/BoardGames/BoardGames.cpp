@@ -20,14 +20,16 @@ void displayMenu() {
     cout << "1. Login as Administrator\n";
     cout << "2. Login as member\n";
     cout << "3. Display all games\n";
-    cout << "0 to exit\n";
+    cout << "4. Display all members\n";
+    cout << "0. EXIT\n";
 }
 
 void adminMenu() {
     cout << "\n--------Admin--------" << endl;
     cout << "1. Add a new board game\n";
     cout << "2. Remove a board game\n";
-    cout << "0 to exit\n";
+    cout << "3. Add a new member\n";
+    cout << "0. EXIT\n";
 }
 
 // proper CSV line parsing (handles quotes + commas)
@@ -138,6 +140,7 @@ int main()
 
     // Members
     List<Member> members;
+    HashTable<string, List<Member>::NodePtr> memberTable;
     Member mem1(1, "Test member 1", "Test1");
     members.add(mem1);
 
@@ -147,6 +150,8 @@ int main()
         displayMenu();
         cout << "Enter your option: ";
         cin >> option;
+        cout << endl;
+
         if (option == 0)
             cout << "Bye Bye!" << endl;
         else if (option == 1) {
@@ -162,14 +167,18 @@ int main()
                     admin.addGame(games, gameTable);
                 else if (adminOption == 2)
                     admin.removeGame(games, gameTable);
+                else if (adminOption == 3)
+                    admin.addMember(members, memberTable);
                 else
                     cout << "Invalid admin operation!\n";
-            }  
+            }
         }
         else if (option == 2)
             cout << "User options (Khaleel)\n";
         else if (option == 3)
             games.print();
+        else if (option == 4)
+            members.print();
         else
             cout << "Invalid option!\n";
     }

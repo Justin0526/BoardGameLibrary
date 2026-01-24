@@ -2,6 +2,8 @@
 #define MEMBER_H
 
 #include "User.h"
+#include <iostream>
+using namespace std;
 
 class Member : public User {
 public:

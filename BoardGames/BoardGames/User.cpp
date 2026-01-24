@@ -29,3 +29,8 @@ string User::getName() const {
 string User::getRole() const {
     return role;
 }
+
+ostream& operator<<(ostream& os, const User& u) {
+    os << u.getName() << " (" << u.getUserId() << ")" << endl;
+    return os;
+}

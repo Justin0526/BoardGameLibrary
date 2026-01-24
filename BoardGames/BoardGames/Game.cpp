@@ -35,7 +35,6 @@ int Game::getYearPublished() const {
 	return this->yearPublished;
 }
 
-
 ostream& operator<<(ostream& os, const Game& g) {
 	os << g.getName() << ", " << 
 		g.getMinPlayer() << ", " <<

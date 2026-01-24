@@ -14,7 +14,7 @@ public:
 
     void addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable);
     void removeGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable);
-    void addMember(List<Member>& members, HashTable<string, List<Member>::NodePtr>& memberTable));
+    void addMember(List<Member>& members, HashTable<string, List<Member>::NodePtr>& memberTable);
     void displayGameBorrowReturnSummary();
 };
 

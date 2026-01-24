@@ -12,6 +12,17 @@ Admin::Admin(int id, string name, string password)
     : User(id, name, password, "Admin") {
 }
 
+bool checkInputCharacter(string s) {
+    bool valid = true;
+    for (char c : s) {
+        if (!isalpha(c) && c != ' ') {
+            valid = false;
+            break;
+        }
+    }
+    return valid;
+}
+
 void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable) {
     // Allow admin to fill in fields
     cout << "----Add a game----\n";
@@ -140,6 +151,39 @@ void Admin::removeGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>
 void Admin::addMember(List<Member>& members, HashTable<string, List<Member>::NodePtr>& memberTable) {
     cout << "---- Add a new member ----\n" << endl;
 
+    string name;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    while (true) {
+        cout << "Name of member: ";
+        getline(cin, name);
+        bool validName = checkInputCharacter(name);
+
+        if (name.empty()) {
+            cout << "Name cannot be empty!\n";
+        }
+        else if (!validName) {
+            cout << "Name must contain letters only.\n";
+        }
+        else {
+            break;
+        }
+    }
+
+    string password;
+    cout << "Password: ";
+
+    getline(cin, password);
+
+    int id = members.getLength() + 1;
+    Member newMember(id, name, password);
+
+    List<Member>::NodePtr memberPtr = members.add(newMember);
+    memberTable.add(name, memberPtr);
+
+    members.print();
+
+    cout << "Adding new member...\n";
+    cout << name << "added successfully!\n";
 }
 
 void Admin::displayGameBorrowReturnSummary() {
