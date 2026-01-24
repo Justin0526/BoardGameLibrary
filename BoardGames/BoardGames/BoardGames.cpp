@@ -13,6 +13,13 @@
 
 using namespace std;
 
+void displayMenu() {
+    cout << "\n--------Tabletop Games Club--------" << endl;
+    cout << "1. Login as Administrator\n";
+    cout << "2. Login as member\n";
+    cout << "0 to exit\n";
+}
+
 // proper CSV line parsing (handles quotes + commas)
 // vector is a dynamic array in C++ , can grow as you push items into it
 static vector<string> parseCsvLine(const string& line) {
