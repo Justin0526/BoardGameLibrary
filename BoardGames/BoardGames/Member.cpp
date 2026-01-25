@@ -56,6 +56,9 @@ bool Member::returnGame(List<Game>& games, int gameId) {
     return false;
 }
 
+void Member::displayGamesBorrowedReturnedByMember() {
+    cout << "Displaying member borrow/return summary" << endl;
+}
 void Member::displayGamesBorrowedReturnedByMember() const {
     cout << "Member: " << getName() << " (ID:" << getUserId() << ")\n";
     cout << "Currently borrowed (" << borrowed.getLength() << "):\n";

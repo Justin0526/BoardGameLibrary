@@ -2,6 +2,10 @@
 #define USER_H
 
 #include <string>
+#include <iostream>
+#include <sstream>
+#include "LinkedList.h"
+#include "Game.h"
 using namespace std;
 
 class User {
@@ -20,6 +24,10 @@ public:
     int getUserId() const;
     string getName() const;
     string getRole() const;
+
+    void displayGamesPlayableByNPlayers(List<Game>& games);
 };
+
+ostream& operator<<(std::ostream& os, const User& u);
 
 #endif

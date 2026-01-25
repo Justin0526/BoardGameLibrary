@@ -2,6 +2,8 @@
 #define MEMBER_H
 
 #include "User.h"
+#include <iostream>
+using namespace std;
 #include "LinkedList.h"
 #include <string>
 using namespace std;

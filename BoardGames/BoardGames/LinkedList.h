@@ -17,6 +17,12 @@ private:
 	Node* firstNode;
 	int size;
 
+	// cmp is a fuunction that compares two T objects and returns true if first should come before the second
+
+	Node* mergeSort(Node* head, bool (*cmp)(const T&, const T&));
+	Node* split(Node* head);
+	Node* merge(Node* left, Node* right, bool (*cmp)(const T&, const T&));
+
 public:
 	using NodePtr = Node*;
 
@@ -52,6 +58,11 @@ public:
 	void print();
 	void print() const; // const
 
+	// merge sort
+	void sort(bool (*cmp)(const T&, const T&));
+
+	template <typename Pred>
+	List<T> filter(Pred pred) const;
 };
 
 template <typename T>
@@ -181,16 +192,90 @@ template <typename T>
 void List<T>::print() {
 	Node* current = firstNode;
 	for (int i = 0; i < size; i++) {
-		cout << current->item << endl;
+		cout << i+1 << ". " << current->item;
 		current = current->next;
 	}
 }
 
 template <typename T>
-void List<T>::print() const {
-	const Node* current = firstNode;
-	for (int i = 0; i < size; i++) {
-		cout << current->item << endl;
-		current = current->next;
+void List<T>::sort(bool (*cmp)(const T&, const T&)) {
+	firstNode = mergeSort(firstNode, cmp);
+}
+
+// Merge sort
+template <typename T>
+typename List<T>::Node*
+List<T>::mergeSort(Node* head, bool (*cmp)(const T&, const T&)) {
+	// Base case: If empty list or single node then it is sorted
+	if (head == nullptr || head->next == nullptr) {
+		return head;
 	}
+
+	// Split list into two halves
+	Node* mid = split(head);
+	
+	// Sort left half
+	Node* left = mergeSort(head, cmp);
+	
+	// Sort right half
+	Node* right = mergeSort(mid, cmp);
+
+	// merge sorted halves
+	return merge(left, right, cmp);
+
+}
+
+// Split 
+template <typename T>
+typename List<T>::Node* 
+List<T>::split(Node* head) {
+	Node* slow = head;
+	Node* fast = head->next;
+
+	while (fast != nullptr && fast->next != nullptr) {
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+
+	Node* secondHalf = slow->next;
+	slow->next = nullptr; // cut the list
+	return secondHalf;
+}
+
+// Merge
+template <typename T>
+typename List<T>::Node*
+List<T>::merge(Node* left, Node* right, bool (*cmp)(const T&, const T&)) {
+	if (left == nullptr) return right;
+	if (right == nullptr) return left;
+
+	if (cmp(left->item, right->item)) {
+		left->next = merge(left->next, right, cmp);
+		return left;
+	}
+	else {
+		right->next = merge(left, right->next, cmp);
+		return right;
+	}
+}
+
+// Filter is a template that accepts any callable function/labmbda/functor
+template <typename T>
+template <typename Pred>
+List<T> List<T>::filter(Pred pred) const {
+	List<T> result;
+
+	// Start from first node
+	Node* current = firstNode;
+
+	while (current != nullptr) {
+		// If predicate returns true, keep the item
+		if (pred(current->item)) {
+			result.add(current->item); // add a COPY of the item
+		}
+		current = current->next; // move forward
+	}
+
+	return result;
+	
 }
