@@ -31,7 +31,7 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
     string name;
     cout << "Name of Game: ";
 
-    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, name);
     
     // min player of game
