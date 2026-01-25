@@ -42,15 +42,21 @@ public:
 
 	// get an item at a specified position in the list (retrieve)
 	T get(int index);
+	T get(int index) const; // const overload
+
+	// get node pointer at index (new)
+	NodePtr getNode(int index);
 
 	T& getItem(NodePtr p);
 	const T& getItem(NodePtr p) const;
 
 	// Check the size of the list
 	int getLength();
+	int getLength() const; // const
 
 	// display all the items in the list
 	void print();
+	void print() const; // const
 
 	// merge sort
 	void sort(bool (*cmp)(const T&, const T&));
@@ -139,6 +145,28 @@ T List<T>::get(int index) {
 	return current->item;
 }
 
+// const overload
+template <typename T>
+T List<T>::get(int index) const {
+	const Node* current = firstNode;
+
+	for (int i = 0; i < index; i++) {
+		current = current->next;
+	}
+	return current->item;
+}
+
+// new: return NodePtr at index (or nullptr if out of range)
+template <typename T>
+typename List<T>::NodePtr List<T>::getNode(int index) {
+	if (index < 0 || index >= size) return nullptr;
+	Node* current = firstNode;
+	for (int i = 0; i < index; ++i) {
+		current = current->next;
+	}
+	return current;
+}
+
 template<typename T>
 T& List<T>::getItem(NodePtr p) {
 	return p->item;
@@ -151,6 +179,11 @@ const T& List<T>::getItem(NodePtr p) const {
 
 template <typename T>
 int List<T>::getLength() {
+	return size;
+}
+
+template <typename T>
+int List<T>::getLength() const {
 	return size;
 }
 
