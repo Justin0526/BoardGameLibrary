@@ -137,11 +137,6 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
     return true;
 }
 
-static void printAllGames(const List<Game>& games) {
-    cout << "Available games:\n";
-    games.print();
-}
-
 int main()
 {
     // show files in current directory
@@ -161,6 +156,9 @@ int main()
     HashTable<string, List<Member>::NodePtr> memberTable;
     Member mem1(1, "Test member 1", "Test1");
     members.add(mem1);
+
+    // Demo member store (in a real app you'd load members from storage)
+    Member demoMember(1, "Alice", "pw");
 
     int option = -1;
     
@@ -194,8 +192,66 @@ int main()
                     cout << "Invalid admin operation!\n";
             }
         }
-        else if (option == 2)
-            cout << "User options (Khaleel)\n";
+        else if (option == 2) {
+            // require login
+            cout << "Member Login\n";
+            cout << "Username: ";
+            string username;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getline(cin, username);
+            cout << "Password: ";
+            string password;
+            getline(cin, password);
+
+            if (!demoMember.login(username, password)) {
+                cout << "Login failed. Returning to main menu.\n";
+                continue;
+            }
+
+            cout << "Login successful. Welcome, " << demoMember.getName() << "!\n";
+
+            // member menu
+            while (true) {
+                cout << "\nMember Menu\n";
+                cout << "1) Borrow a game by name\n";
+                cout << "3) Return a game by id\n";
+                cout << "4) View my borrowed/history\n";
+                cout << "5) Logout\n";
+                cout << "Select option: ";
+                string mopt;
+                if (!getline(cin, mopt)) { mopt = "4"; }
+
+                if (mopt == "1") {
+                    cout << "Enter game name to borrow: ";
+                    string gameName;
+                    getline(cin, gameName);
+                    if (!demoMember.borrowGame(games, gameName)) {
+                        cout << "Borrow failed (no available copy or error).\n";
+                    }
+                }
+                else if (mopt == "3") {
+                    cout << "Enter game id to return: ";
+                    string idStr;
+                    getline(cin, idStr);
+                    try {
+                        int id = stoi(idStr);
+                        if (!demoMember.returnGame(games, id)) {
+                            cout << "Return failed.\n";
+                        }
+                    }
+                    catch (...) {
+                        cout << "Invalid id.\n";
+                    }
+                }
+                else if (mopt == "4") {
+                    demoMember.displayGamesBorrowedReturnedByMember();
+                }
+                else { // logout or any other input
+                    cout << "Logging out...\n";
+                    break;
+                }
+            }
+        }
 
         else if (option == 3) {
             int displayOption = -1;
@@ -223,91 +279,6 @@ int main()
         else
             cout << "Invalid option!\n";
     }
-
-    // Demo member store (in a real app you'd load members from storage)
-    Member demoMember(1, "Alice", "pw");
-
-    while (true) {
-        cout << "\nMain Menu\n";
-        cout << "1) Admin Login\n";
-        cout << "2) Member Login\n";
-        cout << "3) Quit\n";
-        cout << "Select option: ";
-        string option;
-        if (!getline(cin, option)) break;
-
-        if (option == "2") {
-            // require login
-            cout << "Member Login\n";
-            cout << "Username: ";
-            string username;
-            getline(cin, username);
-            cout << "Password: ";
-            string password;
-            getline(cin, password);
-
-            if (!demoMember.login(username, password)) {
-                cout << "Login failed. Returning to main menu.\n";
-                continue;
-            }
-
-            cout << "Login successful. Welcome, " << demoMember.getName() << "!\n";
-
-            // member menu
-            while (true) {
-                cout << "\nMember Menu\n";
-                cout << "1) Borrow a game by name\n";
-				cout << "2) View all games\n";
-                cout << "3) Return a game by id\n";
-                cout << "4) View my borrowed/history\n";
-                cout << "5) Logout\n";
-                cout << "Select option: ";
-                string mopt;
-                if (!getline(cin, mopt)) { mopt = "4"; }
-
-                if (mopt == "1") {
-                    cout << "Enter game name to borrow: ";
-                    string gameName;
-                    getline(cin, gameName);
-                    if (!demoMember.borrowGame(games, gameName)) {
-                        cout << "Borrow failed (no available copy or error).\n";
-                    }
-                }
-                else if (mopt == "2") {
-					printAllGames(games);
-                }
-                else if (mopt == "3") {
-                    cout << "Enter game id to return: ";
-                    string idStr;
-                    getline(cin, idStr);
-                    try {
-                        int id = stoi(idStr);
-                        if (!demoMember.returnGame(games, id)) {
-                            cout << "Return failed.\n";
-                        }
-                    } catch (...) {
-                        cout << "Invalid id.\n";
-                    }
-                }
-                else if (mopt == "4") {
-                    demoMember.displayGamesBorrowedReturnedByMember();
-                }
-                else { // logout or any other input
-                    cout << "Logging out...\n";
-                    break;
-                }
-            }
-        }
-        else if (option == "3") {
-            cout << "Exiting.\n";
-            break;
-        }
-        else {
-            cout << "Invalid option.\n";
-        }
-    }
-
-    return 0;
 }
 
 

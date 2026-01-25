@@ -59,6 +59,8 @@ bool byNameAsc(const Game& a, const Game& b) {
 
 bool byNameDesc(const Game& a, const Game& b) {
 	return a.getName() > b.getName();
+}
+
 bool Game::isBorrowed() const {
 	return this->borrowed;
 }
