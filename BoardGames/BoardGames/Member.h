@@ -25,7 +25,7 @@ public:
     // return by game id
     bool returnGame(List<Game>& games, int gameId);
 
-    void displayGamesBorrowedReturnedByMember() const;
+    void displayGamesBorrowedReturnedByMember();
 };
 
 #endif

@@ -56,7 +56,6 @@ public:
 
 	// display all the items in the list
 	void print();
-	void print() const; // const
 
 	// merge sort
 	void sort(bool (*cmp)(const T&, const T&));
