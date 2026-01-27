@@ -214,9 +214,9 @@ int main()
             while (true) {
                 cout << "\nMember Menu\n";
                 cout << "1) Borrow a game by name\n";
-                cout << "3) Return a game by id\n";
-                cout << "4) View my borrowed/history\n";
-                cout << "5) Logout\n";
+                cout << "2) Return a game by id\n";
+                cout << "3) View my borrowed/history\n";
+                cout << "4) Logout\n";
                 cout << "Select option: ";
                 string mopt;
                 if (!getline(cin, mopt)) { mopt = "4"; }
@@ -229,7 +229,7 @@ int main()
                         cout << "Borrow failed (no available copy or error).\n";
                     }
                 }
-                else if (mopt == "3") {
+                else if (mopt == "2") {
                     cout << "Enter game id to return: ";
                     string idStr;
                     getline(cin, idStr);
@@ -243,7 +243,7 @@ int main()
                         cout << "Invalid id.\n";
                     }
                 }
-                else if (mopt == "4") {
+                else if (mopt == "3") {
                     demoMember.displayGamesBorrowedReturnedByMember();
                 }
                 else { // logout or any other input
