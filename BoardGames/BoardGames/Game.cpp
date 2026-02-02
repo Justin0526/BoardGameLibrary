@@ -88,9 +88,6 @@ void Game::setBorrowed(bool b) {
 }
 
 ostream& operator<<(ostream& os, const Game& g) {
-	if (g.getIsActive() != "TRUE") {
-		continue;
-	}
 	os << "[" << g.getGameId() << "] "
 		<< g.getName() << ", " <<
 		g.getMinPlayer() << ", " <<
