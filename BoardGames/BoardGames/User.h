@@ -18,6 +18,7 @@ protected:
 public:
     User();
     User(int id, string name, string password, string role);
+    User(int id, string name, string role);
 
     bool login(string inputName, string inputPassword) const;
 
@@ -25,6 +26,7 @@ public:
     string getName() const;
     string getRole() const;
 
+    void printActiveGames(List<Game>& games);
     void displayGamesPlayableByNPlayers(List<Game>& games);
 };
 

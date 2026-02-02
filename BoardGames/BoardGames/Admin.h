@@ -10,11 +10,11 @@
 class Admin : public User {
 public:
     Admin();
-    Admin(int id, string name, string password);
+    Admin(int id, string name);
 
     void addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable);
     void removeGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable);
-    void addMember(List<Member>& members, HashTable<string, List<Member>::NodePtr>& memberTable);
+    void addMember(List<Member>& members, HashTable<string, List<Member>::NodePtr>& memberTable, List<User>& users, HashTable<string, List<User>::NodePtr>& userTable);
     void displayGameBorrowReturnSummary();
 };
 

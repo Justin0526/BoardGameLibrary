@@ -63,6 +63,10 @@ string Game::getIsActive() const {
 	return this->isActive;
 }
 
+string Game::setIsActive(string active) {
+	return this->isActive = active;
+}
+
 bool byYearAsc(const Game& a, const Game& b) {
 	return a.getYearPublished() < b.getYearPublished();
 }

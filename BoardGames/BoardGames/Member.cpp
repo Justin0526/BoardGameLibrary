@@ -9,6 +9,8 @@ Member::Member(int id, string name, string password)
     : User(id, name, password, "Member") {
 }
 
+Member::Member(int id, string name): User(id, name, "member") { }
+
 bool Member::borrowGame(List<Game>& games, const string& gameName) {
     int n = games.getLength();
     // find first not-borrowed copy

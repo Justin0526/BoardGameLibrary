@@ -9,8 +9,8 @@ using namespace std;
 
 Admin::Admin() : User() {}
 
-Admin::Admin(int id, string name, string password)
-    : User(id, name, password, "Admin") {
+Admin::Admin(int id, string name)
+    : User(id, name, "admin") {
 }
 
 bool checkInputCharacter(string s) {
@@ -29,6 +29,18 @@ int currentYear() {
     tm local{};
     localtime_s(&local, &now);
     return local.tm_year + 1900;
+}
+
+bool isAlphabetOnly(const string& s) {
+    if (s.empty())
+        return false;
+
+    for (char c : s) {
+        if (!isalpha(static_cast<unsigned char>(c)) && c != ' ')
+            return false; // allow space but not special characters
+    }
+
+    return true;
 }
 
 string csvEscape(const string& s) {
@@ -139,12 +151,13 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
         cout << "Year published: ";
     }
 
-    List<Game>::NodePtr checkGame = gameTable.get(name);
+    List<Game>::NodePtr gamePtr = gameTable.get(name);
+
     int copies = 1;
-    if (checkGame != nullptr) {
+    if (gamePtr != nullptr && gamePtr->item.getIsActive() == "TRUE") {
 
         string option;
-        cout << "You already have " << checkGame->item.getGameCopy() << " copies\n";
+        cout << "You already have " << gamePtr->item.getGameCopy() << " copies\n";
         cout << "Do you want to add one more? (Y/N): ";
 
         // Validation loop for copies option (accepts lowercase/uppercase)
@@ -162,8 +175,8 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
             c = static_cast<char>(toupper(static_cast<unsigned char>(c)));
 
             if (c == 'Y') {
-                copies = checkGame->item.getGameCopy() + 1;
-                checkGame->item.setGameCopy(copies);
+                copies = gamePtr->item.getGameCopy() + 1;
+                gamePtr->item.setGameCopy(copies);
 
                 // overwrite
                 ofstream file("games.csv", ios::trunc);
@@ -236,15 +249,54 @@ void Admin::removeGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     getline(cin, name);
-    List<Game>::NodePtr node = gameTable.get(name);
-    if (node != nullptr) {
-        cout << "Deleting " << node->item.getName() << "...\n";
+    List<Game>::NodePtr gamePtr = gameTable.get(name);
+    if (gamePtr != nullptr && gamePtr->item.getIsActive() != "TRUE") {
+        for (List<Game>::NodePtr node = games.getNode(0); node != nullptr; node = node->next) {
+            if (node->item.getName() == name && node->item.getIsActive() == "TRUE") {
+                gamePtr = node;
+                break;
+            }
+        }
+    }
 
-        // Delete node from linked list
-        games.remove(node);
+    if (gamePtr != nullptr && gamePtr->item.getIsActive() == "TRUE") {
+        cout << "Deleting " << gamePtr->item.getName() << "...\n";
+        
+        gamePtr->item.setIsActive("FALSE");
+        // overwrite
+        ofstream file("games.csv", ios::trunc);
 
-        // Remove key from hash table
-        gameTable.remove(name);
+        //write header 
+        file << "gameId,name,minPlayer,maxPlayTime,minPlayTime,maxPlaytime,yearPublished,copy,isActive\n";
+
+        for (List<Game>::NodePtr node = games.getNode(0); node != nullptr; node = node->next) {
+            const Game& g = node->item;
+            if (gamePtr->item.getGameId() == node->item.getGameId()) {
+                file << g.getGameId() << ","
+                    << csvEscape(g.getName()) << ","
+                    << g.getMinPlayer() << ","
+                    << g.getMaxPlayer() << ","
+                    << g.getMinPlayTime() << ","
+                    << g.getMaxPlayTime() << ","
+                    << g.getYearPublished() << ","
+                    << g.getGameCopy() << ","
+                    << "FALSE"
+                    << "\n";
+            }
+            else {
+                file << g.getGameId() << ","
+                    << csvEscape(g.getName()) << ","
+                    << g.getMinPlayer() << ","
+                    << g.getMaxPlayer() << ","
+                    << g.getMinPlayTime() << ","
+                    << g.getMaxPlayTime() << ","
+                    << g.getYearPublished() << ","
+                    << g.getGameCopy() << ","
+                    << g.getIsActive()
+                    << "\n";
+            }
+        }
+        file.close();
 
         cout << "Successfully deleted " << name << endl;
     }
@@ -253,7 +305,8 @@ void Admin::removeGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>
     }
 }
 
-void Admin::addMember(List<Member>& members, HashTable<string, List<Member>::NodePtr>& memberTable) {
+void Admin::addMember(List<Member>& members, HashTable<string, List<Member>::NodePtr>& memberTable, 
+    List<User>& users, HashTable<string, List<User>::NodePtr>& userTable) {
     cout << "---- Add a new member ----\n" << endl;
 
     string name;
@@ -274,16 +327,22 @@ void Admin::addMember(List<Member>& members, HashTable<string, List<Member>::Nod
         }
     }
 
-    string password;
-    cout << "Password: ";
+    int id = users.getLength();
+    User newUser(id + 1, name, "member");
+    List<User>::NodePtr userPtr = users.add(newUser);
+    userTable.add(name, userPtr);
 
-    getline(cin, password);
-
-    int id = members.getLength() + 1;
-    Member newMember(id, name, password);
-
+    Member newMember(id+1, name);
     List<Member>::NodePtr memberPtr = members.add(newMember);
     memberTable.add(name, memberPtr);
+
+    fstream file;
+    file.open("users.csv", ios::app);
+    file << id + 1 << ","
+        << csvEscape(name) << ','
+        << "member";
+
+    file.close();
 
     members.print();
 

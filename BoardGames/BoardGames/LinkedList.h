@@ -57,6 +57,8 @@ public:
 	// display all the items in the list
 	void print();
 
+	void printWithIndex();
+
 	// merge sort
 	void sort(bool (*cmp)(const T&, const T&));
 
@@ -192,6 +194,15 @@ void List<T>::print() {
 	Node* current = firstNode;
 	for (int i = 0; i < size; i++) {
 		cout << current->item;
+		current = current->next;
+	}
+}
+
+template <typename T>
+void List<T>::printWithIndex() {
+	Node* current = firstNode;
+	for (int i = 0; i < size; i++) {
+		cout << i + 1 << ". " << current->item;
 		current = current->next;
 	}
 }

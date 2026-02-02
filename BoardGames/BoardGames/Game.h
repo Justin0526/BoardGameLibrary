@@ -36,6 +36,7 @@ class Game {
 		int getGameCopy() const;
 		int setGameCopy(int num);
 		string getIsActive() const;
+		string setIsActive(string active);
 
 		// borrow state
 		bool isBorrowed() const;
