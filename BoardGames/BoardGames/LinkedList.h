@@ -191,7 +191,7 @@ template <typename T>
 void List<T>::print() {
 	Node* current = firstNode;
 	for (int i = 0; i < size; i++) {
-		cout << i+1 << ". " << current->item;
+		cout << current->item;
 		current = current->next;
 	}
 }

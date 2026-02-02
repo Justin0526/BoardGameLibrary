@@ -103,27 +103,37 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
         if (line.empty()) continue;
 
         vector<string> cols = parseCsvLine(line);
-        if (cols.size() != 6) {
+        if (cols.size() != 9) {
             cout << "Bad column count (" << cols.size() << "): [" << line << "]\n";
             continue;
         }
 
-        string name = stripOuterQuotes(cols[0]);
-        string minP = cols[1];
-        string maxP = cols[2];
-        string maxT = cols[3];
+        string gameId = cols[0];
+        string name = stripOuterQuotes(cols[1]);
+        string minP = cols[2];
+        string maxP = cols[3];
         string minT = cols[4];
-        string year = trimCR(cols[5]);
+        string maxT = cols[5];
+        string year = cols[6];
+        string copy = trimCR(cols[7]);
+        string isActive = cols[8];
+
+        if (isActive == "FALSE") {
+            continue;
+        }
 
         // Create object and add to list
         try {
             Game g(
+                stoi(gameId),
                 name,
                 stoi(minP),
                 stoi(maxP),
-                stoi(maxT),
                 stoi(minT),
-                stoi(year)
+                stoi(maxT),
+                stoi(year),
+                stoi(copy),
+                isActive
             );
             g.setId(nextId++);
             List<Game>::NodePtr gamePtr = games.add(g);
@@ -139,11 +149,6 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
 
 int main()
 {
-    // show files in current directory
-    for (auto& p : filesystem::directory_iterator(filesystem::current_path())) {
-        cout << p.path().filename().string() << endl;
-    }
-
     List<Game> games;
     HashTable<string, List<Game>::NodePtr> gameTable; // Store address of the linked list node in the hash table
     loadGamesFromCSV("games.csv", games, gameTable);
@@ -265,12 +270,15 @@ int main()
                     cout << "Exiting to main menu...\n";
 
                 else if (displayOption == 1) {
-                    cout << "Name | MinPlayer | MaxPlayer | MaxPlayTime | MinPlayTime | YearPublished\n";
+                    cout << "GameID | Name | MinPlayer | MaxPlayer | MaxPlayTime | MinPlayTime | YearPublished | No. of Copies\n";
                     games.print();
                 }
 
                 else if (displayOption == 2)
                     admin.displayGamesPlayableByNPlayers(games);
+
+                else
+                    cout << "Invalid option!\n";
             }
         }
            

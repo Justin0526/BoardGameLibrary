@@ -128,7 +128,6 @@
     <ClCompile Include="BoardGames.cpp" />
     <ClCompile Include="Dictionary.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="Member.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>

@@ -1,15 +1,17 @@
 #include "Game.h"
 
-Game::Game() : id(0), minPlayer(0), maxPlayer(0), maxPlaytime(0), minPlaytime(0), yearPublished(0), borrowed(false) {};
+Game::Game() : gameId(1), minPlayer(0), maxPlayer(0), minPlaytime(0), maxPlaytime(0), yearPublished(0),  copy(1), isActive("TRUE"), borrowed(false) {};
 
-Game::Game(string name, int minPlayer, int maxPlayer, int maxPlaytime, int minPlaytime, int yearPublished)
-	: name(name),
-	id(0),
+Game::Game(int gameId, string name, int minPlayer, int maxPlayer, int minPlaytime, int maxPlaytime, int yearPublished, int copy, string isActive)
+	: gameId(gameId),
+	name(name),
 	minPlayer(minPlayer),
 	maxPlayer(maxPlayer),
-	maxPlaytime(maxPlaytime),
 	minPlaytime(minPlaytime),
+	maxPlaytime(maxPlaytime),
 	yearPublished(yearPublished),
+	copy (copy),
+	isActive(isActive),
 	borrowed(false) {
 }
 
@@ -45,6 +47,22 @@ int Game::getYearPublished() const {
 	return this->yearPublished;
 }
 
+int Game::getGameId() const {
+	return this->gameId;
+}
+
+int Game::getGameCopy() const {
+	return this->copy;
+}
+
+int Game::setGameCopy(int num) {
+	return this->copy = num;
+}
+
+string Game::getIsActive() const {
+	return this->isActive;
+}
+
 bool byYearAsc(const Game& a, const Game& b) {
 	return a.getYearPublished() < b.getYearPublished();
 }
@@ -70,11 +88,16 @@ void Game::setBorrowed(bool b) {
 }
 
 ostream& operator<<(ostream& os, const Game& g) {
-	os << "[" << g.getId() << "] " << g.getName() << ", " << 
+	if (g.getIsActive() != "TRUE") {
+		continue;
+	}
+	os << "[" << g.getGameId() << "] "
+		<< g.getName() << ", " <<
 		g.getMinPlayer() << ", " <<
 		g.getMaxPlayer() << ", " <<
 		g.getMaxPlayTime() << ", " <<
 		g.getMinPlayTime() << ", " <<
-		g.getYearPublished() << endl;
+		g.getYearPublished() << ", " << 
+		g.getGameCopy() << endl;
 	return os;
 }
