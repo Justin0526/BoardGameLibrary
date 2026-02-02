@@ -5,7 +5,9 @@
 #include <iostream>
 #include <exception>
 #include <vector>
+#include <limits>
 
+#include "BorrowRecord.h"
 #include "Game.h"
 #include "LinkedList.h"
 #include "HashTable.h"
@@ -15,12 +17,14 @@
 
 using namespace std;
 
+int borrowRecordCounter; // Remove = 1, will be set by getNextBorrowRecordId()
+
 void displayMenu() {
     cout << "\n--------Tabletop Games Club--------" << endl;
     cout << "1. Login as Administrator\n";
-    cout << "2. Login as member\n";
-    cout << "3. Display games\n";
-    cout << "4. Display all members\n";
+    cout << "2. Login as Member\n";
+    cout << "3. Display Games\n";
+    cout << "4. Display All Members\n";
     cout << "0. EXIT\n";
 }
 
@@ -139,14 +143,23 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
 
 int main()
 {
+    // Initialize CSV file with proper header
+    initializeBorrowRecordsCSV();
+    
     // show files in current directory
     for (auto& p : filesystem::directory_iterator(filesystem::current_path())) {
         cout << p.path().filename().string() << endl;
     }
 
+    // Initialize borrow record counter from existing records
+    borrowRecordCounter = getNextBorrowRecordId();
+
     List<Game> games;
-    HashTable<string, List<Game>::NodePtr> gameTable; // Store address of the linked list node in the hash table
+    HashTable<string, List<Game>::NodePtr> gameTable;
     loadGamesFromCSV("games.csv", games, gameTable);
+    
+    // Restore borrowed states from borrow records
+    restoreGameBorrowStates(games);
 
     // Admins
     Admin admin(1, "Justin", "Justin");
@@ -225,7 +238,17 @@ int main()
                     cout << "Enter game name to borrow: ";
                     string gameName;
                     getline(cin, gameName);
-                    if (!demoMember.borrowGame(games, gameName)) {
+                    if (demoMember.borrowGame(games, gameName)) {
+                        cout << "Borrow successful.\n";
+
+                        writeBorrowRecord(
+                            borrowRecordCounter++,
+                            to_string(demoMember.getUserId()),   // memberId (string)
+                            gameName,             // game identifier (name)
+                            "BORROW"
+                        );
+                    }
+                    else {
                         cout << "Borrow failed (no available copy or error).\n";
                     }
                 }
@@ -235,7 +258,17 @@ int main()
                     getline(cin, idStr);
                     try {
                         int id = stoi(idStr);
-                        if (!demoMember.returnGame(games, id)) {
+                        if (demoMember.returnGame(games, id)) {
+                            cout << "Return successful.\n";
+
+                            writeBorrowRecord(
+                                borrowRecordCounter++,
+                                to_string(demoMember.getUserId()),     // memberId (string)
+                                to_string(id),          // gameId
+                                "RETURN"
+                            );
+                        }
+                        else {
                             cout << "Return failed.\n";
                         }
                     }
@@ -244,7 +277,19 @@ int main()
                     }
                 }
                 else if (mopt == "3") {
-                    demoMember.displayGamesBorrowedReturnedByMember();
+                    // Load and display member's borrow history from CSV
+                    vector<string> borrowHistory;
+                    loadMemberBorrowHistory(demoMember.getUserId(), borrowHistory);
+                    
+                    cout << "\n=== Your Borrow History ===\n";
+                    if (borrowHistory.empty()) {
+                        cout << "No borrow history found.\n";
+                    } else {
+                        for (const string& record : borrowHistory) {
+                            cout << "- " << record << "\n";
+                        }
+                    }
+                    cout << "============================\n";
                 }
                 else { // logout or any other input
                     cout << "Logging out...\n";
@@ -280,5 +325,3 @@ int main()
             cout << "Invalid option!\n";
     }
 }
-
-
