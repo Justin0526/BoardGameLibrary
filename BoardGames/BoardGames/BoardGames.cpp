@@ -43,6 +43,38 @@ void displayGameMenu() {
     cout << "0. EXIT\n";
 }
 
+// Function to display detailed borrow history
+void displayDetailedBorrowHistory(int memberId, List<Game>& games) {
+    vector<BorrowHistoryRecord> borrowHistory;
+    loadMemberBorrowHistoryDetailed(memberId, games, borrowHistory);
+    
+    cout << "\n============= YOUR DETAILED BORROW HISTORY =============\n";
+    if (borrowHistory.empty()) {
+        cout << "No borrow history found.\n";
+    } else {
+        for (size_t i = 0; i < borrowHistory.size(); ++i) {
+            const BorrowHistoryRecord& record = borrowHistory[i];
+            cout << "\n--- Record " << (i + 1) << " ---\n";
+            cout << "Action: " << record.action << "\n";
+            
+            if (record.gameDetails != nullptr) {
+                Game& g = *(record.gameDetails);
+                cout << "Game Details:\n";
+                cout << "  ID: " << g.getId() << "\n";
+                cout << "  Name: " << g.getName() << "\n";
+                cout << "  Players: " << g.getMinPlayer() << " - " << g.getMaxPlayer() << " players\n";
+                cout << "  Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
+                cout << "  Year Published: " << g.getYearPublished() << "\n";
+                cout << "  Current Status: " << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
+            } else {
+                cout << "Game ID/Name: " << record.gameId << "\n";
+                cout << "  Game details not found (may have been removed)\n";
+            }
+        }
+    }
+    cout << "========================================================\n";
+}
+
 // proper CSV line parsing (handles quotes + commas)
 // vector is a dynamic array in C++ , can grow as you push items into it
 static vector<string> parseCsvLine(const string& line) {
@@ -277,19 +309,8 @@ int main()
                     }
                 }
                 else if (mopt == "3") {
-                    // Load and display member's borrow history from CSV
-                    vector<string> borrowHistory;
-                    loadMemberBorrowHistory(demoMember.getUserId(), borrowHistory);
-                    
-                    cout << "\n=== Your Borrow History ===\n";
-                    if (borrowHistory.empty()) {
-                        cout << "No borrow history found.\n";
-                    } else {
-                        for (const string& record : borrowHistory) {
-                            cout << "- " << record << "\n";
-                        }
-                    }
-                    cout << "============================\n";
+                    // Display detailed borrow history with full game information
+                    displayDetailedBorrowHistory(demoMember.getUserId(), games);
                 }
                 else { // logout or any other input
                     cout << "Logging out...\n";

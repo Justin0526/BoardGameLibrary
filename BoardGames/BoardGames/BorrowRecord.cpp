@@ -15,7 +15,7 @@ void writeBorrowRecord(
     const std::string& action
 ) {
     namespace fs = std::filesystem;
-
+    
     // Write only to the project source directory
     fs::path sourcePath = fs::path(__FILE__);
     fs::path projectRoot = sourcePath.parent_path();
@@ -28,7 +28,7 @@ void writeBorrowRecord(
     }
 
     file << recordId << "," << memberId << "," << gameId << "," << action << std::endl;
-
+    
     if (!file) {
         std::cout << "ERROR: Failed to write to file: " << projectPath.string() << std::endl;
     }
@@ -76,26 +76,25 @@ int getNextBorrowRecordId() {
 
     int maxId = 0;
     std::string line;
-
+    
     // Skip header
     if (std::getline(file, line)) {
         while (std::getline(file, line)) {
             if (line.empty()) continue;
-
+            
             // Parse first column (recordId)
             size_t commaPos = line.find(',');
             if (commaPos != std::string::npos) {
                 try {
                     int id = std::stoi(line.substr(0, commaPos));
                     if (id > maxId) maxId = id;
-                }
-                catch (...) {
+                } catch (...) {
                     // Skip invalid lines
                 }
             }
         }
     }
-
+    
     file.close();
     return maxId + 1;
 }
@@ -107,40 +106,101 @@ void loadMemberBorrowHistory(int memberId, std::vector<std::string>& borrowHisto
     fs::path projectPath = projectRoot / "borrow_records.csv";
 
     borrowHistory.clear();
-
+    
     std::ifstream file(projectPath);
     if (!file.is_open()) {
         return; // No history if file doesn't exist
     }
 
     std::string line;
-
+    
     // Skip header
     if (std::getline(file, line)) {
         while (std::getline(file, line)) {
             if (line.empty()) continue;
-
+            
             // Parse: recordId,memberId,gameId,action
             std::istringstream ss(line);
             std::string recordId, memberIdStr, gameId, action;
-
+            
             if (std::getline(ss, recordId, ',') &&
                 std::getline(ss, memberIdStr, ',') &&
                 std::getline(ss, gameId, ',') &&
                 std::getline(ss, action)) {
-
+                
                 try {
                     if (std::stoi(memberIdStr) == memberId) {
                         borrowHistory.push_back(action + ": " + gameId);
                     }
-                }
-                catch (...) {
+                } catch (...) {
                     // Skip invalid lines
                 }
             }
         }
     }
+    
+    file.close();
+}
 
+void loadMemberBorrowHistoryDetailed(int memberId, List<Game>& games, std::vector<BorrowHistoryRecord>& borrowHistory) {
+    namespace fs = std::filesystem;
+    fs::path sourcePath = fs::path(__FILE__);
+    fs::path projectRoot = sourcePath.parent_path();
+    fs::path projectPath = projectRoot / "borrow_records.csv";
+
+    borrowHistory.clear();
+    
+    std::ifstream file(projectPath);
+    if (!file.is_open()) {
+        return; // No history if file doesn't exist
+    }
+
+    std::string line;
+    
+    // Skip header
+    if (std::getline(file, line)) {
+        while (std::getline(file, line)) {
+            if (line.empty()) continue;
+            
+            // Parse: recordId,memberId,gameId,action
+            std::istringstream ss(line);
+            std::string recordId, memberIdStr, gameId, action;
+            
+            if (std::getline(ss, recordId, ',') &&
+                std::getline(ss, memberIdStr, ',') &&
+                std::getline(ss, gameId, ',') &&
+                std::getline(ss, action)) {
+                
+                try {
+                    if (std::stoi(memberIdStr) == memberId) {
+                        BorrowHistoryRecord record;
+                        record.action = action;
+                        record.gameId = gameId;
+                        record.gameDetails = nullptr;
+                        
+                        // Find the corresponding game object
+                        int n = games.getLength();
+                        for (int i = 0; i < n; ++i) {
+                            auto node = games.getNode(i);
+                            if (node == nullptr) continue;
+                            Game& g = games.getItem(node);
+                            
+                            // Check if gameId matches by name or ID
+                            if (g.getName() == gameId || std::to_string(g.getId()) == gameId) {
+                                record.gameDetails = &g;
+                                break;
+                            }
+                        }
+                        
+                        borrowHistory.push_back(record);
+                    }
+                } catch (...) {
+                    // Skip invalid lines
+                }
+            }
+        }
+    }
+    
     file.close();
 }
 
