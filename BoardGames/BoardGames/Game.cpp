@@ -37,12 +37,28 @@ int Game::getMaxPlayTime() const {
 	return this->maxPlaytime;
 }
 
-int Game::getMinPlaytime() const {
+int Game::getMinPlayTime() const {
 	return this->minPlaytime;
 }
 
 int Game::getYearPublished() const {
 	return this->yearPublished;
+}
+
+bool byYearAsc(const Game& a, const Game& b) {
+	return a.getYearPublished() < b.getYearPublished();
+}
+
+bool byYearDesc(const Game& a, const Game& b) {
+	return a.getYearPublished() > b.getYearPublished();
+}
+
+bool byNameAsc(const Game& a, const Game& b) {
+	return a.getName() < b.getName();
+}
+
+bool byNameDesc(const Game& a, const Game& b) {
+	return a.getName() > b.getName();
 }
 
 bool Game::isBorrowed() const {
@@ -58,7 +74,7 @@ ostream& operator<<(ostream& os, const Game& g) {
 		g.getMinPlayer() << ", " <<
 		g.getMaxPlayer() << ", " <<
 		g.getMaxPlayTime() << ", " <<
-		g.getMinPlaytime() << ", " <<
-		g.getYearPublished();
+		g.getMinPlayTime() << ", " <<
+		g.getYearPublished() << endl;
 	return os;
 }
