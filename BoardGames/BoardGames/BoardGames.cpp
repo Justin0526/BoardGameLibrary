@@ -28,6 +28,35 @@ void displayMenu() {
     cout << "0. EXIT\n";
 }
 
+List<Admin>::NodePtr adminLoginMenu(List<Admin>& admins) {
+    cout << "\n---- Admin Login ----\n";
+    cout << "Select admin by index:\n";
+    admins.printWithIndex();
+    cout << "0. EXIT\n";
+    cout << "Choice: ";
+
+    int choice;
+    cin >> choice;
+
+    if (choice <= 0) return nullptr;
+
+    return admins.getNode(choice - 1); 
+}
+
+List<Member>::NodePtr memberLoginMenu(List<Member>& members) {
+    cout << "\n---- Member Login ----\n";
+    cout << "Select member by index:\n";
+    members.printWithIndex();
+    cout << "0. EXIT\n";
+    cout << "Choice: ";
+
+    int choice; 
+    cin >> choice;
+    if (choice <= 0) return nullptr;
+
+    return members.getNode(choice - 1);
+}
+
 void adminMenu() {
     cout << "\n--------Admin--------" << endl;
     cout << "1. Add a new board game\n";
@@ -132,36 +161,39 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
     if (!getline(file, line))
         return false;
 
-    int nextId = 1; // assign incremental id per game copy
-
     // 2) Read each data row
     while (getline(file, line)) {
         if (line.empty()) continue;
 
         vector<string> cols = parseCsvLine(line);
-        if (cols.size() != 6) {
+        if (cols.size() != 9) {
             cout << "Bad column count (" << cols.size() << "): [" << line << "]\n";
             continue;
         }
 
-        string name = stripOuterQuotes(cols[0]);
-        string minP = cols[1];
-        string maxP = cols[2];
-        string maxT = cols[3];
+        string gameId = cols[0];
+        string name = stripOuterQuotes(cols[1]);
+        string minP = cols[2];
+        string maxP = cols[3];
         string minT = cols[4];
-        string year = trimCR(cols[5]);
+        string maxT = cols[5];
+        string year = cols[6];
+        string copy = trimCR(cols[7]);
+        string isActive = cols[8];
 
         // Create object and add to list
         try {
             Game g(
+                stoi(gameId),
                 name,
                 stoi(minP),
                 stoi(maxP),
-                stoi(maxT),
                 stoi(minT),
-                stoi(year)
+                stoi(maxT),
+                stoi(year),
+                stoi(copy),
+                isActive
             );
-            g.setId(nextId++);
             List<Game>::NodePtr gamePtr = games.add(g);
             gameTable.add(name, gamePtr);
         }catch (const exception& e) {
@@ -173,19 +205,61 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
     return true;
 }
 
-int main()
-{
-    // Initialize CSV file with proper header
-    initializeBorrowRecordsCSV();
-    
-    // show files in current directory
-    for (auto& p : filesystem::directory_iterator(filesystem::current_path())) {
-        cout << p.path().filename().string() << endl;
+bool loadUsersFromCSV(const string& filename, List<Admin>& admins, List<Member>& members, List<User>& users, 
+    HashTable<string, List<Admin>::NodePtr>& adminTable, HashTable<string, List<Member>::NodePtr>& memberTable, HashTable<string, List<User>::NodePtr>& userTable) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Failed to open file: " << filename << endl;
+        return false;
     }
 
-    // Initialize borrow record counter from existing records
-    borrowRecordCounter = getNextBorrowRecordId();
+    string line;
 
+    // 1) Skip header line
+    if (!getline(file, line))
+        return false;
+
+    // 2) Read each data row
+    while (getline(file, line)) {
+        if (line.empty()) continue;
+        stringstream ss(line);
+        string id;
+        getline(ss, id, ',');
+
+        string name;
+        getline(ss, name, ',');
+
+        string role;
+        getline(ss, role, ',');
+
+        id = trimCR(stripOuterQuotes(id));
+        name = trimCR(stripOuterQuotes(name));
+        role = trimCR(stripOuterQuotes(role));
+
+        if (role == "admin") {
+            Admin a(stoi(id), name);
+            List<Admin>::NodePtr adminPtr = admins.add(a);
+            adminTable.add(name, adminPtr);
+        }
+        else {
+            Member m(stoi(id), name);
+            List<Member>::NodePtr memberPtr = members.add(m);
+            memberTable.add(name, memberPtr);
+        }
+
+        User u(stoi(id), name, role);
+        List<User>::NodePtr userPtr = users.add(u);
+        userTable.add(name, userPtr);
+    }
+
+    file.close();
+    return true;
+}
+
+int main()
+{
+  // Initialize borrow record counter from existing records
+    borrowRecordCounter = getNextBorrowRecordId();  
     List<Game> games;
     HashTable<string, List<Game>::NodePtr> gameTable;
     loadGamesFromCSV("games.csv", games, gameTable);
@@ -193,17 +267,16 @@ int main()
     // Restore borrowed states from borrow records
     restoreGameBorrowStates(games);
 
-    // Admins
-    Admin admin(1, "Justin", "Justin");
-
-    // Members
+    List<Admin> admins;
     List<Member> members;
-    HashTable<string, List<Member>::NodePtr> memberTable;
-    Member mem1(1, "Test member 1", "Test1");
-    members.add(mem1);
+    List<User> users;
 
-    // Demo member store (in a real app you'd load members from storage)
-    Member demoMember(1, "Alice", "pw");
+    HashTable<string, List<Admin>::NodePtr> adminTable;
+    HashTable<string, List<Member>::NodePtr> memberTable;
+    HashTable<string, List<User>::NodePtr> userTable;
+    loadUsersFromCSV("users.csv", admins, members, users, adminTable, memberTable, userTable);
+
+    User globalUser(-1, "global user", "admin");
 
     int option = -1;
     
@@ -217,8 +290,14 @@ int main()
             cout << "Bye Bye!" << endl;
 
         else if (option == 1) {
-            int adminOption = -1;
+            List<Admin>::NodePtr loggedInAdmin = adminLoginMenu(admins);
 
+            if (loggedInAdmin == nullptr) {
+                cout << "Exiting to main menu...\n";
+                continue;
+            }
+
+            int adminOption = -1;
             while (adminOption != 0) {
                 adminMenu();
                 cout << "Enter your option: ";
@@ -228,32 +307,25 @@ int main()
                 if (adminOption == 0)
                     cout << "Exiting to main menu...\n";
                 else if (adminOption == 1)
-                    admin.addGame(games, gameTable);
+                    loggedInAdmin->item.addGame(games, gameTable);
                 else if (adminOption == 2)
-                    admin.removeGame(games, gameTable);
+                    loggedInAdmin->item.removeGame(games, gameTable);
                 else if (adminOption == 3)
-                    admin.addMember(members, memberTable);
+                    loggedInAdmin->item.addMember(members, memberTable, users, userTable);
                 else
                     cout << "Invalid admin operation!\n";
             }
         }
-        else if (option == 2) {
-            // require login
-            cout << "Member Login\n";
-            cout << "Username: ";
-            string username;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            getline(cin, username);
-            cout << "Password: ";
-            string password;
-            getline(cin, password);
 
-            if (!demoMember.login(username, password)) {
-                cout << "Login failed. Returning to main menu.\n";
+        else if (option == 2) {
+            List<Member>::NodePtr loggedInMember = memberLoginMenu(members);
+
+            if (loggedInMember == nullptr) {
+                cout << "Exiting to main menu...\n";
                 continue;
             }
 
-            cout << "Login successful. Welcome, " << demoMember.getName() << "!\n";
+            cout << "Login successful. Welcome, " << loggedInMember->item.getName() << "!\n";
 
             // member menu
             while (true) {
@@ -270,17 +342,11 @@ int main()
                     cout << "Enter game name to borrow: ";
                     string gameName;
                     getline(cin, gameName);
-                    if (demoMember.borrowGame(games, gameName)) {
+                    if (loggedInMember->item.borrowGame(games, gameName)){
+                        writeBorrowRecord(borrowRecordCounter++, to_string(loggedInMember->item.getUserId()), gameName, "BORROW");
                         cout << "Borrow successful.\n";
-
-                        writeBorrowRecord(
-                            borrowRecordCounter++,
-                            to_string(demoMember.getUserId()),   // memberId (string)
-                            gameName,             // game identifier (name)
-                            "BORROW"
-                        );
                     }
-                    else {
+                    else{
                         cout << "Borrow failed (no available copy or error).\n";
                     }
                 }
@@ -290,12 +356,12 @@ int main()
                     getline(cin, idStr);
                     try {
                         int id = stoi(idStr);
-                        if (demoMember.returnGame(games, id)) {
+                        if (!loggedInMember->item.returnGame(games, id)) {
                             cout << "Return successful.\n";
 
                             writeBorrowRecord(
                                 borrowRecordCounter++,
-                                to_string(demoMember.getUserId()),     // memberId (string)
+                                to_string(loggedInMember->item.getUserId()),     // memberId (string)
                                 to_string(id),          // gameId
                                 "RETURN"
                             );
@@ -310,7 +376,7 @@ int main()
                 }
                 else if (mopt == "3") {
                     // Display detailed borrow history with full game information
-                    displayDetailedBorrowHistory(demoMember.getUserId(), games);
+                    displayDetailedBorrowHistory(loggedInMember->item.getUserId(), games);
                 }
                 else { // logout or any other input
                     cout << "Logging out...\n";
@@ -331,12 +397,15 @@ int main()
                     cout << "Exiting to main menu...\n";
 
                 else if (displayOption == 1) {
-                    cout << "Name | MinPlayer | MaxPlayer | MaxPlayTime | MinPlayTime | YearPublished\n";
-                    games.print();
+                    cout << "GameID | Name | MinPlayer | MaxPlayer | MaxPlayTime | MinPlayTime | YearPublished | No. of Copies\n";
+                    globalUser.printActiveGames(games);
                 }
 
                 else if (displayOption == 2)
-                    admin.displayGamesPlayableByNPlayers(games);
+                    globalUser.displayGamesPlayableByNPlayers(games);
+
+                else
+                    cout << "Invalid option!\n";
             }
         }
            

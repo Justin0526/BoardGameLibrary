@@ -1,5 +1,6 @@
 #include "User.h"
 #include "Game.h"
+#include "LinkedList.h"
 #include <limits>
 #include <sstream>
 #include <iostream>
@@ -18,6 +19,12 @@ User::User(int id, string name, string password, string role) {
     this->role = role;
 }
 
+User::User(int id, string name, string role) {
+    this->userId = id;
+    this->name = name;
+    this->role = role;
+}
+
 bool User::login(string inputName, string inputPassword) const {
     return (name == inputName && password == inputPassword);
 }
@@ -32,6 +39,17 @@ string User::getName() const {
 
 string User::getRole() const {
     return role;
+}
+
+void User::printActiveGames(List<Game>& games) {
+    for (int i = 0; i < games.getLength(); i++) {
+        List<Game>::NodePtr node = games.getNode(i);
+        Game& g = node->item;
+
+        if (g.getIsActive() == "TRUE") {
+            cout << g;
+        }
+    }
 }
 
 bool User::borrowGame(List<Game>& games, const string& gameName) {
@@ -190,6 +208,6 @@ void User::displayGamesPlayableByNPlayers(List<Game>& games) {
 }
 
 ostream& operator<<(ostream& os, const User& u) {
-    os << u.getName() << " (" << u.getUserId() << ")" << endl;
+    os << u.getName() << " [User ID: " << u.getUserId() << "]" << endl;
     return os;
 }

@@ -12,11 +12,14 @@ class Game {
 		int maxPlaytime;
 		int minPlaytime;
 		int yearPublished;
+		int gameId;
+		int copy;
+		string isActive;
 		bool borrowed;          // whether this copy is currently borrowed
 
 	public:
 		Game();
-		Game(string name, int minPlayer, int maxPlayer, int maxPlaytime, int minPlaytime, int yearPublished);
+		Game(int gameId, string name, int minPlayer, int maxPlayer, int minPlaytime, int maxPlaytime, int yearPublished, int copy, string isActive);
 
 		// id accessors
 		int getId() const;
@@ -29,6 +32,11 @@ class Game {
 		int getMaxPlayTime() const;
 		int getMinPlayTime() const;
 		int getYearPublished() const;
+		int getGameId() const;
+		int getGameCopy() const;
+		int setGameCopy(int num);
+		string getIsActive() const;
+		string setIsActive(string active);
 
 		// borrow state
 		bool isBorrowed() const;
