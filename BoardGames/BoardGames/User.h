@@ -15,6 +15,9 @@ protected:
     string password;
     string role;
 
+    List<int> borrowed;
+    List<int> history;
+
 public:
     User();
     User(int id, string name, string password, string role);
@@ -27,6 +30,11 @@ public:
     string getRole() const;
 
     void printActiveGames(List<Game>& games);
+    // Features available to all users
+    bool borrowGame(List<Game>& games, const string& gameName);
+    bool returnGame(List<Game>& games, int gameId);
+    void displayBorrowedAndHistory() const;
+
     void displayGamesPlayableByNPlayers(List<Game>& games);
 };
 
