@@ -19,7 +19,7 @@ void writeBorrowRecord(
     // Write only to the project source directory
     fs::path sourcePath = fs::path(__FILE__);
     fs::path projectRoot = sourcePath.parent_path();
-    fs::path projectPath = projectRoot / "borrow_records.csv";
+    fs::path projectPath = projectRoot / "data/borrow_records.csv";
 
     std::ofstream file(projectPath, std::ios::app);
     if (!file.is_open()) {
@@ -41,7 +41,7 @@ void initializeBorrowRecordsCSV() {
     namespace fs = std::filesystem;
     fs::path sourcePath = fs::path(__FILE__);
     fs::path projectRoot = sourcePath.parent_path();
-    fs::path projectPath = projectRoot / "borrow_records.csv";
+    fs::path projectPath = projectRoot / "data/borrow_records.csv";
 
     // Check if file exists and has content
     std::ifstream checkFile(projectPath);
@@ -67,7 +67,7 @@ int getNextBorrowRecordId() {
     namespace fs = std::filesystem;
     fs::path sourcePath = fs::path(__FILE__);
     fs::path projectRoot = sourcePath.parent_path();
-    fs::path projectPath = projectRoot / "borrow_records.csv";
+    fs::path projectPath = projectRoot / "data/borrow_records.csv";
 
     std::ifstream file(projectPath);
     if (!file.is_open()) {
@@ -103,7 +103,7 @@ void loadMemberBorrowHistory(int memberId, std::vector<std::string>& borrowHisto
     namespace fs = std::filesystem;
     fs::path sourcePath = fs::path(__FILE__);
     fs::path projectRoot = sourcePath.parent_path();
-    fs::path projectPath = projectRoot / "borrow_records.csv";
+    fs::path projectPath = projectRoot / "data/borrow_records.csv";
 
     borrowHistory.clear();
     
@@ -146,7 +146,7 @@ void loadMemberBorrowHistoryDetailed(int memberId, List<Game>& games, std::vecto
     namespace fs = std::filesystem;
     fs::path sourcePath = fs::path(__FILE__);
     fs::path projectRoot = sourcePath.parent_path();
-    fs::path projectPath = projectRoot / "borrow_records.csv";
+    fs::path projectPath = projectRoot / "data/borrow_records.csv";
 
     borrowHistory.clear();
     
@@ -186,7 +186,7 @@ void loadMemberBorrowHistoryDetailed(int memberId, List<Game>& games, std::vecto
                             Game& g = games.getItem(node);
                             
                             // Check if gameId matches by name or ID
-                            if (g.getName() == gameId || std::to_string(g.getId()) == gameId) {
+                            if (g.getName() == gameId || std::to_string(g.getGameId()) == gameId) {
                                 record.gameDetails = &g;
                                 break;
                             }
@@ -208,7 +208,7 @@ void restoreGameBorrowStates(List<Game>& games) {
     namespace fs = std::filesystem;
     fs::path sourcePath = fs::path(__FILE__);
     fs::path projectRoot = sourcePath.parent_path();
-    fs::path projectPath = projectRoot / "borrow_records.csv";
+    fs::path projectPath = projectRoot / "data/borrow_records.csv";
 
     std::ifstream file(projectPath);
     if (!file.is_open()) {
@@ -270,7 +270,7 @@ void restoreGameBorrowStates(List<Game>& games) {
         Game& g = games.getItem(node);
 
         std::string gameName = g.getName();
-        int gameId = g.getId();
+        int gameId = g.getGameId();
         
         bool finalState = false; // Default to available
         bool stateFound = false;

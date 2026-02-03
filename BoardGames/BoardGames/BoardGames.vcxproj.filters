@@ -71,6 +71,6 @@
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="data\games.csv" />
-    <CopyFileToFolders Include="borrow_records.csv" />
+    <CopyFileToFolders Include="data\borrow_records.csv" />
   </ItemGroup>
 </Project>

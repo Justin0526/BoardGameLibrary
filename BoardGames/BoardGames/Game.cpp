@@ -96,8 +96,8 @@ ostream& operator<<(ostream& os, const Game& g) {
 		<< g.getName() << ", " <<
 		g.getMinPlayer() << ", " <<
 		g.getMaxPlayer() << ", " <<
-		g.getMaxPlayTime() << ", " <<
 		g.getMinPlayTime() << ", " <<
+		g.getMaxPlayTime() << ", " <<
 		g.getYearPublished() << ", " << 
 		g.getGameCopy() << endl;
 	return os;

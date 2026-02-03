@@ -89,7 +89,7 @@ void displayDetailedBorrowHistory(int memberId, List<Game>& games) {
             if (record.gameDetails != nullptr) {
                 Game& g = *(record.gameDetails);
                 cout << "Game Details:\n";
-                cout << "  ID: " << g.getId() << "\n";
+                cout << "  ID: " << g.getGameId() << "\n";
                 cout << "  Name: " << g.getName() << "\n";
                 cout << "  Players: " << g.getMinPlayer() << " - " << g.getMaxPlayer() << " players\n";
                 cout << "  Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
@@ -327,16 +327,17 @@ int main()
 
             cout << "Login successful. Welcome, " << loggedInMember->item.getName() << "!\n";
 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             // member menu
             while (true) {
                 cout << "\nMember Menu\n";
                 cout << "1) Borrow a game by name\n";
                 cout << "2) Return a game by id\n";
                 cout << "3) View my borrowed/history\n";
-                cout << "4) Logout\n";
+                cout << "0) Logout\n";
                 cout << "Select option: ";
                 string mopt;
-                if (!getline(cin, mopt)) { mopt = "4"; }
+                if (!getline(cin, mopt)) { mopt = "0"; }
 
                 if (mopt == "1") {
                     cout << "Enter game name to borrow: ";
@@ -356,7 +357,7 @@ int main()
                     getline(cin, idStr);
                     try {
                         int id = stoi(idStr);
-                        if (!loggedInMember->item.returnGame(games, id)) {
+                        if (loggedInMember->item.returnGame(games, id)) {
                             cout << "Return successful.\n";
 
                             writeBorrowRecord(
@@ -397,7 +398,7 @@ int main()
                     cout << "Exiting to main menu...\n";
 
                 else if (displayOption == 1) {
-                    cout << "GameID | Name | MinPlayer | MaxPlayer | MaxPlayTime | MinPlayTime | YearPublished | No. of Copies\n";
+                    cout << "GameID | Name | MinPlayer | MaxPlayer | MinPlayTime | MaxPlayTime | YearPublished | No. of Copies\n";
                     globalUser.printActiveGames(games);
                 }
 

@@ -141,8 +141,8 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
         if (!(ss >> yearPublished) || !ss.eof()) {
             cout << "Invalid input! Please enter  a whole number!\n";
         }
-        else if(yearPublished > current) {
-            cout << "Invalid year! Enter a year that is not in the future!\n";
+        else if(yearPublished > current || yearPublished <= 0) {
+            cout << "Invalid year!\n";
         }
         else {
             break;
@@ -182,7 +182,7 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
                 ofstream file("games.csv", ios::trunc);
 
                 //write header 
-                file << "gameId,name,minPlayer,maxPlayTime,minPlayTime,maxPlaytime,yearPublished,copy,isActive\n";
+                file << "gameId,name,minPlayer,maxPlayer,minPlayTime,maxPlaytime,yearPublished,copy,isActive\n";
                 for (List<Game>::NodePtr node = games.getNode(0); node != nullptr; node = node->next) {
                     const Game& g = node->item;
                     file << g.getGameId() << ","
@@ -224,7 +224,8 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
         // ifstream - read only
         fstream file;
         file.open("games.csv", ios::app);
-        file << lastGameId + 1 << ","
+        file 
+            << lastGameId + 1 << ","
             << csvEscape(name) << ','
             << minPlayer << ","
             << maxPlayer << ","
@@ -343,8 +344,6 @@ void Admin::addMember(List<Member>& members, HashTable<string, List<Member>::Nod
         << "member";
 
     file.close();
-
-    members.print();
 
     cout << "Adding new member...\n";
     cout << name << "added successfully!\n";
