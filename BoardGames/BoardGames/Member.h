@@ -13,6 +13,7 @@ class Member : public User {
 public:
     Member();
     Member(int id, string name, string password);
+    Member(int id, string name);
 
     void displayGamesBorrowedReturnedByMember() const;
 };

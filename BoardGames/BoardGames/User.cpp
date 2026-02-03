@@ -1,5 +1,6 @@
 #include "User.h"
 #include "Game.h"
+#include "LinkedList.h"
 #include <limits>
 #include <sstream>
 #include <iostream>
@@ -15,6 +16,12 @@ User::User(int id, string name, string password, string role) {
     this->userId = id;
     this->name = name;
     this->password = password;
+    this->role = role;
+}
+
+User::User(int id, string name, string role) {
+    this->userId = id;
+    this->name = name;
     this->role = role;
 }
 
@@ -34,6 +41,17 @@ string User::getRole() const {
     return role;
 }
 
+void User::printActiveGames(List<Game>& games) {
+    for (int i = 0; i < games.getLength(); i++) {
+        List<Game>::NodePtr node = games.getNode(i);
+        Game& g = node->item;
+
+        if (g.getIsActive() == "TRUE") {
+            cout << g;
+        }
+    }
+}
+
 bool User::borrowGame(List<Game>& games, const string& gameName) {
     int n = games.getLength();
     // find first not-borrowed copy
@@ -43,9 +61,9 @@ bool User::borrowGame(List<Game>& games, const string& gameName) {
         Game& g = games.getItem(node);
         if (g.getName() == gameName && !g.isBorrowed()) {
             g.setBorrowed(true);
-            borrowed.add(g.getId());
-            history.add(g.getId());
-            cout << role << " " << getName() << " borrowed game [" << g.getId() << "] " << g.getName() << endl;
+            borrowed.add(g.getGameId());
+            history.add(g.getGameId());
+            cout << role << " " << getName() << " borrowed game [" << g.getGameId() << "] " << g.getName() << endl;
             return true;
         }
     }
@@ -59,7 +77,7 @@ bool User::returnGame(List<Game>& games, int gameId) {
         auto node = games.getNode(i);
         if (node == nullptr) continue;
         Game& g = games.getItem(node);
-        if (g.getId() == gameId && g.isBorrowed()) {
+        if (g.getGameId() == gameId && g.isBorrowed()) {
             g.setBorrowed(false);
             // remove gameId from borrowed list by rebuilding as List lacks removeAt
             List<int> newBorrowed;
@@ -73,7 +91,7 @@ bool User::returnGame(List<Game>& games, int gameId) {
             borrowed = List<int>();
             for (int j = 0; j < newBorrowed.getLength(); ++j) borrowed.add(newBorrowed.get(j));
 
-            cout << role << " " << getName() << " returned game [" << g.getId() << "] " << g.getName() << endl;
+            cout << role << " " << getName() << " returned game [" << g.getGameId() << "] " << g.getName() << endl;
             return true;
         }
     }
@@ -190,6 +208,6 @@ void User::displayGamesPlayableByNPlayers(List<Game>& games) {
 }
 
 ostream& operator<<(ostream& os, const User& u) {
-    os << u.getName() << " (" << u.getUserId() << ")" << endl;
+    os << u.getName() << " [User ID: " << u.getUserId() << "]" << endl;
     return os;
 }

@@ -30,12 +30,6 @@
     <ClCompile Include="Admin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LinkedList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Dictionary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Borrow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -65,9 +59,6 @@
     <ClInclude Include="Admin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dictionary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Borrow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -80,6 +71,6 @@
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="data\games.csv" />
-    <CopyFileToFolders Include="borrow_records.csv" />
+    <CopyFileToFolders Include="data\borrow_records.csv" />
   </ItemGroup>
 </Project>
