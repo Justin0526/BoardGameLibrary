@@ -128,7 +128,6 @@
     <ClCompile Include="BoardGames.cpp" />
     <ClCompile Include="Borrow.cpp" />
     <ClCompile Include="BorrowRecord.cpp" />
-    <ClCompile Include="Dictionary.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Member.cpp" />
     <ClCompile Include="Return.cpp" />
@@ -152,7 +151,7 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="borrow_records.csv">
+    <CopyFileToFolders Include="data\borrow_records.csv">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <FileType>Document</FileType>
     </CopyFileToFolders>

@@ -61,9 +61,9 @@ bool User::borrowGame(List<Game>& games, const string& gameName) {
         Game& g = games.getItem(node);
         if (g.getName() == gameName && !g.isBorrowed()) {
             g.setBorrowed(true);
-            borrowed.add(g.getId());
-            history.add(g.getId());
-            cout << role << " " << getName() << " borrowed game [" << g.getId() << "] " << g.getName() << endl;
+            borrowed.add(g.getGameId());
+            history.add(g.getGameId());
+            cout << role << " " << getName() << " borrowed game [" << g.getGameId() << "] " << g.getName() << endl;
             return true;
         }
     }
@@ -77,7 +77,7 @@ bool User::returnGame(List<Game>& games, int gameId) {
         auto node = games.getNode(i);
         if (node == nullptr) continue;
         Game& g = games.getItem(node);
-        if (g.getId() == gameId && g.isBorrowed()) {
+        if (g.getGameId() == gameId && g.isBorrowed()) {
             g.setBorrowed(false);
             // remove gameId from borrowed list by rebuilding as List lacks removeAt
             List<int> newBorrowed;
@@ -91,7 +91,7 @@ bool User::returnGame(List<Game>& games, int gameId) {
             borrowed = List<int>();
             for (int j = 0; j < newBorrowed.getLength(); ++j) borrowed.add(newBorrowed.get(j));
 
-            cout << role << " " << getName() << " returned game [" << g.getId() << "] " << g.getName() << endl;
+            cout << role << " " << getName() << " returned game [" << g.getGameId() << "] " << g.getName() << endl;
             return true;
         }
     }
