@@ -205,11 +205,17 @@ void User::displayGamesPlayableByNPlayers(List<Game>& games) {
     }
     cout << "Name | MinPlayer | MaxPlayer | MaxPlayTime | MinPlayTime | YearPublished\n";
     // print
-    filtered.print();
+    printActiveGames(filtered);
 }
 
-void User::recommendFromGame(int gameId, List<Rating>& ratings, List<GameCandidate>& outCandidates,
-    HashTable<string, List<List<Rating>::NodePtr>*>& gameRatings, HashTable<string, List<List<Rating>::NodePtr>*>& memberRatings) {
+void User::recommendFromGame(
+    int gameId,
+    List<Rating>& ratings, 
+    List<GameCandidate>& outCandidates,
+    HashTable<string, List<List<Rating>::NodePtr>*>& gameRatings, 
+    HashTable<string, List<List<Rating>::NodePtr>*>& memberRatings,
+    List<Game>& games,
+    HashTable<string, List<Game>::NodePtr>& gameTable) {
     // Clear outcandidates
     outCandidates.clear();
 
@@ -223,18 +229,21 @@ void User::recommendFromGame(int gameId, List<Rating>& ratings, List<GameCandida
     int topN = 10;
 
     // Get all ratings from game
-    List<List<Rating>::NodePtr>* allRatings = gameRatings.get(to_string(gameId));
-
-    if (allRatings == nullptr) {
+    string targetKey = to_string(gameId);
+    if (!gameRatings.containsKey(targetKey)) {
         cout << "There is currently no ratings for this game\n";
         return;
     }
+    List<List<Rating>::NodePtr>* allRatings = gameRatings.get(targetKey);
+
     // Find "fans" of the game A
     for (auto node = allRatings->getNode(0); node != nullptr; node = node->next) {
         List<Rating>::NodePtr ratingNode = node->item;
         Rating& r = ratings.getItem(ratingNode);
         if (r.getRating() >= ratingCutoff) {
-            List<List<Rating>::NodePtr>* memberList = memberRatings.get(to_string(r.getUserId()));
+            string userKey = to_string(r.getUserId());
+            if (!memberRatings.containsKey(userKey)) continue;
+            List<List<Rating>::NodePtr>* memberList = memberRatings.get(userKey);
             
             if (memberList == nullptr) {
                 cout << "We can’t find this user in memberRatings index\n";
@@ -246,51 +255,175 @@ void User::recommendFromGame(int gameId, List<Rating>& ratings, List<GameCandida
                 Rating& mr = ratings.getItem(mRatingNode);
 
                 if (mr.getRating() >= ratingCutoff && mr.getGameId() != gameId) {
-                    string gameId = to_string(mr.getGameId());
+                    string candId = to_string(mr.getGameId());
                     int score;
 
-                    if (!candidateScore.containsKey(gameId)) {
+                    if (!candidateScore.containsKey(candId)) {
                         score = mr.getRating();
                     }
                     else {
-                        score = candidateScore.get(gameId) + mr.getRating();
+                        score = candidateScore.get(candId) + mr.getRating();
                     }
-                    candidateScore.addOrUpdate(gameId, score);
+                    candidateScore.addOrUpdate(candId, score);
 
                     int numOfSupport;
-                    if (!candidateSupport.containsKey(gameId)) {
+                    if (!candidateSupport.containsKey(candId)) {
                         numOfSupport = 1;
                     }
                     else {
-                        numOfSupport = candidateSupport.get(gameId) + 1;
+                        numOfSupport = candidateSupport.get(candId) + 1;
                     }
-                    candidateSupport.addOrUpdate(gameId, numOfSupport);
+                    candidateSupport.addOrUpdate(candId, numOfSupport);
                 }
             }
         }
     }
 
     // Iterate through candidateScore hash table
-    candidateScore.forEach(
-        [&](const string& gameId, int score) {
-            // [ & ] capture everything outside by reference
-            // This let us use candidateSupport, minSupport, candidates, etc
+    candidateScore.forEach([&](const string& candId, int score) {
+        if (!candidateSupport.containsKey(candId)) return;
+        int support = candidateSupport.get(candId);
 
-            // Look up how many users supported this game
-            int support = candidateSupport.get(gameId);
-
-            GameCandidate gc(gameId, score, support);
-            outCandidates.add(gc);
+        // lookup name
+        string name = "(unknown)";
+        if (gameTable.containsKey(candId)) {
+            Game& g = games.getItem(gameTable.get(candId));
+            name = g.getName();
         }
-    );
+
+        outCandidates.add(GameCandidate(candId, name, score, support));
+        });
+
 }
 
-void User::printRecommendedGames(List<GameCandidate>& candidates) {
-    cout << "GameID | Score | Support \n";
-    candidates.printWithIndex();
+void User::printRecommendedGames(
+    List<GameCandidate>& candidates,
+    List<Game>& games,
+    HashTable<string, List<Game>::NodePtr>& gameTable
+) {
+
+    int option = -1;
+    bool (*cmp)(const GameCandidate&, const GameCandidate&) = nullptr;
+
+    while (true) {
+        cout << "\n-- Sort By --" << endl;
+        cout << "0. Default\n";
+        cout << "1. Name in Ascending order\n";
+        cout << "2. Name in Descending order\n";
+        cout << "3. Score in Ascending order\n";
+        cout << "4. Score in Descending order\n";
+        cout << "5. Support in Ascending order\n";
+        cout << "6. Support in Descending order\n";
+
+        cout << "Enter your option: ";
+        cin >> option;
+        cout << endl;
+
+        if (option == 0) {
+            cout << "Loading in default view...\n";
+            break;
+        }
+
+        else if (option == 1)
+        {
+            cout << "Loading NAME in ascending order...\n";
+            cmp = byNameAsc;
+            break;
+        }
+
+        else if (option == 2) {
+            cout << "Loading NAME in descending order...\n";
+            cmp = byNameDesc;
+            break;
+        }
+
+        else if (option == 3) {
+            cout << "Loading SCORE in ascending order...\n";
+            cmp = byScoreAsc;
+            break;
+        }
+
+        else if (option == 4) {
+            cout << "loading SCORE in descending order...\n";
+            cmp = byScoreDesc;
+            break;
+        }
+
+        else if (option == 5) {
+            cout << "loading SUPPORT in ascending order...\n";
+            cmp = bySupportAsc;
+            break;
+        }
+
+        else if (option == 6) {
+            cout << "loading SUPPORT in descending order...\n";
+            cmp = bySupportDesc;
+            break;
+        }
+
+        else
+            cout << "Invalid option!";
+
+    }
+
+    if (cmp != nullptr) {
+        candidates.sort(cmp);
+    }
+
+    cout << "GameID | Name | Score | Support\n";
+
+    for (auto p = candidates.getNode(0); p != nullptr; p = p->next) {
+        GameCandidate& c = candidates.getItem(p);
+        const string& gid = c.getGameId();
+
+        if (!gameTable.containsKey(gid)) continue;
+
+        Game& g = games.getItem(gameTable.get(gid));
+
+        cout << gid << " | "
+            << g.getName() << " | "
+            << c.getScore() << " | "
+            << c.getSupport() << "\n";
+    }
 }
 
 ostream& operator<<(ostream& os, const User& u) {
     os << u.getName() << " [User ID: " << u.getUserId() << "]" << endl;
     return os;
+}
+
+void User::filterRecommendedCandidates(
+    List<GameCandidate>& in,
+    List<Game>& games,
+    HashTable<string, List<Game>::NodePtr>& gameTable,
+    int desiredPlayers,      // pass -1 if not filtering by players
+    int desiredMinutes,      // pass -1 if not filtering by time
+    List<GameCandidate>& out // output list
+) {
+    out.clear();
+
+    for (auto p = in.getNode(0); p != nullptr; p = p->next) {
+        GameCandidate& c = in.getItem(p);
+        const string& gid = c.getGameId();
+
+        // if game doesn't exist in table (soft deleted or mismatch), skip it
+        if (!gameTable.containsKey(gid)) continue;
+
+        List<Game>::NodePtr gNode = gameTable.get(gid);
+        Game& g = games.getItem(gNode);
+
+        // players filter
+        if (desiredPlayers != -1) {
+            if (!(desiredPlayers >= g.getMinPlayer() && desiredPlayers <= g.getMaxPlayer()))
+                continue;
+        }
+
+        // playtime filter  
+        if (desiredMinutes != -1) {
+            if (!(desiredMinutes >= g.getMinPlayTime() && desiredMinutes <= g.getMaxPlayTime()))
+                continue;
+        }
+
+        out.add(c); // copies GameCandidate 
+    }
 }

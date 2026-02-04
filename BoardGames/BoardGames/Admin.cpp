@@ -101,7 +101,7 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
 
     // min play time
     int minPlayTime;
-    cout << "Minimum playtime: ";
+    cout << "Minimum playtime (mins): ";
 
     while (true) {
         getline(cin, input);
@@ -117,7 +117,7 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
 
     // max play time
     int maxPlayTime;
-    cout << "Maximum playtime: ";
+    cout << "Maximum playtime (mins): ";
     
     while (true) {
         getline(cin, input);

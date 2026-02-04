@@ -534,14 +534,78 @@ int main()
                         continue;
                     }
                     List<GameCandidate> candidates;
-                    globalUser.recommendFromGame(gameId, ratings,candidates, gameRatings, memberRatings);
+                    globalUser.recommendFromGame(gameId, ratings,candidates, gameRatings, memberRatings, games, gameTable);
                     
                     if (candidates.getLength() <= 0) {
                         cout << "No user recommend this game yet... Be the first to recommend it\n";
                         continue;
                     }
 
-                    globalUser.printRecommendedGames(candidates);
+                    globalUser.printRecommendedGames(candidates, games, gameTable);
+
+                    //int players = -1;
+                    //int minutes = -1;
+                    //char choice;
+
+                    //// -------- Filter by players --------
+                    //while (true) {
+                    //    cout << "Filter by players? (Y/N): ";
+                    //    cin >> choice;
+
+                    //    if (choice == 'Y' || choice == 'y') {
+                    //        cout << "Number of players: ";
+                    //        if (!(cin >> players) || players <= 0) {
+                    //            cin.clear();
+                    //            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    //            cout << "Invalid number of players.\n";
+                    //            players = -1;
+                    //            continue;
+                    //        }
+                    //        break;
+                    //    }
+                    //    else if (choice == 'N' || choice == 'n') {
+                    //        break;
+                    //    }
+                    //    else {
+                    //        cout << "Please enter Y or N.\n";
+                    //    }
+                    //}
+
+                    //// -------- Filter by playtime --------
+                    //while (true) {
+                    //    cout << "Filter by playtime? (Y/N): ";
+                    //    cin >> choice;
+
+                    //    if (choice == 'Y' || choice == 'y') {
+                    //        cout << "Playtime (minutes): ";
+                    //        if (!(cin >> minutes) || minutes <= 0) {
+                    //            cin.clear();
+                    //            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    //            cout << "Invalid playtime.\n";
+                    //            minutes = -1;
+                    //            continue;
+                    //        }
+                    //        break;
+                    //    }
+                    //    else if (choice == 'N' || choice == 'n') {
+                    //        break;
+                    //    }
+                    //    else {
+                    //        cout << "Please enter Y or N.\n";
+                    //    }
+                    //}
+
+                    //// -------- Apply filter & print --------
+                    //List<GameCandidate> filtered;
+                    //globalUser.filterRecommendedCandidates(
+                    //    candidates,
+                    //    games,
+                    //    gameTable,
+                    //    players,
+                    //    minutes,
+                    //    filtered
+                    //);
+
                 }
                 else {
                     cout << "Invalid option!\n";
