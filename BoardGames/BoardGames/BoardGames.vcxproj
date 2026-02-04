@@ -129,6 +129,7 @@
     <ClCompile Include="Borrow.cpp" />
     <ClCompile Include="BorrowRecord.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameCandidate.cpp" />
     <ClCompile Include="Member.cpp" />
     <ClCompile Include="Rating.cpp" />
     <ClCompile Include="Return.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="Borrow.h" />
     <ClInclude Include="BorrowRecord.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameCandidate.h" />
     <ClInclude Include="HashTable.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Member.h" />

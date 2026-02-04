@@ -1,4 +1,5 @@
 #include "User.h"
+#include "Member.h"
 #include "Game.h"
 #include "LinkedList.h"
 #include <limits>
@@ -205,6 +206,88 @@ void User::displayGamesPlayableByNPlayers(List<Game>& games) {
     cout << "Name | MinPlayer | MaxPlayer | MaxPlayTime | MinPlayTime | YearPublished\n";
     // print
     filtered.print();
+}
+
+void User::recommendFromGame(int gameId, List<Rating>& ratings, List<GameCandidate>& outCandidates,
+    HashTable<string, List<List<Rating>::NodePtr>*>& gameRatings, HashTable<string, List<List<Rating>::NodePtr>*>& memberRatings) {
+    // Clear outcandidates
+    outCandidates.clear();
+
+    // Game scoring table
+    HashTable<string, int> candidateScore;
+    HashTable<string, int> candidateSupport;
+
+    // Parameters
+    int ratingCutoff = 4;
+    int minSupport = 2;
+    int topN = 10;
+
+    // Get all ratings from game
+    List<List<Rating>::NodePtr>* allRatings = gameRatings.get(to_string(gameId));
+
+    if (allRatings == nullptr) {
+        cout << "There is currently no ratings for this game\n";
+        return;
+    }
+    // Find "fans" of the game A
+    for (auto node = allRatings->getNode(0); node != nullptr; node = node->next) {
+        List<Rating>::NodePtr ratingNode = node->item;
+        Rating& r = ratings.getItem(ratingNode);
+        if (r.getRating() >= ratingCutoff) {
+            List<List<Rating>::NodePtr>* memberList = memberRatings.get(to_string(r.getUserId()));
+            
+            if (memberList == nullptr) {
+                cout << "We can’t find this user in memberRatings index\n";
+                continue;
+            }
+
+            for (auto mNode = memberList->getNode(0); mNode != nullptr; mNode = mNode->next){
+                List<Rating>::NodePtr mRatingNode = mNode->item;
+                Rating& mr = ratings.getItem(mRatingNode);
+
+                if (mr.getRating() >= ratingCutoff && mr.getGameId() != gameId) {
+                    string gameId = to_string(mr.getGameId());
+                    int score;
+
+                    if (!candidateScore.containsKey(gameId)) {
+                        score = mr.getRating();
+                    }
+                    else {
+                        score = candidateScore.get(gameId) + mr.getRating();
+                    }
+                    candidateScore.addOrUpdate(gameId, score);
+
+                    int numOfSupport;
+                    if (!candidateSupport.containsKey(gameId)) {
+                        numOfSupport = 1;
+                    }
+                    else {
+                        numOfSupport = candidateSupport.get(gameId) + 1;
+                    }
+                    candidateSupport.addOrUpdate(gameId, numOfSupport);
+                }
+            }
+        }
+    }
+
+    // Iterate through candidateScore hash table
+    candidateScore.forEach(
+        [&](const string& gameId, int score) {
+            // [ & ] capture everything outside by reference
+            // This let us use candidateSupport, minSupport, candidates, etc
+
+            // Look up how many users supported this game
+            int support = candidateSupport.get(gameId);
+
+            GameCandidate gc(gameId, score, support);
+            outCandidates.add(gc);
+        }
+    );
+}
+
+void User::printRecommendedGames(List<GameCandidate>& candidates) {
+    cout << "GameID | Score | Support \n";
+    candidates.printWithIndex();
 }
 
 ostream& operator<<(ostream& os, const User& u) {

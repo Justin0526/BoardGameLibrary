@@ -64,6 +64,8 @@ public:
 
 	template <typename Pred>
 	List<T> filter(Pred pred) const;
+
+	void clear();
 };
 
 template <typename T>
@@ -288,4 +290,16 @@ List<T> List<T>::filter(Pred pred) const {
 
 	return result;
 	
+}
+
+template <typename T>
+void List<T>::clear() {
+	Node* current = firstNode;
+	while (current != nullptr) {
+		Node* temp = current;
+		current = current->next;
+		delete temp;
+	}
+	firstNode = nullptr;
+	size = 0;
 }
