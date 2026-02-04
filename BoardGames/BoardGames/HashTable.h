@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <string>
 #include <optional>
+#include <functional>
 
 const int MAX_SIZE = 101;
 

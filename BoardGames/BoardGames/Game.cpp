@@ -15,14 +15,6 @@ Game::Game(int gameId, string name, int minPlayer, int maxPlayer, int minPlaytim
 	borrowed(false) {
 }
 
-int Game::getId() const {
-	return this->id;
-}
-
-void Game::setId(int idVal) {
-	this->id = idVal;
-}
-
 string Game::getName() const {
 	return this->name;
 }
