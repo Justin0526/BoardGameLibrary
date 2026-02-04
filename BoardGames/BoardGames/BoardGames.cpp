@@ -15,6 +15,7 @@
 #include "Admin.h"
 #include "Member.h"
 #include "Rating.h"
+#include "Reviews.h"
 
 using namespace std;
 
@@ -437,6 +438,8 @@ int main()
                 cout << "1) Borrow a game by name\n";
                 cout << "2) Return a game by id\n";
                 cout << "3) View my borrowed/history\n";
+				cout << "4) Write a review for a game\n";
+				cout << "5) View reviews for a game\n";
                 cout << "0) Logout\n";
                 cout << "Select option: ";
                 string mopt;
@@ -504,6 +507,12 @@ int main()
                 else if (mopt == "3") {
                     // Display detailed borrow history with full game information
                     displayDetailedBorrowHistory(loggedInMember->item.getUserId(), games);
+                }
+                else if (mopt == "4") {
+                    writeReview(ratings, gameRatings, members, games, loggedInMember->item.getUserId());
+                }
+                else if (mopt == "5") {
+                    displayReviewsForGame(ratings, gameRatings, games);
                 }
                 else { // logout or any other input
                     cout << "Logging out...\n";

@@ -42,6 +42,9 @@
     <ClCompile Include="Rating.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Reviews.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LinkedList.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rating.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Reviews.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
