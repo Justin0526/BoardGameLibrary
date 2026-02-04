@@ -14,6 +14,7 @@
 #include "User.h"
 #include "Admin.h"
 #include "Member.h"
+#include "Rating.h"
 
 using namespace std;
 
@@ -256,10 +257,71 @@ bool loadUsersFromCSV(const string& filename, List<Admin>& admins, List<Member>&
     return true;
 }
 
+bool loadRatingsFromCSV(const string& filename, List<Rating>& ratings, HashTable<string, List<Rating>::NodePtr>& ratingTable,
+    HashTable<string, List<Rating>::NodePtr>& gameRatings, HashTable<string, List<Rating>::NodePtr>& memberRatings) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Failed to open file: " << filename << endl;
+        return false;
+    }
+
+    string line;
+
+    // 1) Skip header line
+    if (!getline(file, line))
+        return false;
+
+    // 2) Read each data row
+    while (getline(file, line)) {
+        if (line.empty()) continue;
+
+        vector<string> cols = parseCsvLine(line);
+        if (cols.size() != 8) {
+            cout << "Bad column count (" << cols.size() << "): [" << line << "]\n";
+            continue;
+        }
+
+        string id = cols[0];
+        string gameId = cols[1];
+        string gameName = stripOuterQuotes(cols[2]);
+        string userId = cols[3];
+        string username = stripOuterQuotes(cols[4]);
+        string rating = cols[5];
+        string review = stripOuterQuotes(cols[6]);
+        string createdAt = trimCR(stripOuterQuotes(cols[7]));
+
+        // Create object and add to list
+        try {
+            Rating r(
+                stoi(id),
+                stoi(gameId),
+                gameName,
+                stoi(userId),
+                username,
+                stoi(rating),
+                review,
+                createdAt
+            );
+            List<Rating>::NodePtr ratingPtr = ratings.add(r);
+            ratingTable.add(id, ratingPtr);
+            gameRatings.add(gameId, ratingPtr);
+            memberRatings.add(userId, ratingPtr);
+        }
+        catch (const exception& e) {
+            cout << "Parse error: " << e.what() << "\n";
+            cout << "Bad line: [" << line << "]\n";
+        }
+    }
+    file.close();
+    return true;
+}
+
 int main()
 {
   // Initialize borrow record counter from existing records
     borrowRecordCounter = getNextBorrowRecordId();  
+
+    // ---- Game ----
     List<Game> games;
     HashTable<string, List<Game>::NodePtr> gameTable;
     loadGamesFromCSV("games.csv", games, gameTable);
@@ -267,6 +329,7 @@ int main()
     // Restore borrowed states from borrow records
     restoreGameBorrowStates(games);
 
+    // ---- Users ----
     List<Admin> admins;
     List<Member> members;
     List<User> users;
@@ -276,8 +339,14 @@ int main()
     HashTable<string, List<User>::NodePtr> userTable;
     loadUsersFromCSV("users.csv", admins, members, users, adminTable, memberTable, userTable);
 
+    // ---- Ratings ----
+    List<Rating> ratings;
+    HashTable<string, List<Rating>::NodePtr> ratingTable;
+    HashTable<string, List<Rating>::NodePtr> gameRatings;
+    HashTable<string, List<Rating>::NodePtr> memberRatings;
+    loadRatingsFromCSV("ratings.csv", ratings, ratingTable, gameRatings, memberRatings);
+    
     User globalUser(-1, "global user", "admin");
-
     int option = -1;
     
     while (option != 0) {

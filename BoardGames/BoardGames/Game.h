@@ -21,10 +21,6 @@ class Game {
 		Game();
 		Game(int gameId, string name, int minPlayer, int maxPlayer, int minPlaytime, int maxPlaytime, int yearPublished, int copy, string isActive);
 
-		// id accessors
-		int getId() const;
-		void setId(int idVal) ;
-
 		// basic accessors
 		string getName() const;
 		int getMinPlayer() const;
