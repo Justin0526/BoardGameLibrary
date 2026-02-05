@@ -33,4 +33,4 @@ class Rating
 		const std::string& getCreatedAt() const { return createdAt; }
 };
 
-
+ostream& operator<<(ostream& os, const Rating& r);

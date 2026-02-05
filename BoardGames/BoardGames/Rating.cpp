@@ -25,3 +25,12 @@ int Rating::getGameId() {
     return this->gameId;
 }
 
+ostream& operator<<(ostream& os, const Rating& r) {
+    os << r.getId() << ", "
+        << r.getGameId() << ", "
+        << r.getGameName() << ", "
+        << r.getUserId() << ", "
+        << r.getUsername() << ", "
+        << r.getRating() << endl;
+    return os;
+}

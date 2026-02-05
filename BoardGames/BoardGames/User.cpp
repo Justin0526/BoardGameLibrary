@@ -218,6 +218,10 @@ void User::recommendFromGame(
     HashTable<string, List<Game>::NodePtr>& gameTable) {
     // Clear outcandidates
     outCandidates.clear();
+    int fanCount = 0;
+    int totalFanRatingsScanned = 0;
+    int totalCandidateAdds = 0;
+    int totalCandidateScoreKeys = 0;
 
     // Game scoring table
     HashTable<string, int> candidateScore;
@@ -241,6 +245,8 @@ void User::recommendFromGame(
         List<Rating>::NodePtr ratingNode = node->item;
         Rating& r = ratings.getItem(ratingNode);
         if (r.getRating() >= ratingCutoff) {
+            fanCount++;
+
             string userKey = to_string(r.getUserId());
             if (!memberRatings.containsKey(userKey)) continue;
             List<List<Rating>::NodePtr>* memberList = memberRatings.get(userKey);
@@ -251,10 +257,12 @@ void User::recommendFromGame(
             }
 
             for (auto mNode = memberList->getNode(0); mNode != nullptr; mNode = mNode->next){
+                totalFanRatingsScanned++;
                 List<Rating>::NodePtr mRatingNode = mNode->item;
                 Rating& mr = ratings.getItem(mRatingNode);
 
                 if (mr.getRating() >= ratingCutoff && mr.getGameId() != gameId) {
+                    totalCandidateAdds++;
                     string candId = to_string(mr.getGameId());
                     int score;
 
@@ -278,9 +286,13 @@ void User::recommendFromGame(
             }
         }
     }
+    //cout << "\n[DEBUG] fanCount=" << fanCount
+    //    << " totalFanRatingsScanned=" << totalFanRatingsScanned
+    //    << " totalCandidateAdds=" << totalCandidateAdds << "\n";
 
     // Iterate through candidateScore hash table
     candidateScore.forEach([&](const string& candId, int score) {
+        totalCandidateScoreKeys++;
         if (!candidateSupport.containsKey(candId)) return;
         int support = candidateSupport.get(candId);
 
@@ -293,6 +305,9 @@ void User::recommendFromGame(
 
         outCandidates.add(GameCandidate(candId, name, score, support));
         });
+
+    //cout << "[DEBUG] candidateScoreKeys=" << totalCandidateScoreKeys
+    //    << " outCandidatesLen=" << outCandidates.getLength() << "\n";
 
 }
 
@@ -376,7 +391,11 @@ void User::printRecommendedGames(
         GameCandidate& c = candidates.getItem(p);
         const string& gid = c.getGameId();
 
-        if (!gameTable.containsKey(gid)) continue;
+        if (!gameTable.containsKey(gid)) {
+            cout << "[SKIP] candidate gameId=" << gid
+                << " (not found in gameTable)\n";
+            continue;
+        }
 
         Game& g = games.getItem(gameTable.get(gid));
 
