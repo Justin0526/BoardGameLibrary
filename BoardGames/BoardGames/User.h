@@ -7,6 +7,9 @@
 #include "HashTable.h"
 #include "LinkedList.h"
 #include "Game.h"
+#include "HashTable.h"
+#include "Rating.h"
+#include "GameCandidate.h"
 using namespace std;
 
 class User {
@@ -37,6 +40,27 @@ public:
     void displayBorrowedAndHistory() const;
 
     void displayGamesPlayableByNPlayers(List<Game>& games);
+    void recommendFromGame(
+        int gameId, 
+        List<Rating>& ratings, 
+        List<GameCandidate>& outcandidates, 
+        HashTable<string, List<List<Rating>::NodePtr>*>& gameRatings, 
+        HashTable<string, List<List<Rating>::NodePtr>*>& memberRatings,
+        List<Game>& games, 
+        HashTable<string, List<Game>::NodePtr>& gameTable);
+
+    void filterRecommendedCandidates(
+        List<GameCandidate>& in, 
+        List<Game>& games, 
+        HashTable<string, List<Game>::NodePtr>& gameTable,
+        int desiredPlayers, 
+        int desiredMinutes, 
+        List<GameCandidate>& out);
+
+    void printRecommendedGames(
+        List<GameCandidate>& candidates, 
+        List<Game>& games, HashTable<string, 
+        List<Game>::NodePtr>& gameTable);
 };
 
 ostream& operator<<(std::ostream& os, const User& u);

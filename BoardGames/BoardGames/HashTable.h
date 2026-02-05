@@ -24,10 +24,17 @@ class HashTable {
 		~HashTable();
 		int hash(const K& key);
 		bool add(const K& key, const V& value);
+		bool addOrUpdate(const K& key, const V& value);
 		void remove(const K& key);
 		V get(const K& key);
 		bool isEmpty();
 		int getLength();
+		bool containsKey(const K& key);
+
+		// forEach allows the caller to run a function (lambda) on every (key, value)
+		// pair stored inside the hash table.
+		template<typename Func>
+		void forEach(Func fn);
 };
 
 
@@ -95,6 +102,41 @@ bool HashTable<K, V>::add(const K& newKey, const V& newValue) {
 }
 
 template <typename K, typename V>
+bool HashTable<K, V>::addOrUpdate(const K& key, const V& value) {
+
+	int index = hash(key);
+	Node<K, V>* current = items[index];
+
+	Node<K, V>* newNode = new Node <K, V>;
+	newNode->key = key;
+	newNode->value = value;
+	newNode->next = nullptr;
+
+	if (current == nullptr) {
+		items[index] = newNode;
+		size++;
+	}
+	else {
+		while (current->next != nullptr) {
+			if (current->key == key) {
+				break;
+			}
+			current = current->next;
+		}
+
+		if (current->key == key) {
+			current->value = value;
+			delete newNode;
+		}
+		else {
+			current->next = newNode;
+			size++;
+		}
+	}	
+	return true;
+}
+
+template <typename K, typename V>
 void HashTable<K, V>::remove(const K& key) {
 	int index = hash(key);
 	Node<K, V>* current = items[index];
@@ -131,7 +173,7 @@ V HashTable<K, V>::get(const K& key) {
 		current = current->next;
 	}
 	
-	return nullptr;
+	throw runtime_error("Key not found in HashTable");
 }
 
 template <typename K, typename V>
@@ -142,4 +184,36 @@ bool HashTable<K, V>::isEmpty() {
 template <typename K, typename V>
 int HashTable<K, V>::getLength() {
 	return size;
+}
+
+template <typename K, typename V>
+bool HashTable<K, V>::containsKey(const K& key) {
+	int index = hash(key);
+	Node<K, V>* current = items[index];
+
+	while (current != nullptr) {
+		if (current->key == key)
+			return true;
+		current = current->next;
+	}
+	return false;
+}
+
+template <typename K, typename V>
+template <typename Func>
+void HashTable<K, V>::forEach(Func fn) {
+	// Loop through every bucket in the hash table
+	for (int i = 0; i < MAX_SIZE; i++) {
+		// Start at the head of the linked list in this bucket
+		Node<K, V>* current = items[i];
+
+		while (current != nullptr) {
+			// Call the lambda function provided by the caller
+			// Pass the key and value of the current hash node
+			fn(current->key, current->value);
+
+			// Move to the enxt node
+			current = current->next;
+		}
+	}
 }
