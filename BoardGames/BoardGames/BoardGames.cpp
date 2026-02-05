@@ -66,6 +66,7 @@ void adminMenu() {
     cout << "1. Add a new board game\n";
     cout << "2. Remove a board game\n";
     cout << "3. Add a new member\n";
+    cout << "4. Borrow/Return Summary\n";
     cout << "0. EXIT\n";
 }
 
@@ -384,6 +385,10 @@ bool loadRatingsFromCSV(const string& filename, List<Rating>& ratings, HashTable
     return true;
 }
 
+//bool loadBorrowRecordsFromCSV(const string& filename, List<BorrowRow>& rows) {
+//    ifstream file(filename);
+//    if ()
+//}
 int main()
 {
   // Initialize borrow record counter from existing records

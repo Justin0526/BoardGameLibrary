@@ -7,6 +7,15 @@
 #include "LinkedList.h"
 #include "HashTable.h"
 
+struct BorrowRow {
+    int recordId;
+    string memberId;
+    string gameId;
+    string action;
+    string borrowDate;
+    string returnDate;
+};
+
 class Admin : public User {
 public:
     Admin();
