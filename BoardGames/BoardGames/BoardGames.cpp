@@ -16,6 +16,7 @@
 #include "Member.h"
 #include "Rating.h"
 #include "GameCandidate.h"
+#include "Reviews.h"
 
 using namespace std;
 
@@ -72,6 +73,7 @@ void displayGameMenu() {
     cout << "\n--------Display Board games--------" << endl;
     cout << "1. Default\n";
     cout << "2. Display a list of games that can be played by a given number of players\n";
+    cout << "3. Search game by name or id\n";
     cout << "0. EXIT\n";
 }
 
@@ -79,6 +81,37 @@ void recommendGameMenu() {
     cout << "\n--------Recommend Games--------" << endl;
     cout << "1. Recommend games\n";
     cout << "0. Exit\n";
+}
+
+void searchGameByNameOrId(List<Game>& games) {
+    cout << "Enter game name or ID to search: ";
+    string input;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, input);
+
+    bool found = false;
+    for (int i = 0; i < games.getLength(); ++i) {
+        auto node = games.getNode(i);
+        if (!node) continue;
+        Game& g = games.getItem(node);
+
+        if (g.getName() == input || to_string(g.getGameId()) == input) {
+            cout << "\n--- Game Details ---\n";
+            cout << "ID: " << g.getGameId() << "\n";
+            cout << "Name: " << g.getName() << "\n";
+            cout << "Players: " << g.getMinPlayer() << " - " << g.getMaxPlayer() << "\n";
+            cout << "Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
+            cout << "Year Published: " << g.getYearPublished() << "\n";
+            cout << "Copies: " << g.getGameCopy() << "\n";
+            cout << "Status: " << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
+            cout << "Active: " << g.getIsActive() << "\n";
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        cout << "Game not found.\n";
+    }
 }
 
 // Function to display detailed borrow history
@@ -104,6 +137,8 @@ void displayDetailedBorrowHistory(int memberId, List<Game>& games) {
                 cout << "  Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
                 cout << "  Year Published: " << g.getYearPublished() << "\n";
                 cout << "  Current Status: " << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
+                cout << "Borrow Date: " << record.borrowDate << "\n";
+                cout << "Return Date: " << record.returnDate << "\n";
             } else {
                 cout << "Game ID/Name: " << record.gameId << "\n";
                 cout << "  Game details not found (may have been removed)\n";
@@ -432,6 +467,8 @@ int main()
                 cout << "1) Borrow a game by name\n";
                 cout << "2) Return a game by id\n";
                 cout << "3) View my borrowed/history\n";
+				cout << "4) Write a review for a game\n";
+				cout << "5) View reviews for a game\n";
                 cout << "0) Logout\n";
                 cout << "Select option: ";
                 string mopt;
@@ -441,11 +478,32 @@ int main()
                     cout << "Enter game name to borrow: ";
                     string gameName;
                     getline(cin, gameName);
-                    if (loggedInMember->item.borrowGame(games, gameName)){
-                        writeBorrowRecord(borrowRecordCounter++, to_string(loggedInMember->item.getUserId()), gameName, "BORROW");
-                        cout << "Borrow successful.\n";
+                    if (loggedInMember->item.borrowGame(games, gameName)) {
+                        // Find the game ID by name
+                        int gameId = -1;
+                        for (int i = 0; i < games.getLength(); ++i) {
+                            auto node = games.getNode(i);
+                            if (node && games.getItem(node).getName() == gameName) {
+                                gameId = games.getItem(node).getGameId();
+                                break;
+                            }
+                        }
+                        if (gameId != -1) {
+                            writeBorrowRecord(
+                                borrowRecordCounter++,
+                                to_string(loggedInMember->item.getUserId()),
+                                to_string(gameId), // <-- always use ID
+                                "BORROW",
+                                getCurrentDate(),
+                                ""
+                            );
+                            cout << "Borrow successful.\n";
+                        }
+                        else {
+                            cout << "Borrow failed (game not found).\n";
+                        }
                     }
-                    else{
+                    else {
                         cout << "Borrow failed (no available copy or error).\n";
                     }
                 }
@@ -460,9 +518,11 @@ int main()
 
                             writeBorrowRecord(
                                 borrowRecordCounter++,
-                                to_string(loggedInMember->item.getUserId()),     // memberId (string)
-                                to_string(id),          // gameId
-                                "RETURN"
+                                to_string(loggedInMember->item.getUserId()),
+                                to_string(id),
+                                "RETURN",
+                                "",                 // borrowDate
+                                getCurrentDate()    // returnDate
                             );
                         }
                         else {
@@ -476,6 +536,12 @@ int main()
                 else if (mopt == "3") {
                     // Display detailed borrow history with full game information
                     displayDetailedBorrowHistory(loggedInMember->item.getUserId(), games);
+                }
+                else if (mopt == "4") {
+                    writeReview(ratings, gameRatings, members, games, loggedInMember->item.getUserId());
+                }
+                else if (mopt == "5") {
+                    displayReviewsForGame(ratings, gameRatings, games);
                 }
                 else { // logout or any other input
                     cout << "Logging out...\n";
@@ -494,15 +560,14 @@ int main()
 
                 if (displayOption == 0)
                     cout << "Exiting to main menu...\n";
-
                 else if (displayOption == 1) {
                     cout << "GameID | Name | MinPlayer | MaxPlayer | MinPlayTime | MaxPlayTime | YearPublished | No. of Copies\n";
                     globalUser.printActiveGames(games);
                 }
-
                 else if (displayOption == 2)
                     globalUser.displayGamesPlayableByNPlayers(games);
-
+                else if (displayOption == 3)
+                    searchGameByNameOrId(games); // <-- call the new function
                 else
                     cout << "Invalid option!\n";
             }

@@ -43,6 +43,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameCandidate.cpp">
+    <ClCompile Include="Reviews.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -78,6 +79,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameCandidate.h">
+    <ClInclude Include="Reviews.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

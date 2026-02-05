@@ -23,6 +23,14 @@ class Rating
 		int getRating();
 		int getUserId();
 		int getGameId();
+		int getId() const { return id; }
+		int getGameId() const { return gameId; }
+		const std::string& getGameName() const { return gameName; }
+		int getUserId() const { return userId; }
+		const std::string& getUsername() const { return username; }
+		int getRating() const { return rating; }
+		const std::string& getReview() const { return review; }
+		const std::string& getCreatedAt() const { return createdAt; }
 };
 
 

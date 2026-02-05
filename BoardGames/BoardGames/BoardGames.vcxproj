@@ -133,6 +133,7 @@
     <ClCompile Include="Member.cpp" />
     <ClCompile Include="Rating.cpp" />
     <ClCompile Include="Return.cpp" />
+    <ClCompile Include="Reviews.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +147,7 @@
     <ClInclude Include="Member.h" />
     <ClInclude Include="Rating.h" />
     <ClInclude Include="Return.h" />
+    <ClInclude Include="Reviews.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>
