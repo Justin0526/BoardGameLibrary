@@ -10,6 +10,13 @@
 #include "Game.h"
 #include "LinkedList.h"
 
+using namespace std;
+
+// Always resolve the SAME borrow_records.csv
+static std::filesystem::path getBorrowCSVPath() {
+    return std::filesystem::path(__FILE__).parent_path() / "data" / "borrow_records.csv";
+}
+
 std::string getCurrentDate() {
     auto now = std::chrono::system_clock::now();
     std::time_t t = std::chrono::system_clock::to_time_t(now);
@@ -24,6 +31,16 @@ std::string getCurrentDate() {
     return buf;
 }
 
+void initializeBorrowRecordsCSV() {
+    auto path = getBorrowCSVPath();
+
+    if (!std::filesystem::exists(path)) {
+        std::ofstream file(path);
+        file << "recordId,memberId,gameId,action,borrowDate,returnDate\n";
+        file.close();
+    }
+}
+
 void writeBorrowRecord(
     int recordId,
     const std::string& memberId,
@@ -32,275 +49,142 @@ void writeBorrowRecord(
     const std::string& borrowDate,
     const std::string& returnDate
 ) {
-    namespace fs = std::filesystem;
-    fs::path sourcePath = fs::path(__FILE__);
-    fs::path projectRoot = sourcePath.parent_path();
-    fs::path projectPath = projectRoot / "data/borrow_records.csv";
+    auto path = getBorrowCSVPath();
 
-    std::ofstream file(projectPath, std::ios::app);
+    std::ofstream file(path, std::ios::app);
     if (!file.is_open()) {
-        std::cout << "ERROR: Cannot open file: " << projectPath.string() << std::endl;
+        std::cout << "ERROR: Cannot open file: " << path << std::endl;
         return;
     }
 
-    file << recordId << "," << memberId << "," << gameId << "," << action << "," << borrowDate << "," << returnDate << std::endl;
-
-    if (!file) {
-        std::cout << "ERROR: Failed to write to file: " << projectPath.string() << std::endl;
-    }
+    file << recordId << ","
+        << memberId << ","
+        << gameId << ","
+        << action << ","
+        << borrowDate << ","
+        << returnDate << "\n";
 
     file.close();
 }
 
-void initializeBorrowRecordsCSV() {
-    namespace fs = std::filesystem;
-    fs::path sourcePath = fs::path(__FILE__);
-    fs::path projectRoot = sourcePath.parent_path();
-    fs::path projectPath = projectRoot / "data/borrow_records.csv";
-
-    std::ifstream checkFile(projectPath);
-    bool fileExists = checkFile.good();
-    std::string firstLine;
-    if (fileExists) {
-        std::getline(checkFile, firstLine);
-    }
-    checkFile.close();
-
-    if (!fileExists || firstLine != "recordId,memberId,gameId,action,borrowDate,returnDate") {
-        std::ofstream file(projectPath, std::ios::trunc);
-        if (file.is_open()) {
-            file << "recordId,memberId,gameId,action,borrowDate,returnDate" << std::endl;
-            file.close();
-            std::cout << "Initialized borrow_records.csv with header." << std::endl;
-        }
-    }
-}
-
 int getNextBorrowRecordId() {
-    namespace fs = std::filesystem;
-    fs::path sourcePath = fs::path(__FILE__);
-    fs::path projectRoot = sourcePath.parent_path();
-    fs::path projectPath = projectRoot / "data/borrow_records.csv";
+    auto path = getBorrowCSVPath();
 
-    std::ifstream file(projectPath);
-    if (!file.is_open()) {
-        return 1; // Start with 1 if file doesn't exist
-    }
+    std::ifstream file(path);
+    if (!file.is_open()) return 1;
 
     int maxId = 0;
     std::string line;
 
-    // Skip header
-    if (std::getline(file, line)) {
-        while (std::getline(file, line)) {
-            if (line.empty()) continue;
+    std::getline(file, line); // header
+    while (std::getline(file, line)) {
+        if (line.empty()) continue;
 
-            // Parse first column (recordId)
-            size_t commaPos = line.find(',');
-            if (commaPos != std::string::npos) {
-                try {
-                    int id = std::stoi(line.substr(0, commaPos));
-                    if (id > maxId) maxId = id;
-                } catch (...) {
-                    // Skip invalid lines
-                }
-            }
+        size_t comma = line.find(',');
+        if (comma == std::string::npos) continue;
+
+        try {
+            int id = std::stoi(line.substr(0, comma));
+            maxId = std::max(maxId, id);
         }
+        catch (...) {}
     }
 
-    file.close();
     return maxId + 1;
 }
 
-void loadMemberBorrowHistory(int memberId, std::vector<std::string>& borrowHistory) {
-    namespace fs = std::filesystem;
-    fs::path sourcePath = fs::path(__FILE__);
-    fs::path projectRoot = sourcePath.parent_path();
-    fs::path projectPath = projectRoot / "data/borrow_records.csv";
-
+void loadMemberBorrowHistoryDetailed(
+    int memberId,
+    List<Game>& games,
+    std::vector<BorrowHistoryRecord>& borrowHistory
+) {
+    auto path = getBorrowCSVPath();
     borrowHistory.clear();
 
-    std::ifstream file(projectPath);
-    if (!file.is_open()) {
-        return; // No history if file doesn't exist
-    }
+    std::ifstream file(path);
+    if (!file.is_open()) return;
 
     std::string line;
+    std::getline(file, line); // header
 
-    // Skip header
-    if (std::getline(file, line)) {
-        while (std::getline(file, line)) {
-            if (line.empty()) continue;
+    while (std::getline(file, line)) {
+        if (line.empty()) continue;
 
-            // Parse: recordId,memberId,gameId,action,borrowDate,returnDate
-            std::istringstream ss(line);
-            std::string recordId, memberIdStr, gameId, action, borrowDate, returnDate;
+        std::stringstream ss(line);
+        BorrowHistoryRecord rec;
+        std::string recordId, memberIdStr;
 
-            if (std::getline(ss, recordId, ',') &&
-                std::getline(ss, memberIdStr, ',') &&
-                std::getline(ss, gameId, ',') &&
-                std::getline(ss, action, ',') &&
-                std::getline(ss, borrowDate, ',') &&
-                std::getline(ss, returnDate)) {
+        std::getline(ss, recordId, ',');
+        std::getline(ss, memberIdStr, ',');
+        std::getline(ss, rec.gameId, ',');
+        std::getline(ss, rec.action, ',');
+        std::getline(ss, rec.borrowDate, ',');
+        std::getline(ss, rec.returnDate);
 
-                try {
-                    if (std::stoi(memberIdStr) == memberId) {
-                        borrowHistory.push_back(action + ": " + gameId);
-                    }
-                } catch (...) {
-                    // Skip invalid lines
-                }
+        try {
+            if (std::stoi(memberIdStr) != memberId) continue;
+        }
+        catch (...) { continue; }
+
+        rec.gameDetails = nullptr;
+
+        int n = games.getLength();
+        for (int i = 0; i < n; ++i) {
+            auto node = games.getNode(i);
+            if (!node) continue;
+            Game& g = games.getItem(node);
+
+            if (std::to_string(g.getGameId()) == rec.gameId ||
+                g.getName() == rec.gameId) {
+                rec.gameDetails = &g;
+                break;
             }
         }
+
+        borrowHistory.push_back(rec);
     }
-
-    file.close();
-}
-
-void loadMemberBorrowHistoryDetailed(int memberId, List<Game>& games, std::vector<BorrowHistoryRecord>& borrowHistory) {
-    namespace fs = std::filesystem;
-    fs::path sourcePath = fs::path(__FILE__);
-    fs::path projectRoot = sourcePath.parent_path();
-    fs::path projectPath = projectRoot / "data/borrow_records.csv";
-
-    borrowHistory.clear();
-
-    std::ifstream file(projectPath);
-    if (!file.is_open()) {
-        return; // No history if file doesn't exist
-    }
-
-    std::string line;
-
-    // Skip header
-    if (std::getline(file, line)) {
-        while (std::getline(file, line)) {
-            if (line.empty()) continue;
-
-            // Parse: recordId,memberId,gameId,action,borrowDate,returnDate
-            std::istringstream ss(line);
-            std::string recordId, memberIdStr, gameId, action, borrowDate, returnDate;
-
-            if (std::getline(ss, recordId, ',') &&
-                std::getline(ss, memberIdStr, ',') &&
-                std::getline(ss, gameId, ',') &&
-                std::getline(ss, action, ',') &&
-                std::getline(ss, borrowDate, ',') &&
-                std::getline(ss, returnDate)) {
-
-                try {
-                    if (std::stoi(memberIdStr) == memberId) {
-                        BorrowHistoryRecord record;
-                        record.action = action;
-                        record.gameId = gameId;
-                        record.gameDetails = nullptr;
-                        record.borrowDate = borrowDate;
-                        record.returnDate = returnDate;
-
-                        // Find the corresponding game object
-                        int n = games.getLength();
-                        for (int i = 0; i < n; ++i) {
-                            auto node = games.getNode(i);
-                            if (node == nullptr) continue;
-                            Game& g = games.getItem(node);
-
-                            // Check if gameId matches by name or ID
-                            if (g.getName() == gameId || std::to_string(g.getGameId()) == gameId) {
-                                record.gameDetails = &g;
-                                break;
-                            }
-                        }
-
-                        borrowHistory.push_back(record);
-                    }
-                } catch (...) {
-                    // Skip invalid lines
-                }
-            }
-        }
-    }
-
-    file.close();
 }
 
 void restoreGameBorrowStates(List<Game>& games) {
-    namespace fs = std::filesystem;
-    fs::path sourcePath = fs::path(__FILE__);
-    fs::path projectRoot = sourcePath.parent_path();
-    fs::path projectPath = projectRoot / "data/borrow_records.csv";
+    auto path = getBorrowCSVPath();
+    std::ifstream file(path);
+    if (!file.is_open()) return;
 
-    std::ifstream file(projectPath);
-    if (!file.is_open()) {
-        return; // No records to restore
-    }
-
-    // Track currently borrowed games by BOTH name and ID
-    std::map<std::string, bool> borrowedByName;
-    std::map<int, bool> borrowedById;
+    std::map<int, bool> lastState;
 
     std::string line;
-    if (std::getline(file, line)) { // skip header
-        while (std::getline(file, line)) {
-            if (line.empty()) continue;
-            std::istringstream ss(line);
-            std::string recordId, memberIdStr, gameIdStr, action, borrowDate, returnDate;
-            if (std::getline(ss, recordId, ',') &&
-                std::getline(ss, memberIdStr, ',') &&
-                std::getline(ss, gameIdStr, ',') &&
-                std::getline(ss, action, ',') &&
-                std::getline(ss, borrowDate, ',') &&
-                std::getline(ss, returnDate)) {
+    std::getline(file, line); // header
 
-                // Update borrow state maps
-                if (action == "BORROW") {
-                    borrowedByName[gameIdStr] = true;
-                    try {
-                        int gid = std::stoi(gameIdStr);
-                        borrowedById[gid] = true;
-                    } catch (...) {}
-                } else if (action == "RETURN") {
-                    borrowedByName[gameIdStr] = false;
-                    try {
-                        int gid = std::stoi(gameIdStr);
-                        borrowedById[gid] = false;
-                    } catch (...) {}
-                }
-            }
+    while (std::getline(file, line)) {
+        if (line.empty()) continue;
+
+        std::stringstream ss(line);
+        std::string recordId, memberId, gameId, action, borrowDate, returnDate;
+
+        std::getline(ss, recordId, ',');
+        std::getline(ss, memberId, ',');
+        std::getline(ss, gameId, ',');
+        std::getline(ss, action, ',');
+        std::getline(ss, borrowDate, ',');
+        std::getline(ss, returnDate);
+
+        try {
+            int gid = std::stoi(gameId);
+            lastState[gid] = (action == "BORROW");
         }
+        catch (...) {}
     }
-    file.close();
 
-    // Update game states
     int n = games.getLength();
     for (int i = 0; i < n; ++i) {
         auto node = games.getNode(i);
-        if (node == nullptr) continue;
+        if (!node) continue;
+
         Game& g = games.getItem(node);
+        int id = g.getGameId();
 
-        std::string gameName = g.getName();
-        int gameId = g.getGameId();
-
-        bool finalState = false; // Default to available
-        bool stateFound = false;
-
-        // Check by name first
-        if (borrowedByName.find(gameName) != borrowedByName.end()) {
-            finalState = borrowedByName[gameName];
-            stateFound = true;
-        }
-
-        // Check by ID (this can override name-based state if there's a more recent ID-based record)
-        if (borrowedById.find(gameId) != borrowedById.end()) {
-            finalState = borrowedById[gameId];
-            stateFound = true;
-        }
-
-        if (stateFound) {
-            g.setBorrowed(finalState);
-            std::cout << "Restored " << gameName << " (ID:" << gameId << ") borrowed state: "
-                      << (finalState ? "BORROWED" : "AVAILABLE") << std::endl;
+        if (lastState.count(id)) {
+            g.setBorrowed(lastState[id]);
         }
     }
 }
-
-

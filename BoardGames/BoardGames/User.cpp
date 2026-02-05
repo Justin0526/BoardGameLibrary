@@ -52,18 +52,42 @@ void User::printActiveGames(List<Game>& games) {
     }
 }
 
-bool User::borrowGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable, const string& gameName) {
-    // Use hash table for fast lookup
-    auto node = gameTable.get(gameName);
-    if (node && !games.getItem(node).isBorrowed()) {
-        Game& g = games.getItem(node);
-        g.setBorrowed(true);
-        // If you have a borrowed/history list, update it here
-        cout << role << " " << name << " borrowed game [" << g.getGameId() << "] " << g.getName() << endl;
-        return true;
+bool User::borrowGame(
+    List<Game>& games,
+    HashTable<string, List<Game>::NodePtr>& /*gameTable*/,
+    const string& gameName
+) {
+    // Find game by NAME using LinkedList
+    List<Game>::NodePtr found = nullptr;
+
+    for (int i = 0; i < games.getLength(); ++i) {
+        auto node = games.getNode(i);
+        if (node && games.getItem(node).getName() == gameName) {
+            found = node;
+            break;
+        }
     }
-    cout << "No available copy found for \"" << gameName << "\"\n";
-    return false;
+
+    if (!found) {
+        cout << "Game \"" << gameName << "\" not found.\n";
+        return false;
+    }
+
+    Game& g = games.getItem(found);
+
+    if (g.isBorrowed() || g.getGameCopy() <= 0) {
+        cout << "No available copy for \"" << gameName << "\".\n";
+        return false;
+    }
+
+    g.setBorrowed(true);
+    borrowed.add(g.getGameId());
+    history.add(g.getGameId());
+    cout << role << " " << name
+        << " borrowed game [" << g.getGameId()
+        << "] " << g.getName() << endl;
+
+    return true;
 }
 
 bool User::returnGame(List<Game>& games, HashTable<std::string, List<Game>::NodePtr>& gameTable, int gameId) {
@@ -72,6 +96,22 @@ bool User::returnGame(List<Game>& games, HashTable<std::string, List<Game>::Node
     if (node && games.getItem(node).isBorrowed()) {
         Game& g = games.getItem(node);
         g.setBorrowed(false);
+        // Remove gameId from borrowed list (List<int> has remove(NodePtr), so we find the node)
+        List<int>::NodePtr target = nullptr;
+        for (int i = 0; i < borrowed.getLength(); ++i) {
+            auto p = borrowed.getNode(i);
+            if (p && borrowed.getItem(p) == gameId) {
+                target = p;
+                break;
+            }
+        }
+        if (target != nullptr) {
+            borrowed.remove(target);
+        }
+
+        // Add to history log
+        history.add(gameId);
+        history.add(g.getGameId());
         cout << role << " " << name << " returned game [" << g.getGameId() << "] " << g.getName() << endl;
         return true;
     }

@@ -9,7 +9,7 @@
 // Write a review for a game (by a member)
 void writeReview(
     List<Rating>& ratings,
-    HashTable<std::string, List<Rating>::NodePtr>& gameRatings,
+    HashTable<std::string, List<List<Rating>::NodePtr>*>& gameRatings,
     List<Member>& members,
     List<Game>& games,
     int memberId
@@ -18,6 +18,6 @@ void writeReview(
 // Display all reviews for a game
 void displayReviewsForGame(
     List<Rating>& ratings,
-    HashTable<std::string, List<Rating>::NodePtr>& gameRatings,
+    HashTable<std::string, List<List<Rating>::NodePtr>*>& gameRatings,
     List<Game>& games
 );
