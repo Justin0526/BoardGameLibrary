@@ -101,7 +101,7 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
 
     // min play time
     int minPlayTime;
-    cout << "Minimum playtime: ";
+    cout << "Minimum playtime (mins): ";
 
     while (true) {
         getline(cin, input);
@@ -117,7 +117,7 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
 
     // max play time
     int maxPlayTime;
-    cout << "Maximum playtime: ";
+    cout << "Maximum playtime (mins): ";
     
     while (true) {
         getline(cin, input);
@@ -212,12 +212,12 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
     }
     else {
         Game lastGame = games.get(games.getLength() - 1);
-        int lastGameId = lastGame.getGameId();
+        int newGameId = lastGame.getGameId() + 1;
         string isActive = "TRUE";
 
-        Game g(lastGameId + 1, name, minPlayer, maxPlayer, minPlayTime, maxPlayTime, yearPublished, copies, isActive);
+        Game g(newGameId + 1, name, minPlayer, maxPlayer, minPlayTime, maxPlayTime, yearPublished, copies, isActive);
         List<Game>::NodePtr gamePtr = games.add(g);
-        gameTable.add(name, gamePtr);
+        gameTable.add(to_string(newGameId), gamePtr);
 
         // fstream - include read (ios::in), write(ios::out), append (ios::app) modes
         // ofstream - write only (will overwrite the file if it already exists!)
@@ -225,7 +225,7 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
         fstream file;
         file.open("games.csv", ios::app);
         file 
-            << lastGameId + 1 << ","
+            << newGameId << ","
             << csvEscape(name) << ','
             << minPlayer << ","
             << maxPlayer << ","
@@ -341,12 +341,13 @@ void Admin::addMember(List<Member>& members, HashTable<string, List<Member>::Nod
     file.open("users.csv", ios::app);
     file << id + 1 << ","
         << csvEscape(name) << ','
-        << "member";
+        << "member"  
+        << "\n";
 
     file.close();
 
     cout << "Adding new member...\n";
-    cout << name << "added successfully!\n";
+    cout << name << " added successfully!\n";
 }
 
 void Admin::displayGameBorrowReturnSummary() {

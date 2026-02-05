@@ -15,6 +15,7 @@
 #include "Admin.h"
 #include "Member.h"
 #include "Rating.h"
+#include "GameCandidate.h"
 #include "Reviews.h"
 
 using namespace std;
@@ -27,6 +28,7 @@ void displayMenu() {
     cout << "2. Login as Member\n";
     cout << "3. Display Games\n";
     cout << "4. Display All Members\n";
+    cout << "5. Recommend Games\n";
     cout << "0. EXIT\n";
 }
 
@@ -73,6 +75,12 @@ void displayGameMenu() {
     cout << "2. Display a list of games that can be played by a given number of players\n";
     cout << "3. Search game by name or id\n";
     cout << "0. EXIT\n";
+}
+
+void recommendGameMenu() {
+    cout << "\n--------Recommend Games--------" << endl;
+    cout << "1. Recommend games\n";
+    cout << "0. Exit\n";
 }
 
 void searchGameByNameOrId(List<Game>& games) {
@@ -231,7 +239,7 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
                 isActive
             );
             List<Game>::NodePtr gamePtr = games.add(g);
-            gameTable.add(name, gamePtr);
+            gameTable.add(gameId, gamePtr);
         }catch (const exception& e) {
             cout << "Parse error: " << e.what() << "\n";
             cout << "Bad line: [" << line << "]\n";
@@ -293,7 +301,7 @@ bool loadUsersFromCSV(const string& filename, List<Admin>& admins, List<Member>&
 }
 
 bool loadRatingsFromCSV(const string& filename, List<Rating>& ratings, HashTable<string, List<Rating>::NodePtr>& ratingTable,
-    HashTable<string, List<Rating>::NodePtr>& gameRatings, HashTable<string, List<Rating>::NodePtr>& memberRatings) {
+    HashTable<string, List<List<Rating>::NodePtr>*>& gameRatings, HashTable<string, List<List<Rating>::NodePtr>*>& memberRatings) {
     ifstream file(filename);
     if (!file.is_open()) {
         cout << "Failed to open file: " << filename << endl;
@@ -325,6 +333,7 @@ bool loadRatingsFromCSV(const string& filename, List<Rating>& ratings, HashTable
         string review = stripOuterQuotes(cols[6]);
         string createdAt = trimCR(stripOuterQuotes(cols[7]));
 
+        
         // Create object and add to list
         try {
             Rating r(
@@ -338,9 +347,29 @@ bool loadRatingsFromCSV(const string& filename, List<Rating>& ratings, HashTable
                 createdAt
             );
             List<Rating>::NodePtr ratingPtr = ratings.add(r);
-            ratingTable.add(id, ratingPtr);
-            gameRatings.add(gameId, ratingPtr);
-            memberRatings.add(userId, ratingPtr);
+            ratingTable.addOrUpdate(id, ratingPtr);
+
+            // gameId -> List<RatingNodePtr>*
+            List<List<Rating>::NodePtr>* gameListPtr = nullptr;
+            if (gameRatings.containsKey(gameId)) {
+                gameListPtr = gameRatings.get(gameId);
+            }
+            else {
+                gameListPtr = new List<List<Rating>::NodePtr>();
+                gameRatings.addOrUpdate(gameId, gameListPtr);
+            }
+            gameListPtr->add(ratingPtr);
+
+            // userId -> List<RatingNodePtr>*
+            List<List<Rating>::NodePtr>* memberListPtr = nullptr;
+            if (memberRatings.containsKey(userId)) {
+                memberListPtr = memberRatings.get(userId);
+            }
+            else {
+                memberListPtr = new List<List<Rating>::NodePtr>();
+                memberRatings.addOrUpdate(userId, memberListPtr);
+            }
+            memberListPtr->add(ratingPtr);
         }
         catch (const exception& e) {
             cout << "Parse error: " << e.what() << "\n";
@@ -377,8 +406,8 @@ int main()
     // ---- Ratings ----
     List<Rating> ratings;
     HashTable<string, List<Rating>::NodePtr> ratingTable;
-    HashTable<string, List<Rating>::NodePtr> gameRatings;
-    HashTable<string, List<Rating>::NodePtr> memberRatings;
+    HashTable<string, List<List<Rating>::NodePtr>*> gameRatings;
+    HashTable<string, List<List<Rating>::NodePtr>*> memberRatings;
     loadRatingsFromCSV("ratings.csv", ratings, ratingTable, gameRatings, memberRatings);
     
     User globalUser(-1, "global user", "admin");
@@ -546,6 +575,108 @@ int main()
            
         else if (option == 4)
             members.print();
+
+        else if (option == 5) {
+            int recommendOption = -1;
+            while (recommendOption != 0) {
+                recommendGameMenu();
+                cout << "Enter your option: ";
+                cin >> recommendOption;
+                cout << endl;
+
+                if (recommendOption == 0) {
+                    cout << "Exiting to main menu...\n";
+                }
+
+                else if (recommendOption == 1) {
+                    cout << "Enter a game ID to see similar recommended games: ";
+                    int gameId;
+
+                    if (!(cin >> gameId)) {
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        cout << "Invalid game ID.\n";
+                        continue;
+                    }
+                    List<GameCandidate> candidates;
+                    globalUser.recommendFromGame(gameId, ratings,candidates, gameRatings, memberRatings, games, gameTable);
+                    
+                    if (candidates.getLength() <= 0) {
+                        cout << "No user recommend this game yet... Be the first to recommend it\n";
+                        continue;
+                    }
+
+                    globalUser.printRecommendedGames(candidates, games, gameTable);
+
+                    //int players = -1;
+                    //int minutes = -1;
+                    //char choice;
+
+                    //// -------- Filter by players --------
+                    //while (true) {
+                    //    cout << "Filter by players? (Y/N): ";
+                    //    cin >> choice;
+
+                    //    if (choice == 'Y' || choice == 'y') {
+                    //        cout << "Number of players: ";
+                    //        if (!(cin >> players) || players <= 0) {
+                    //            cin.clear();
+                    //            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    //            cout << "Invalid number of players.\n";
+                    //            players = -1;
+                    //            continue;
+                    //        }
+                    //        break;
+                    //    }
+                    //    else if (choice == 'N' || choice == 'n') {
+                    //        break;
+                    //    }
+                    //    else {
+                    //        cout << "Please enter Y or N.\n";
+                    //    }
+                    //}
+
+                    //// -------- Filter by playtime --------
+                    //while (true) {
+                    //    cout << "Filter by playtime? (Y/N): ";
+                    //    cin >> choice;
+
+                    //    if (choice == 'Y' || choice == 'y') {
+                    //        cout << "Playtime (minutes): ";
+                    //        if (!(cin >> minutes) || minutes <= 0) {
+                    //            cin.clear();
+                    //            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    //            cout << "Invalid playtime.\n";
+                    //            minutes = -1;
+                    //            continue;
+                    //        }
+                    //        break;
+                    //    }
+                    //    else if (choice == 'N' || choice == 'n') {
+                    //        break;
+                    //    }
+                    //    else {
+                    //        cout << "Please enter Y or N.\n";
+                    //    }
+                    //}
+
+                    //// -------- Apply filter & print --------
+                    //List<GameCandidate> filtered;
+                    //globalUser.filterRecommendedCandidates(
+                    //    candidates,
+                    //    games,
+                    //    gameTable,
+                    //    players,
+                    //    minutes,
+                    //    filtered
+                    //);
+
+                }
+                else {
+                    cout << "Invalid option!\n";
+                }
+            }
+        }
         else
             cout << "Invalid option!\n";
     }
