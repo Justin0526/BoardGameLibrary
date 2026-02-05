@@ -47,591 +47,591 @@ gameId,name,minPlayer,maxPlayer,minPlayTime,maxPlayTime,yearPublished,copy,isAct
 46,Bandido,1,4,10,15,2016,1,TRUE
 47,BANG!,4,7,20,40,2002,1,TRUE
 48,BANG! The Dice Game,3,8,15,15,2013,1,TRUE
-49,BANG! The Dice Game,3,8,15,15,2013,1,TRUE
-50,Barbarossa,3,4,60,60,1988,1,TRUE
-51,Bargain Quest,2,6,30,60,2017,1,TRUE
-52,BasketBoss,2,5,50,50,2009,1,TRUE
-53,Battle Line,2,2,30,30,2000,1,TRUE
-54,Battle Merchants,2,4,120,120,2014,1,TRUE
-55,BattleCON: Fate of Indines,2,2,30,60,2015,1,TRUE
-56,Beasty Bar,2,4,20,20,2014,1,TRUE
-57,Beer!,2,6,0,0,2001,1,TRUE
-58,Belratti,3,7,25,25,2018,1,TRUE
-59,Betrayal at House on the Hill,3,6,60,60,2004,1,TRUE
-60,Between Two Cities,1,7,25,25,2015,1,TRUE
-61,Biblios,2,4,30,30,2007,1,TRUE
-62,Black Friday,2,5,55,55,2010,1,TRUE
-63,Blokus,2,4,20,20,2000,1,TRUE
-64,Blood Bound,6,12,30,30,2013,1,TRUE
-65,Blood Rage,2,4,60,90,2015,1,TRUE
-66,Bloodborne: The Card Game,3,5,30,45,2016,1,TRUE
-67,The Bloody Inn,1,4,30,60,2015,1,TRUE
-68,Blueprints,2,4,30,30,2013,1,TRUE
-69,Blueprints,2,4,30,30,2013,1,TRUE
+49,BANG! The Dice Game: 10 Players,3,10,15,15,2014,1,TRUE
+50,Barbarossa,3,8,60,60,1988,1,TRUE
+51,Bargain Quest,2,8,30,60,2017,1,TRUE
+52,BasketBoss,2,8,50,50,2009,1,TRUE
+53,Battle Line,2,8,30,30,2000,1,TRUE
+54,Battle Merchants,2,8,120,120,2014,1,TRUE
+55,BattleCON: Fate of Indines,2,8,30,60,2015,1,TRUE
+56,Beasty Bar,2,8,20,20,2014,1,TRUE
+57,Beer!,2,8,0,0,2001,1,TRUE
+58,Belratti,3,8,25,25,2018,1,TRUE
+59,Betrayal at House on the Hill,3,8,60,60,2004,1,TRUE
+60,Between Two Cities,1,8,25,25,2015,1,TRUE
+61,Biblios,2,8,30,30,2007,1,TRUE
+62,Black Friday,2,8,55,55,2010,1,TRUE
+63,Blokus,2,8,20,20,2000,1,TRUE
+64,Blood Bound,6,8,30,30,2013,1,TRUE
+65,Blood Rage,2,8,60,90,2015,1,TRUE
+66,Bloodborne: The Card Game,3,8,30,45,2016,1,TRUE
+67,The Bloody Inn,1,8,30,60,2015,1,TRUE
+68,Blueprints,2,8,30,30,2013,1,TRUE
+69,Blueprints,2,8,30,30,2013,1,TRUE
 70,Boggle,1,8,10,10,1972,1,TRUE
-71,Bohnanza,2,7,45,45,1997,1,TRUE
-72,Bomb Busters,2,5,30,30,2024,1,TRUE
-73,Boss Monster: The Dungeon Building Card Game,2,4,30,30,2013,1,TRUE
-74,Bosworth,2,4,60,60,1998,1,TRUE
-75,Botswana,2,5,20,30,1994,1,TRUE
-76,Brass: Birmingham,2,4,60,120,2018,1,TRUE
-77,Bridge Troll,3,6,45,45,2009,1,TRUE
-78,Broom Service,2,5,30,75,2015,1,TRUE
-79,Bruges,2,4,60,60,2013,1,TRUE
-80,Brynk,2,99,15,30,2016,1,TRUE
-81,Buccaneer Bones,1,4,15,15,2013,1,TRUE
-82,Bunny Kingdom,2,4,40,60,2017,1,TRUE
-83,"But Wait,  There's More!",3,10,30,30,2011,1,TRUE
-84,Butterfly Garden,2,4,30,30,2012,1,TRUE
-85,BuyWord,1,4,45,45,2004,1,TRUE
-86,Ca$h 'n Gun$,4,6,30,30,2005,1,TRUE
-87,Ca$h 'n Gun$: Live,8,20,30,30,2007,1,TRUE
+71,Bohnanza,2,8,45,45,1997,1,TRUE
+72,Bomb Busters,2,8,30,30,2024,1,TRUE
+73,Boss Monster: The Dungeon Building Card Game,2,8,30,30,2013,1,TRUE
+74,Bosworth,2,8,60,60,1998,1,TRUE
+75,Botswana,2,8,20,30,1994,1,TRUE
+76,Brass: Birmingham,2,8,60,120,2018,1,TRUE
+77,Bridge Troll,3,8,45,45,2009,1,TRUE
+78,Broom Service,2,8,30,75,2015,1,TRUE
+79,Bruges,2,8,60,60,2013,1,TRUE
+80,Brynk,2,8,15,30,2016,1,TRUE
+81,Buccaneer Bones,1,8,15,15,2013,1,TRUE
+82,Bunny Kingdom,2,8,40,60,2017,1,TRUE
+83,"But Wait,  There's More!",3,8,30,30,2011,1,TRUE
+84,Butterfly Garden,2,8,30,30,2012,1,TRUE
+85,BuyWord,1,8,45,45,2004,1,TRUE
+86,Ca$h 'n Gun$,4,8,30,30,2005,1,TRUE
+87,Ca$h 'n Gun$: Live,8,8,30,30,2007,1,TRUE
 88,Camel Up,2,8,20,30,2014,1,TRUE
-89,Can't Stop,2,4,30,30,1980,1,TRUE
-90,The Capitals,2,5,120,120,2013,1,TRUE
+89,Can't Stop,2,8,30,30,1980,1,TRUE
+90,The Capitals,2,8,120,120,2013,1,TRUE
 91,Captain Sonar,2,8,45,60,2016,1,TRUE
-92,Carcassonne,2,5,30,45,2000,1,TRUE
-93,Carcassonne,2,5,30,45,2000,1,TRUE
-94,The Card Game of Oz,1,4,20,20,2014,1,TRUE
-95,Cartographers,1,100,30,45,2019,1,TRUE
-96,Cascadia,1,4,30,45,2021,1,TRUE
-97,Castell,2,4,60,90,2018,1,TRUE
-98,Castle Combo,2,5,10,25,2024,1,TRUE
-99,Castle Dice,1,4,45,45,2013,1,TRUE
-100,Castle Panic,1,6,30,60,2009,1,TRUE
-101,The Castles of Burgundy,2,4,30,90,2011,1,TRUE
-102,Castles of Mad King Ludwig,1,4,90,90,2014,1,TRUE
-103,Cat Packs,1,4,30,45,2024,1,TRUE
-104,Caylus,2,5,60,150,2005,1,TRUE
-105,Century: Golem Edition,2,5,30,45,2017,1,TRUE
+92,Carcassonne,2,8,30,45,2000,1,TRUE
+93,Carcassonne: The sequel,2,8,30,60,2002,1,TRUE
+94,The Card Game of Oz,1,8,20,20,2014,1,TRUE
+95,Cartographers,1,8,30,45,2019,1,TRUE
+96,Cascadia,1,8,30,45,2021,1,TRUE
+97,Castell,2,8,60,90,2018,1,TRUE
+98,Castle Combo,2,8,10,25,2024,1,TRUE
+99,Castle Dice,1,8,45,45,2013,1,TRUE
+100,Castle Panic,1,8,30,60,2009,1,TRUE
+101,The Castles of Burgundy,2,8,30,90,2011,1,TRUE
+102,Castles of Mad King Ludwig,1,8,90,90,2014,1,TRUE
+103,Cat Packs,1,8,30,45,2024,1,TRUE
+104,Caylus,2,8,60,150,2005,1,TRUE
+105,Century: Golem Edition,2,8,30,45,2017,1,TRUE
 106,Challengers!,1,8,45,45,2022,1,TRUE
 107,The Chameleon,3,8,15,15,2017,1,TRUE
-108,Chateau Roquefort,2,4,30,30,2007,1,TRUE
-109,Chimera Station,2,4,60,90,2017,1,TRUE
-110,Chinese Checkers,2,6,30,30,1893,1,TRUE
-111,Chronicles of Crime: 1400,1,4,60,90,2020,1,TRUE
-112,Chronicles of Crime: 1900,1,4,60,90,2021,1,TRUE
-113,Cinque Terre,2,5,60,60,2013,1,TRUE
+108,Chateau Roquefort,2,8,30,30,2007,1,TRUE
+109,Chimera Station,2,8,60,90,2017,1,TRUE
+110,Chinese Checkers,2,8,30,30,1893,1,TRUE
+111,Chronicles of Crime: 1400,1,8,60,90,2020,1,TRUE
+112,Chronicles of Crime: 1900,1,8,60,90,2021,1,TRUE
+113,Cinque Terre,2,8,60,60,2013,1,TRUE
 114,Citadels,2,8,20,60,2000,1,TRUE
 115,Citadels,2,8,20,60,2000,1,TRUE
-116,Clank!: A Deck-Building Adventure,2,4,30,60,2016,1,TRUE
-117,Clans of Caledonia,1,4,30,120,2017,1,TRUE
-118,Clue: The Card Game,3,5,45,45,2002,1,TRUE
-119,Cockroach Poker Royal,2,6,15,25,2012,1,TRUE
+116,Clank!: A Deck-Building Adventure,2,8,30,60,2016,1,TRUE
+117,Clans of Caledonia,1,8,30,120,2017,1,TRUE
+118,Clue: The Card Game,3,8,45,45,2002,1,TRUE
+119,Cockroach Poker Royal,2,8,15,25,2012,1,TRUE
 120,Codenames,2,8,15,15,2015,1,TRUE
-121,Coimbra,2,4,60,90,2018,1,TRUE
-122,Coin & Crown,1,4,45,60,2018,1,TRUE
-123,Colony,1,4,45,60,2016,1,TRUE
-124,Colt Express,2,6,40,40,2014,1,TRUE
-125,Concept,4,12,40,40,2013,1,TRUE
-126,Concordia,2,5,100,100,2013,1,TRUE
-127,Connect Four,2,2,10,10,1974,1,TRUE
-128,Copycat,2,4,95,95,2012,1,TRUE
-129,Cottage Garden,1,4,60,60,2016,1,TRUE
-130,Council of Verona (Second Edition),2,5,20,20,2014,1,TRUE
-131,Coup,2,6,15,15,2012,1,TRUE
-132,Coup: Rebellion G54,3,6,15,15,2014,1,TRUE
-133,Courtier,2,4,45,45,2012,1,TRUE
-134,Cranium,4,99,60,60,1998,1,TRUE
-135,Creature Caravan,1,4,60,90,2024,1,TRUE
-136,Creature Comforts,1,5,45,45,2022,1,TRUE
-137,Cretaceous Rails,1,4,30,120,2025,1,TRUE
-138,The Crew: The Quest for Planet Nine,2,5,20,20,2019,1,TRUE
-139,Crossfire,5,10,5,10,2017,1,TRUE
-140,Crusaders: Thy Will Be Done,2,4,40,60,2018,1,TRUE
-141,Cuckoo Zoo,2,10,20,20,2002,1,TRUE
-142,Cutthroat Caverns,3,6,90,90,2007,1,TRUE
-143,CV,2,4,60,60,2013,1,TRUE
-144,Dairyman,2,4,20,30,2016,1,TRUE
-145,Dead Cells: The Rogue-Lite Board Game,1,4,45,45,2024,1,TRUE
-146,Dead of Winter: A Crossroads Game,2,5,60,120,2014,1,TRUE
-147,Dead of Winter: The Long Night,2,5,60,120,2016,1,TRUE
-148,Deadwood,2,5,30,60,2011,1,TRUE
-149,Deception: Murder in Hong Kong,4,12,20,20,2014,1,TRUE
+121,Coimbra,2,8,60,90,2018,1,TRUE
+122,Coin & Crown,1,8,45,60,2018,1,TRUE
+123,Colony,1,8,45,60,2016,1,TRUE
+124,Colt Express,2,8,40,40,2014,1,TRUE
+125,Concept,4,8,40,40,2013,1,TRUE
+126,Concordia,2,8,100,100,2013,1,TRUE
+127,Connect Four,2,8,10,10,1974,1,TRUE
+128,Copycat,2,8,95,95,2012,1,TRUE
+129,Cottage Garden,1,8,60,60,2016,1,TRUE
+130,Council of Verona (Second Edition),2,8,20,20,2014,1,TRUE
+131,Coup,2,8,15,15,2012,1,TRUE
+132,Coup: Rebellion G54,3,8,15,15,2014,1,TRUE
+133,Courtier,2,8,45,45,2012,1,TRUE
+134,Cranium,4,8,60,60,1998,1,TRUE
+135,Creature Caravan,1,8,60,90,2024,1,TRUE
+136,Creature Comforts,1,8,45,45,2022,1,TRUE
+137,Cretaceous Rails,1,8,30,120,2025,1,TRUE
+138,The Crew: The Quest for Planet Nine,2,8,20,20,2019,1,TRUE
+139,Crossfire,5,8,5,10,2017,1,TRUE
+140,Crusaders: Thy Will Be Done,2,8,40,60,2018,1,TRUE
+141,Cuckoo Zoo,2,8,20,20,2002,1,TRUE
+142,Cutthroat Caverns,3,8,90,90,2007,1,TRUE
+143,CV,2,8,60,60,2013,1,TRUE
+144,Dairyman,2,8,20,30,2016,1,TRUE
+145,Dead Cells: The Rogue-Lite Board Game,1,8,45,45,2024,1,TRUE
+146,Dead of Winter: A Crossroads Game,2,8,60,120,2014,1,TRUE
+147,Dead of Winter: The Long Night,2,8,60,120,2016,1,TRUE
+148,Deadwood,2,8,30,60,2011,1,TRUE
+149,Deception: Murder in Hong Kong,4,8,20,20,2014,1,TRUE
 150,Decrypto,3,8,15,45,2018,1,TRUE
-151,Defenders of the Realm,1,4,90,90,2010,1,TRUE
-152,Demon Worker,3,4,45,45,2016,1,TRUE
-153,Deus,2,4,60,90,2014,1,TRUE
-154,Diabolo,3,5,30,30,2006,1,TRUE
+151,Defenders of the Realm,1,8,90,90,2010,1,TRUE
+152,Demon Worker,3,8,45,45,2016,1,TRUE
+153,Deus,2,8,60,90,2014,1,TRUE
+154,Diabolo,3,8,30,30,2006,1,TRUE
 155,Diamant,3,8,20,40,2005,1,TRUE
-156,Dice Forge,2,4,45,45,2017,1,TRUE
-157,Dice Manor,2,4,30,45,2023,1,TRUE
-158,Dice Town,2,5,45,45,2009,1,TRUE
-159,Discoveries: The Journals of Lewis & Clark,2,4,60,60,2015,1,TRUE
-160,Discworld: Ankh-Morpork,2,4,60,60,2011,1,TRUE
-161,Dive! Diver! Die!,3,5,45,45,2010,1,TRUE
-162,Dixit,3,6,30,30,2008,1,TRUE
-163,Dixit: Odyssey,3,12,30,30,2011,1,TRUE
-164,Dog Lover,2,4,30,30,2021,1,TRUE
-165,Dominion,2,4,30,30,2008,1,TRUE
-166,Dominion: Intrigue,2,6,30,30,2009,1,TRUE
+156,Dice Forge,2,8,45,45,2017,1,TRUE
+157,Dice Manor,2,8,30,45,2023,1,TRUE
+158,Dice Town,2,8,45,45,2009,1,TRUE
+159,Discoveries: The Journals of Lewis & Clark,2,8,60,60,2015,1,TRUE
+160,Discworld: Ankh-Morpork,2,8,60,60,2011,1,TRUE
+161,Dive! Diver! Die!,3,8,45,45,2010,1,TRUE
+162,Dixit,3,8,30,30,2008,1,TRUE
+163,Dixit: Odyssey,3,8,30,30,2011,1,TRUE
+164,Dog Lover,2,8,30,30,2021,1,TRUE
+165,Dominion,2,8,30,30,2008,1,TRUE
+166,Dominion: Intrigue,2,8,30,30,2009,1,TRUE
 167,Don't Mess with Cthulhu Deluxe,4,8,1,30,2018,1,TRUE
-168,DONUTS,2,2,10,15,2023,1,TRUE
-169,Downforce,2,6,20,40,2017,1,TRUE
-170,Dr. Eureka,2,4,15,15,2015,1,TRUE
-171,Draftosaurus,2,5,15,15,2019,1,TRUE
-172,Dragon's Gold,3,6,45,45,2001,1,TRUE
-173,Dragonkeepers,2,4,20,20,2023,1,TRUE
-174,Drakon,2,6,20,20,2001,1,TRUE
-175,Dream Home,2,4,30,30,2016,1,TRUE
-176,Drop It,2,4,30,30,2018,1,TRUE
-177,Drum Roll,2,4,90,90,2011,1,TRUE
-178,Dungeon Fighter,1,6,45,60,2011,1,TRUE
-179,Dungeon Petz,2,4,90,90,2011,1,TRUE
-180,Dungeons & Dragons: Rock Paper Wizard,3,6,30,30,2016,1,TRUE
-181,Dutch Blitz,2,4,1,15,1960,1,TRUE
-182,The Dutch Golden Age,3,4,60,60,2008,1,TRUE
-183,Earth,1,5,45,90,2023,1,TRUE
-184,Eclipse: New Dawn for the Galaxy,2,6,60,180,2011,1,TRUE
-185,Ecos: First Continent,2,6,45,75,2019,1,TRUE
+168,DONUTS,2,8,10,15,2023,1,TRUE
+169,Downforce,2,8,20,40,2017,1,TRUE
+170,Dr. Eureka,2,8,15,15,2015,1,TRUE
+171,Draftosaurus,2,8,15,15,2019,1,TRUE
+172,Dragon's Gold,3,8,45,45,2001,1,TRUE
+173,Dragonkeepers,2,8,20,20,2023,1,TRUE
+174,Drakon,2,8,20,20,2001,1,TRUE
+175,Dream Home,2,8,30,30,2016,1,TRUE
+176,Drop It,2,8,30,30,2018,1,TRUE
+177,Drum Roll,2,8,90,90,2011,1,TRUE
+178,Dungeon Fighter,1,8,45,60,2011,1,TRUE
+179,Dungeon Petz,2,8,90,90,2011,1,TRUE
+180,Dungeons & Dragons: Rock Paper Wizard,3,8,30,30,2016,1,TRUE
+181,Dutch Blitz,2,8,1,15,1960,1,TRUE
+182,The Dutch Golden Age,3,8,60,60,2008,1,TRUE
+183,Earth,1,8,45,90,2023,1,TRUE
+184,Eclipse: New Dawn for the Galaxy,2,8,60,180,2011,1,TRUE
+185,Ecos: First Continent,2,8,45,75,2019,1,TRUE
 186,Elder Sign,1,8,90,90,2011,1,TRUE
 187,Eldritch Horror,1,8,120,240,2013,1,TRUE
-188,Elfenland,2,6,60,60,1998,1,TRUE
-189,Elysium,2,4,60,60,2015,1,TRUE
-190,Eminent Domain: Microcosm,2,2,15,15,2014,1,TRUE
-191,Empire Builder,2,6,180,180,1982,1,TRUE
-192,Empire's End,2,4,45,60,2023,1,TRUE
-193,Endeavor: Age of Sail,2,5,60,90,2018,1,TRUE
-194,Entropy,2,6,15,15,2015,1,TRUE
-195,Eruption,2,6,30,60,2011,1,TRUE
+188,Elfenland,2,8,60,60,1998,1,TRUE
+189,Elysium,2,8,60,60,2015,1,TRUE
+190,Eminent Domain: Microcosm,2,8,15,15,2014,1,TRUE
+191,Empire Builder,2,8,180,180,1982,1,TRUE
+192,Empire's End,2,8,45,60,2023,1,TRUE
+193,Endeavor: Age of Sail,2,8,60,90,2018,1,TRUE
+194,Entropy,2,8,15,15,2015,1,TRUE
+195,Eruption,2,8,30,60,2011,1,TRUE
 196,Escape from the Aliens in Outer Space,2,8,20,45,2010,1,TRUE
-197,Escape Room: The Game,3,5,60,60,2016,1,TRUE
-198,Ethnos,2,6,45,60,2017,1,TRUE
-199,Eurorails,2,6,180,240,1990,1,TRUE
-200,Evolution,2,6,60,60,2014,1,TRUE
-201,Evolution: Climate,2,6,60,60,2016,1,TRUE
-202,Expedition Altiplano,2,2,30,30,2006,1,TRUE
-203,Explorers of Navoria,2,4,40,80,2024,1,TRUE
-204,Fallout Shelter: The Board Game,2,4,60,90,2020,1,TRUE
-205,Family Business,2,6,30,30,1982,1,TRUE
-206,Fantastic Factories,1,5,45,60,2019,1,TRUE
-207,Fantasy Realms,2,6,20,20,2017,1,TRUE
-208,Fidelitas,1,4,30,30,2015,1,TRUE
-209,First Empires,2,5,45,60,2022,1,TRUE
-210,First Rat,1,5,30,75,2022,1,TRUE
-211,Fjords,1,2,30,30,2005,1,TRUE
-212,Flamecraft,1,5,60,60,2022,1,TRUE
-213,Flash Point: Fire Rescue,2,6,45,45,2011,1,TRUE
-214,Fleet,2,4,30,45,2012,1,TRUE
-215,Flip 7,3,18,20,20,2024,1,TRUE
-216,For Sale,3,6,30,30,1997,1,TRUE
-217,Forbidden Desert,2,5,45,45,2013,1,TRUE
-218,Forbidden Island,2,4,30,30,2010,1,TRUE
-219,Forest Shuffle,2,5,40,60,2023,1,TRUE
-220,Formula De,2,10,120,120,1997,1,TRUE
-221,Fortuna,2,4,60,60,2011,1,TRUE
+197,Escape Room: The Game,3,8,60,60,2016,1,TRUE
+198,Ethnos,2,8,45,60,2017,1,TRUE
+199,Eurorails,2,8,180,240,1990,1,TRUE
+200,Evolution,2,8,60,60,2014,1,TRUE
+201,Evolution: Climate,2,8,60,60,2016,1,TRUE
+202,Expedition Altiplano,2,8,30,30,2006,1,TRUE
+203,Explorers of Navoria,2,8,40,80,2024,1,TRUE
+204,Fallout Shelter: The Board Game,2,8,60,90,2020,1,TRUE
+205,Family Business,2,8,30,30,1982,1,TRUE
+206,Fantastic Factories,1,8,45,60,2019,1,TRUE
+207,Fantasy Realms,2,8,20,20,2017,1,TRUE
+208,Fidelitas,1,8,30,30,2015,1,TRUE
+209,First Empires,2,8,45,60,2022,1,TRUE
+210,First Rat,1,8,30,75,2022,1,TRUE
+211,Fjords,1,8,30,30,2005,1,TRUE
+212,Flamecraft,1,8,60,60,2022,1,TRUE
+213,Flash Point: Fire Rescue,2,8,45,45,2011,1,TRUE
+214,Fleet,2,8,30,45,2012,1,TRUE
+215,Flip 7,3,8,20,20,2024,1,TRUE
+216,For Sale,3,8,30,30,1997,1,TRUE
+217,Forbidden Desert,2,8,45,45,2013,1,TRUE
+218,Forbidden Island,2,8,30,30,2010,1,TRUE
+219,Forest Shuffle,2,8,40,60,2023,1,TRUE
+220,Formula De,2,8,120,120,1997,1,TRUE
+221,Fortuna,2,8,60,60,2011,1,TRUE
 222,Fortune and Glory: The Cliffhanger Game,1,8,90,240,2011,1,TRUE
-223,The Fox Experiment,1,4,60,60,2023,1,TRUE
-224,Fractured Sky,1,5,45,75,2024,1,TRUE
-225,Friday,1,1,25,25,2011,1,TRUE
-226,Fromage,1,4,30,45,2024,1,TRUE
-227,Funfair,2,4,30,60,2021,1,TRUE
-228,Fury of Dracula (Third/Fourth Edition),2,5,120,180,2015,1,TRUE
-229,FUSE,1,5,10,10,2015,1,TRUE
-230,The Game,1,5,20,20,2015,1,TRUE
-231,Game of Thrones: The Iron Throne,3,5,30,60,2016,1,TRUE
-232,Gauner raus!,2,4,30,60,2016,1,TRUE
-233,Geek Out!,2,99,30,30,2013,1,TRUE
-234,Get Bit!,2,7,10,20,2007,1,TRUE
-235,Get on Board: New York & London,2,5,30,30,2022,1,TRUE
+223,The Fox Experiment,1,8,60,60,2023,1,TRUE
+224,Fractured Sky,1,8,45,75,2024,1,TRUE
+225,Friday,1,8,25,25,2011,1,TRUE
+226,Fromage,1,8,30,45,2024,1,TRUE
+227,Funfair,2,8,30,60,2021,1,TRUE
+228,Fury of Dracula (Third/Fourth Edition),2,8,120,180,2015,1,TRUE
+229,FUSE,1,8,10,10,2015,1,TRUE
+230,The Game,1,8,20,20,2015,1,TRUE
+231,Game of Thrones: The Iron Throne,3,8,30,60,2016,1,TRUE
+232,Gauner raus!,2,8,30,60,2016,1,TRUE
+233,Geek Out!,2,8,30,30,2013,1,TRUE
+234,Get Bit!,2,8,10,20,2007,1,TRUE
+235,Get on Board: New York & London,2,8,30,30,2022,1,TRUE
 236,Ghost Blitz,2,8,20,20,2010,1,TRUE
-237,Ghost Stories,1,4,60,60,2008,1,TRUE
-238,Ghosts Love Candy Too,2,6,20,45,2022,1,TRUE
+237,Ghost Stories,1,8,60,60,2008,1,TRUE
+238,Ghosts Love Candy Too,2,8,20,45,2022,1,TRUE
 239,Give Me the Brain!,3,8,15,15,1996,1,TRUE
-240,Gizmos,2,4,40,50,2018,1,TRUE
-241,Glass Road,1,4,20,80,2013,1,TRUE
-242,Gloom,2,5,60,60,2005,1,TRUE
-243,The Gnomes of Zavandor,2,4,60,90,2011,1,TRUE
-244,Going Postal,3,6,10,15,2019,1,TRUE
-245,"Going,  Going,  GONE!",2,6,20,20,2013,1,TRUE
+240,Gizmos,2,8,40,50,2018,1,TRUE
+241,Glass Road,1,8,20,80,2013,1,TRUE
+242,Gloom,2,8,60,60,2005,1,TRUE
+243,The Gnomes of Zavandor,2,8,60,90,2011,1,TRUE
+244,Going Postal,3,8,10,15,2019,1,TRUE
+245,"Going,  Going,  GONE!",2,8,20,20,2013,1,TRUE
 246,Good Cop Bad Cop,4,8,10,20,2014,1,TRUE
-247,Grand Austria Hotel,2,4,60,120,2015,1,TRUE
-248,The Grand Carnival,1,4,45,60,2020,1,TRUE
-249,El Grande: Decennial Edition,2,5,90,90,2006,1,TRUE
-250,The Great Split,2,7,45,45,2022,1,TRUE
-251,The Grizzled,2,5,30,30,2015,1,TRUE
-252,The Guild of Merchant Explorers,1,4,45,45,2022,1,TRUE
-253,Guildhall,2,4,30,45,2012,1,TRUE
-254,Guillotine,2,5,30,30,1998,1,TRUE
-255,Habitats,1,5,30,50,2016,1,TRUE
+247,Grand Austria Hotel,2,8,60,120,2015,1,TRUE
+248,The Grand Carnival,1,8,45,60,2020,1,TRUE
+249,El Grande: Decennial Edition,2,8,90,90,2006,1,TRUE
+250,The Great Split,2,8,45,45,2022,1,TRUE
+251,The Grizzled,2,8,30,30,2015,1,TRUE
+252,The Guild of Merchant Explorers,1,8,45,45,2022,1,TRUE
+253,Guildhall,2,8,30,45,2012,1,TRUE
+254,Guillotine,2,8,30,30,1998,1,TRUE
+255,Habitats,1,8,30,50,2016,1,TRUE
 256,Hail Hydra,5,8,40,75,2018,1,TRUE
-257,Halli Galli,2,6,10,10,1990,1,TRUE
-258,Halloween Party,3,6,20,20,2004,1,TRUE
-259,Hanabi,2,5,25,25,2010,1,TRUE
-260,Hanamikoji,2,2,15,15,2013,1,TRUE
-261,Hansa Teutonica: Big Box,3,5,45,90,2020,1,TRUE
+257,Halli Galli,2,8,10,10,1990,1,TRUE
+258,Halloween Party,3,8,20,20,2004,1,TRUE
+259,Hanabi,2,8,25,25,2010,1,TRUE
+260,Hanamikoji,2,8,15,15,2013,1,TRUE
+261,Hansa Teutonica: Big Box,3,8,45,90,2020,1,TRUE
 262,Happy Salmon,3,8,2,2,2016,1,TRUE
-263,Harbour,1,4,30,60,2015,1,TRUE
-264,Hardback,1,5,45,90,2018,1,TRUE
-265,Le Havre,1,5,30,150,2008,1,TRUE
-266,Heat: Pedal to the Metal,1,6,30,60,2022,1,TRUE
-267,Herd Mentality,4,20,20,30,2020,1,TRUE
-268,Here to Slay,2,6,30,60,2020,1,TRUE
-269,"Hey,  That's My Fish!",2,4,20,20,2003,1,TRUE
-270,High Society,3,5,15,30,1995,1,TRUE
-271,Hoity Toity,2,5,45,45,1990,1,TRUE
-272,Horrified,1,5,60,60,2019,1,TRUE
-273,I'm the Boss!,3,6,60,60,1994,1,TRUE
-274,ICECOOL,2,4,30,30,2016,1,TRUE
-275,Ideology: The War of Ideas,2,5,90,90,2003,1,TRUE
+263,Harbour,1,8,30,60,2015,1,TRUE
+264,Hardback,1,8,45,90,2018,1,TRUE
+265,Le Havre,1,8,30,150,2008,1,TRUE
+266,Heat: Pedal to the Metal,1,8,30,60,2022,1,TRUE
+267,Herd Mentality,4,8,20,30,2020,1,TRUE
+268,Here to Slay,2,8,30,60,2020,1,TRUE
+269,"Hey,  That's My Fish!",2,8,20,20,2003,1,TRUE
+270,High Society,3,8,15,30,1995,1,TRUE
+271,Hoity Toity,2,8,45,45,1990,1,TRUE
+272,Horrified,1,8,60,60,2019,1,TRUE
+273,I'm the Boss!,3,8,60,60,1994,1,TRUE
+274,ICECOOL,2,8,30,30,2016,1,TRUE
+275,Ideology: The War of Ideas,2,8,90,90,2003,1,TRUE
 276,Imaginiff,3,8,30,30,1998,1,TRUE
-277,Imhotep,2,4,40,40,2016,1,TRUE
-278,Imhotep: The Duel,2,2,30,30,2018,1,TRUE
-279,Imperial Settlers,1,4,45,90,2014,1,TRUE
-280,The Impregnable Fortress,2,2,30,60,2017,1,TRUE
-281,Ingenious,1,4,30,45,2004,1,TRUE
-282,Ingenious,1,4,30,45,2004,1,TRUE
-283,Innovation,2,5,20,60,2010,1,TRUE
-284,Intrigue,3,5,45,45,1994,1,TRUE
-285,La Isla,2,4,30,60,2014,1,TRUE
-286,Isle of Skye: From Chieftain to King,2,5,30,50,2015,1,TRUE
-287,Islebound,2,4,60,120,2016,1,TRUE
-288,Istanbul,2,5,40,60,2014,1,TRUE
-289,Istanbul: The Dice Game,2,4,20,40,2017,1,TRUE
-290,Jaipur,2,2,30,30,2009,1,TRUE
-291,Jamaica,2,6,30,60,2007,1,TRUE
-292,Jump Drive,2,4,10,30,2017,1,TRUE
-293,Jungle Speed,2,10,10,10,1997,1,TRUE
-294,Jurassic Jumble,3,9,10,10,2004,1,TRUE
-295,Just One,3,7,20,60,2018,1,TRUE
-296,Kanagawa,2,4,45,45,2016,1,TRUE
-297,Karuba,2,4,30,40,2015,1,TRUE
-298,Keyflower,2,6,90,120,2012,1,TRUE
+277,Imhotep,2,8,40,40,2016,1,TRUE
+278,Imhotep: The Duel,2,8,30,30,2018,1,TRUE
+279,Imperial Settlers,1,8,45,90,2014,1,TRUE
+280,The Impregnable Fortress,2,8,30,60,2017,1,TRUE
+281,Ingenious,1,8,30,45,2004,1,TRUE
+282,Ingenious,1,8,30,45,2004,1,TRUE
+283,Innovation,2,8,20,60,2010,1,TRUE
+284,Intrigue,3,8,45,45,1994,1,TRUE
+285,La Isla,2,8,30,60,2014,1,TRUE
+286,Isle of Skye: From Chieftain to King,2,8,30,50,2015,1,TRUE
+287,Islebound,2,8,60,120,2016,1,TRUE
+288,Istanbul,2,8,40,60,2014,1,TRUE
+289,Istanbul: The Dice Game,2,8,20,40,2017,1,TRUE
+290,Jaipur,2,8,30,30,2009,1,TRUE
+291,Jamaica,2,8,30,60,2007,1,TRUE
+292,Jump Drive,2,8,10,30,2017,1,TRUE
+293,Jungle Speed,2,8,10,10,1997,1,TRUE
+294,Jurassic Jumble,3,8,10,10,2004,1,TRUE
+295,Just One,3,8,20,60,2018,1,TRUE
+296,Kanagawa,2,8,45,45,2016,1,TRUE
+297,Karuba,2,8,30,40,2015,1,TRUE
+298,Keyflower,2,8,90,120,2012,1,TRUE
 299,Kill Doctor Lucky,3,8,45,45,1996,1,TRUE
-300,King of Tokyo,2,6,30,30,2011,1,TRUE
-301,The King's Guild,1,6,60,120,2018,1,TRUE
-302,Kingdomino,2,4,15,25,2016,1,TRUE
-303,Kitchen Rush,1,4,30,45,2017,1,TRUE
-304,Kites,2,6,10,10,2022,1,TRUE
-305,Knarr,2,4,30,30,2023,1,TRUE
-306,Kodama: The Tree Spirits,2,5,30,30,2016,1,TRUE
-307,Ladies & Gentlemen,4,10,30,30,2013,1,TRUE
-308,Lady Alice,3,5,30,30,2012,1,TRUE
-309,Lanterns: The Harvest Festival,2,4,30,30,2015,1,TRUE
-310,Las Vegas,2,5,30,30,2012,1,TRUE
-311,Last Will,2,5,45,75,2011,1,TRUE
-312,Lawless Empire,3,5,90,120,2016,1,TRUE
-313,Legacy: Gears of Time,2,4,60,60,2012,1,TRUE
-314,Legacy: The Testament of Duke de Crecy,1,4,60,60,2013,1,TRUE
-315,Legend of Vyas,2,2,0,0,2015,1,TRUE
-316,Legendary: A Marvel Deck Building Game,1,5,30,60,2012,1,TRUE
-317,Let's Kill!,2,6,20,20,1997,1,TRUE
-318,Letters from Whitechapel,2,6,90,90,2011,1,TRUE
-319,Level 7 [Omega Protocol],2,6,60,90,2013,1,TRUE
-320,Lewis & Clark: The Expedition,1,5,120,120,2013,1,TRUE
-321,Libertalia,2,6,40,60,2012,1,TRUE
+300,King of Tokyo,2,8,30,30,2011,1,TRUE
+301,The King's Guild,1,8,60,120,2018,1,TRUE
+302,Kingdomino,2,8,15,25,2016,1,TRUE
+303,Kitchen Rush,1,8,30,45,2017,1,TRUE
+304,Kites,2,8,10,10,2022,1,TRUE
+305,Knarr,2,8,30,30,2023,1,TRUE
+306,Kodama: The Tree Spirits,2,8,30,30,2016,1,TRUE
+307,Ladies & Gentlemen,4,8,30,30,2013,1,TRUE
+308,Lady Alice,3,8,30,30,2012,1,TRUE
+309,Lanterns: The Harvest Festival,2,8,30,30,2015,1,TRUE
+310,Las Vegas,2,8,30,30,2012,1,TRUE
+311,Last Will,2,8,45,75,2011,1,TRUE
+312,Lawless Empire,3,8,90,120,2016,1,TRUE
+313,Legacy: Gears of Time,2,8,60,60,2012,1,TRUE
+314,Legacy: The Testament of Duke de Crecy,1,8,60,60,2013,1,TRUE
+315,Legend of Vyas,2,8,0,0,2015,1,TRUE
+316,Legendary: A Marvel Deck Building Game,1,8,30,60,2012,1,TRUE
+317,Let's Kill!,2,8,20,20,1997,1,TRUE
+318,Letters from Whitechapel,2,8,90,90,2011,1,TRUE
+319,Level 7 [Omega Protocol],2,8,60,90,2013,1,TRUE
+320,Lewis & Clark: The Expedition,1,8,120,120,2013,1,TRUE
+321,Libertalia,2,8,40,60,2012,1,TRUE
 322,Lift it!,1,8,30,30,2012,1,TRUE
-323,Light Speed: Arena,1,4,5,15,2025,1,TRUE
-324,Link City,2,6,30,30,2024,1,TRUE
-325,Livingstone,2,5,35,35,2009,1,TRUE
-326,Lonpos 4D Puzzle Game,1,2,5,5,2000,1,TRUE
+323,Light Speed: Arena,1,8,5,15,2025,1,TRUE
+324,Link City,2,8,30,30,2024,1,TRUE
+325,Livingstone,2,8,35,35,2009,1,TRUE
+326,Lonpos 4D Puzzle Game,1,8,5,5,2000,1,TRUE
 327,Loot,2,8,20,20,1992,1,TRUE
-328,Lord of the Rings,2,5,20,20,2003,1,TRUE
-329,The Lord of the Rings: The Card Game,1,2,30,60,2011,1,TRUE
-330,Lords of Scotland,2,5,35,35,2010,1,TRUE
-331,Lords of Xidit,3,5,90,90,2014,1,TRUE
-332,Lost Cities,2,2,30,30,1999,1,TRUE
-333,Lost Legends,3,5,70,70,2013,1,TRUE
-334,Lost Ruins of Arnak,1,4,30,120,2020,1,TRUE
-335,Love Letter,2,4,20,20,2012,1,TRUE
+328,Lord of the Rings,2,8,20,20,2003,1,TRUE
+329,The Lord of the Rings: The Card Game,1,8,30,60,2011,1,TRUE
+330,Lords of Scotland,2,8,35,35,2010,1,TRUE
+331,Lords of Xidit,3,8,90,90,2014,1,TRUE
+332,Lost Cities,2,8,30,30,1999,1,TRUE
+333,Lost Legends,3,8,70,70,2013,1,TRUE
+334,Lost Ruins of Arnak,1,8,30,120,2020,1,TRUE
+335,Love Letter,2,8,20,20,2012,1,TRUE
 336,Magic Maze,1,8,15,15,2017,1,TRUE
-337,Majesty: For the Realm,2,4,20,30,2017,1,TRUE
-338,The Manhattan Project,2,5,120,120,2012,1,TRUE
-339,The Manhattan Project: Energy Empire,1,5,60,120,2016,1,TRUE
-340,Mansions of Madness,2,5,120,180,2011,1,TRUE
-341,Mansions of Madness: Second Edition,1,5,120,180,2016,1,TRUE
-342,Martian Dice,2,99,10,10,2011,1,TRUE
-343,Mascarade,2,13,30,30,2013,1,TRUE
-344,Master of Orion: The Board Game,2,4,40,60,2016,1,TRUE
-345,Master of Respect,3,5,60,60,2016,1,TRUE
-346,Mastermind,2,2,20,20,1971,1,TRUE
-347,Mechs vs. Minions,2,4,60,120,2016,1,TRUE
-348,Medieval Academy,2,5,30,30,2014,1,TRUE
-349,Medieval Merchant,2,6,60,90,1998,1,TRUE
-350,Medina (Second Edition),2,4,60,60,2014,1,TRUE
+337,Majesty: For the Realm,2,8,20,30,2017,1,TRUE
+338,The Manhattan Project,2,8,120,120,2012,1,TRUE
+339,The Manhattan Project: Energy Empire,1,8,60,120,2016,1,TRUE
+340,Mansions of Madness,2,8,120,180,2011,1,TRUE
+341,Mansions of Madness: Second Edition,1,8,120,180,2016,1,TRUE
+342,Martian Dice,2,8,10,10,2011,1,TRUE
+343,Mascarade,2,8,30,30,2013,1,TRUE
+344,Master of Orion: The Board Game,2,8,40,60,2016,1,TRUE
+345,Master of Respect,3,8,60,60,2016,1,TRUE
+346,Mastermind,2,8,20,20,1971,1,TRUE
+347,Mechs vs. Minions,2,8,60,120,2016,1,TRUE
+348,Medieval Academy,2,8,30,30,2014,1,TRUE
+349,Medieval Merchant,2,8,60,90,1998,1,TRUE
+350,Medina (Second Edition),2,8,60,60,2014,1,TRUE
 351,Medium,2,8,30,45,2019,1,TRUE
-352,Meeple War,2,4,30,60,2016,1,TRUE
-353,Merkator,1,4,45,90,2010,1,TRUE
-354,MicroMacro: Crime City,1,4,15,45,2020,1,TRUE
-355,The Mines of Zavandor,2,4,45,90,2010,1,TRUE
-356,Mission: Red Planet,3,5,60,60,2005,1,TRUE
-357,Monopoly Deal Card Game,2,5,15,15,2008,1,TRUE
-358,Monster Café,2,4,20,20,2013,1,TRUE
-359,Morels,2,2,30,30,2012,1,TRUE
-360,Mr. Jack,2,2,30,30,2006,1,TRUE
-361,Munchkin Dungeon,2,5,60,90,2020,1,TRUE
-362,Mysterium,2,7,42,42,2015,1,TRUE
-363,Mysterium Park,2,6,30,45,2020,1,TRUE
-364,Mystic Market,2,4,30,45,2019,1,TRUE
-365,Mystic Vale,2,4,45,45,2016,1,TRUE
-366,Nations,1,5,40,200,2013,1,TRUE
-367,Nations: The Dice Game,1,4,20,40,2014,1,TRUE
-368,Near and Far,2,4,90,120,2017,1,TRUE
-369,New Haven,2,4,60,60,2013,1,TRUE
-370,New York 1901,2,4,30,60,2015,1,TRUE
-371,New York Slice,2,6,30,30,2017,1,TRUE
-372,Nidavellir,2,5,45,45,2020,1,TRUE
-373,The Night Cage,1,5,40,60,2021,1,TRUE
-374,Night of the Ninja,4,11,15,30,2021,1,TRUE
-375,Nimalia,2,4,25,30,2023,1,TRUE
-376,No Thanks!,3,7,20,20,2004,1,TRUE
-377,No Thanks!,3,7,20,20,2004,1,TRUE
-378,Nobody but Us Chickens,3,6,20,20,2003,1,TRUE
-379,Not Alone,2,7,30,45,2016,1,TRUE
-380,Notre Dame,2,5,45,75,2007,1,TRUE
+352,Meeple War,2,8,30,60,2016,1,TRUE
+353,Merkator,1,8,45,90,2010,1,TRUE
+354,MicroMacro: Crime City,1,8,15,45,2020,1,TRUE
+355,The Mines of Zavandor,2,8,45,90,2010,1,TRUE
+356,Mission: Red Planet,3,8,60,60,2005,1,TRUE
+357,Monopoly Deal Card Game,2,8,15,15,2008,1,TRUE
+358,Monster Café,2,8,20,20,2013,1,TRUE
+359,Morels,2,8,30,30,2012,1,TRUE
+360,Mr. Jack,2,8,30,30,2006,1,TRUE
+361,Munchkin Dungeon,2,8,60,90,2020,1,TRUE
+362,Mysterium,2,8,42,42,2015,1,TRUE
+363,Mysterium Park,2,8,30,45,2020,1,TRUE
+364,Mystic Market,2,8,30,45,2019,1,TRUE
+365,Mystic Vale,2,8,45,45,2016,1,TRUE
+366,Nations,1,8,40,200,2013,1,TRUE
+367,Nations: The Dice Game,1,8,20,40,2014,1,TRUE
+368,Near and Far,2,8,90,120,2017,1,TRUE
+369,New Haven,2,8,60,60,2013,1,TRUE
+370,New York 1901,2,8,30,60,2015,1,TRUE
+371,New York Slice,2,8,30,30,2017,1,TRUE
+372,Nidavellir,2,8,45,45,2020,1,TRUE
+373,The Night Cage,1,8,40,60,2021,1,TRUE
+374,Night of the Ninja,4,8,15,30,2021,1,TRUE
+375,Nimalia,2,8,25,30,2023,1,TRUE
+376,No Thanks!,3,8,20,20,2004,1,TRUE
+377,No Thanks!,3,8,20,20,2004,1,TRUE
+378,Nobody but Us Chickens,3,8,20,20,2003,1,TRUE
+379,Not Alone,2,8,30,45,2016,1,TRUE
+380,Notre Dame,2,8,45,75,2007,1,TRUE
 381,Nuns on the Run,2,8,45,60,2010,1,TRUE
-382,Oceanos,2,5,30,45,2016,1,TRUE
-383,OddVille,2,4,30,60,2012,1,TRUE
-384,Oh My Goods!,2,4,30,30,2015,1,TRUE
-385,Old Maid,2,6,5,5,1874,1,TRUE
+382,Oceanos,2,8,30,45,2016,1,TRUE
+383,OddVille,2,8,30,60,2012,1,TRUE
+384,Oh My Goods!,2,8,30,30,2015,1,TRUE
+385,Old Maid,2,8,5,5,1874,1,TRUE
 386,On Tour: Paris and New York,1,8,20,30,2022,1,TRUE
-387,Once Upon a Time: The Storytelling Card Game,2,6,30,30,1993,1,TRUE
-388,One Night Revolution,3,10,15,15,2015,1,TRUE
-389,One Night Ultimate Werewolf,3,10,10,10,2014,1,TRUE
-390,Onitama,2,2,15,20,2014,1,TRUE
-391,Orleans,2,5,90,90,2014,1,TRUE
-392,Outlive,2,4,40,110,2017,1,TRUE
-393,Packet Row,2,5,45,75,2013,1,TRUE
-394,Paleo,2,4,45,60,2020,1,TRUE
-395,Pandemic,2,4,45,45,2008,1,TRUE
-396,Pandemic,2,4,45,45,2008,1,TRUE
-397,Pandemic: Rapid Response,2,4,20,20,2019,1,TRUE
-398,Pandemic: The Cure,2,5,30,30,2014,1,TRUE
-399,Parade,2,6,45,45,2007,1,TRUE
-400,Party Panda Pirates,2,6,30,45,2024,1,TRUE
-401,Pasha,2,5,30,30,2013,1,TRUE
-402,Pass the Bomb,2,10,20,20,1994,1,TRUE
-403,Patchwork,2,2,15,30,2014,1,TRUE
-404,Pathfinder Adventure Card Game: Rise of the Runelords â€“ Base Set,1,4,90,90,2013,1,TRUE
-405,Pay Dirt,2,5,90,90,2014,1,TRUE
-406,Peloponnes,1,5,45,45,2009,1,TRUE
-407,Perudo,2,10,15,30,1800,1,TRUE
+387,Once Upon a Time: The Storytelling Card Game,2,8,30,30,1993,1,TRUE
+388,One Night Revolution,3,8,15,15,2015,1,TRUE
+389,One Night Ultimate Werewolf,3,8,10,10,2014,1,TRUE
+390,Onitama,2,8,15,20,2014,1,TRUE
+391,Orleans,2,8,90,90,2014,1,TRUE
+392,Outlive,2,8,40,110,2017,1,TRUE
+393,Packet Row,2,8,45,75,2013,1,TRUE
+394,Paleo,2,8,45,60,2020,1,TRUE
+395,Pandemic,2,8,45,45,2008,1,TRUE
+396,Pandemic,2,8,45,45,2008,1,TRUE
+397,Pandemic: Rapid Response,2,8,20,20,2019,1,TRUE
+398,Pandemic: The Cure,2,8,30,30,2014,1,TRUE
+399,Parade,2,8,45,45,2007,1,TRUE
+400,Party Panda Pirates,2,8,30,45,2024,1,TRUE
+401,Pasha,2,8,30,30,2013,1,TRUE
+402,Pass the Bomb,2,8,20,20,1994,1,TRUE
+403,Patchwork,2,8,15,30,2014,1,TRUE
+404,Pathfinder Adventure Card Game: Rise of the Runelords â€“ Base Set,1,8,90,90,2013,1,TRUE
+405,Pay Dirt,2,8,90,90,2014,1,TRUE
+406,Peloponnes,1,8,45,45,2009,1,TRUE
+407,Perudo,2,8,15,30,1800,1,TRUE
 408,Phantom Ink,2,8,10,15,2022,1,TRUE
-409,Pick-a-Dog,1,5,15,15,2012,1,TRUE
-410,Pick-a-Dog,1,5,15,15,2012,1,TRUE
-411,The Pillars of the Earth,2,4,90,120,2006,1,TRUE
-412,Pioneer Days,2,4,45,75,2017,1,TRUE
+409,Pick-a-Dog,1,8,15,15,2012,1,TRUE
+410,Pick-a-Dog,1,8,15,15,2012,1,TRUE
+411,The Pillars of the Earth,2,8,90,120,2006,1,TRUE
+412,Pioneer Days,2,8,45,75,2017,1,TRUE
 413,Pit,3,8,30,90,1903,1,TRUE
-414,Planted: A Game of Nature & Nurture,2,5,20,30,2022,1,TRUE
+414,Planted: A Game of Nature & Nurture,2,8,20,30,2022,1,TRUE
 415,Pluckin' Pairs,3,8,50,50,2012,1,TRUE
-416,Plunder,2,6,30,45,2013,1,TRUE
-417,Point Salad,2,6,15,30,2019,1,TRUE
-418,Police Precinct,1,6,90,90,2013,1,TRUE
+416,Plunder,2,8,30,45,2013,1,TRUE
+417,Point Salad,2,8,15,30,2019,1,TRUE
+418,Police Precinct,1,8,90,90,2013,1,TRUE
 419,Poo: The Card Game,2,8,5,15,2009,1,TRUE
-420,Port Royal,2,5,20,50,2014,1,TRUE
-421,Power Grid,2,6,120,120,2004,1,TRUE
-422,The Price Is Right,3,5,60,60,1973,1,TRUE
-423,Progress: Evolution of Technology,1,5,45,90,2014,1,TRUE
-424,Project L,1,4,20,40,2020,1,TRUE
-425,Project: ELITE,1,4,30,30,2016,1,TRUE
-426,Puerto Rico,3,5,90,150,2002,1,TRUE
-427,Pulsar 2849,2,4,60,90,2017,1,TRUE
-428,The Pursuit of Happiness,1,4,60,90,2015,1,TRUE
-429,PUSH,2,6,20,25,2018,1,TRUE
-430,QE,3,5,45,45,2019,1,TRUE
-431,Quacks,2,4,45,45,2018,1,TRUE
-432,Quadropolis,2,4,30,60,2016,1,TRUE
-433,The Quest for El Dorado,2,4,30,60,2017,1,TRUE
-434,Qwirkle,2,4,45,45,2006,1,TRUE
-435,Raccoon Tycoon: Deluxe Edition,2,6,30,120,2021,1,TRUE
-436,Race for the Galaxy,2,4,30,60,2007,1,TRUE
-437,Race to Adventure: The Spirit of the Century Exploration Game,2,5,20,20,2013,1,TRUE
-438,Raiders of the North Sea,2,4,60,80,2015,1,TRUE
-439,Railroad Revolution,2,4,45,90,2016,1,TRUE
-440,Rat-a-Tat Cat,2,6,10,10,1995,1,TRUE
-441,Rat-a-Tat Cat,2,6,10,10,1995,1,TRUE
-442,Rat-a-Tat Cat,2,6,10,10,1995,1,TRUE
-443,RattleSnake,2,4,15,15,2007,1,TRUE
-444,Ready Set Bet,2,9,45,60,2022,1,TRUE
-445,The Reckoners,1,6,60,100,2018,1,TRUE
-446,Red7,2,4,5,30,2014,1,TRUE
-447,Reef,2,4,30,45,2018,1,TRUE
-448,Relic Runners,2,5,40,80,2013,1,TRUE
-449,Rent a Hero,3,5,20,30,2012,1,TRUE
-450,Res Arcana,2,4,30,60,2019,1,TRUE
-451,The Resistance,5,10,30,30,2009,1,TRUE
-452,The Resistance,5,10,30,30,2009,1,TRUE
-453,The Resistance: Avalon,5,10,30,30,2012,1,TRUE
-454,Revolution!,3,4,60,60,2009,1,TRUE
-455,Ricochet Robots,1,99,30,30,1999,1,TRUE
-456,Riftforce,2,2,20,30,2021,1,TRUE
-457,Rise,2,4,60,60,2022,1,TRUE
-458,Rise of Augustus,2,6,30,30,2013,1,TRUE
-459,Rising 5: Runes of Asteros,1,5,30,30,2017,1,TRUE
-460,Risk,2,6,120,120,1959,1,TRUE
-461,Risk 2210 A.D.,2,5,240,240,2001,1,TRUE
-462,Risk: Star Wars Edition,2,4,30,45,2015,1,TRUE
-463,River of Gold,2,4,60,90,2024,1,TRUE
-464,River Valley Glassworks,1,5,25,45,2024,1,TRUE
-465,Robinson Crusoe: Adventures on the Cursed Island,1,4,60,120,2012,1,TRUE
+420,Port Royal,2,8,20,50,2014,1,TRUE
+421,Power Grid,2,8,120,120,2004,1,TRUE
+422,The Price Is Right,3,8,60,60,1973,1,TRUE
+423,Progress: Evolution of Technology,1,8,45,90,2014,1,TRUE
+424,Project L,1,8,20,40,2020,1,TRUE
+425,Project: ELITE,1,8,30,30,2016,1,TRUE
+426,Puerto Rico,3,8,90,150,2002,1,TRUE
+427,Pulsar 2849,2,8,60,90,2017,1,TRUE
+428,The Pursuit of Happiness,1,8,60,90,2015,1,TRUE
+429,PUSH,2,8,20,25,2018,1,TRUE
+430,QE,3,8,45,45,2019,1,TRUE
+431,Quacks,2,8,45,45,2018,1,TRUE
+432,Quadropolis,2,8,30,60,2016,1,TRUE
+433,The Quest for El Dorado,2,8,30,60,2017,1,TRUE
+434,Qwirkle,2,8,45,45,2006,1,TRUE
+435,Raccoon Tycoon: Deluxe Edition,2,8,30,120,2021,1,TRUE
+436,Race for the Galaxy,2,8,30,60,2007,1,TRUE
+437,Race to Adventure: The Spirit of the Century Exploration Game,2,8,20,20,2013,1,TRUE
+438,Raiders of the North Sea,2,8,60,80,2015,1,TRUE
+439,Railroad Revolution,2,8,45,90,2016,1,TRUE
+440,Rat-a-Tat Cat,2,8,10,10,1995,1,TRUE
+441,Rat-a-Tat Cat,2,8,10,10,1995,1,TRUE
+442,Rat-a-Tat Cat,2,8,10,10,1995,1,TRUE
+443,RattleSnake,2,8,15,15,2007,1,TRUE
+444,Ready Set Bet,2,8,45,60,2022,1,TRUE
+445,The Reckoners,1,8,60,100,2018,1,TRUE
+446,Red7,2,8,5,30,2014,1,TRUE
+447,Reef,2,8,30,45,2018,1,TRUE
+448,Relic Runners,2,8,40,80,2013,1,TRUE
+449,Rent a Hero,3,8,20,30,2012,1,TRUE
+450,Res Arcana,2,8,30,60,2019,1,TRUE
+451,The Resistance,5,8,30,30,2009,1,TRUE
+452,The Resistance,5,8,30,30,2009,1,TRUE
+453,The Resistance: Avalon,5,8,30,30,2012,1,TRUE
+454,Revolution!,3,8,60,60,2009,1,TRUE
+455,Ricochet Robots,1,8,30,30,1999,1,TRUE
+456,Riftforce,2,8,20,30,2021,1,TRUE
+457,Rise,2,8,60,60,2022,1,TRUE
+458,Rise of Augustus,2,8,30,30,2013,1,TRUE
+459,Rising 5: Runes of Asteros,1,8,30,30,2017,1,TRUE
+460,Risk,2,8,120,120,1959,1,TRUE
+461,Risk 2210 A.D.,2,8,240,240,2001,1,TRUE
+462,Risk: Star Wars Edition,2,8,30,45,2015,1,TRUE
+463,River of Gold,2,8,60,90,2024,1,TRUE
+464,River Valley Glassworks,1,8,25,45,2024,1,TRUE
+465,Robinson Crusoe: Adventures on the Cursed Island,1,8,60,120,2012,1,TRUE
 466,RoboRally,2,8,45,120,1994,1,TRUE
-467,Rococo,2,5,60,120,2013,1,TRUE
-468,Roll for the Galaxy,2,5,45,45,2014,1,TRUE
-469,Roll Player,1,4,60,90,2016,1,TRUE
-470,Roll Through the Ages: The Bronze Age,1,4,30,45,2008,1,TRUE
-471,Room 25,1,6,30,30,2013,1,TRUE
-472,Royals,2,5,60,60,2014,1,TRUE
-473,Rummikub,2,4,60,60,1977,1,TRUE
-474,"Run,  Fight,  or Die!",1,4,40,40,2014,1,TRUE
-475,Russian Railroads,2,4,120,120,2013,1,TRUE
-476,Saboteur,3,10,30,30,2004,1,TRUE
-477,Saboteur,3,10,30,30,2004,1,TRUE
-478,Sail to India,3,4,60,60,2013,1,TRUE
-479,Saint Malo,2,5,45,45,2012,1,TRUE
-480,Saint Petersburg,2,4,45,60,2004,1,TRUE
-481,Samurai,2,4,30,60,1998,1,TRUE
-482,San Juan,2,4,45,60,2004,1,TRUE
-483,Sanssouci,2,4,30,45,2013,1,TRUE
-484,Santa Maria,1,4,45,90,2017,1,TRUE
-485,Santo Domingo,2,6,20,30,2017,1,TRUE
-486,Santorini,2,4,20,20,2016,1,TRUE
+467,Rococo,2,8,60,120,2013,1,TRUE
+468,Roll for the Galaxy,2,8,45,45,2014,1,TRUE
+469,Roll Player,1,8,60,90,2016,1,TRUE
+470,Roll Through the Ages: The Bronze Age,1,8,30,45,2008,1,TRUE
+471,Room 25,1,8,30,30,2013,1,TRUE
+472,Royals,2,8,60,60,2014,1,TRUE
+473,Rummikub,2,8,60,60,1977,1,TRUE
+474,"Run,  Fight,  or Die!",1,8,40,40,2014,1,TRUE
+475,Russian Railroads,2,8,120,120,2013,1,TRUE
+476,Saboteur,3,8,30,30,2004,1,TRUE
+477,Saboteur,3,8,30,30,2004,1,TRUE
+478,Sail to India,3,8,60,60,2013,1,TRUE
+479,Saint Malo,2,8,45,45,2012,1,TRUE
+480,Saint Petersburg,2,8,45,60,2004,1,TRUE
+481,Samurai,2,8,30,60,1998,1,TRUE
+482,San Juan,2,8,45,60,2004,1,TRUE
+483,Sanssouci,2,8,30,45,2013,1,TRUE
+484,Santa Maria,1,8,45,90,2017,1,TRUE
+485,Santo Domingo,2,8,20,30,2017,1,TRUE
+486,Santorini,2,8,20,20,2016,1,TRUE
 487,Say Anything,3,8,30,30,2008,1,TRUE
-488,Say Anything Family Edition,3,6,30,30,2011,1,TRUE
-489,Scotland Yard: Hunting Mister X,2,4,15,15,2019,1,TRUE
-490,Scythe,1,5,115,115,2016,1,TRUE
-491,Sea Salt & Paper,2,4,30,45,2022,1,TRUE
-492,Seasons,2,4,60,60,2012,1,TRUE
-493,Secret Hitler,5,10,45,45,2016,1,TRUE
-494,Sentinels of the Multiverse,2,5,30,60,2011,1,TRUE
-495,Sequence,2,12,10,30,1982,1,TRUE
-496,The Settlers of Catan,3,6,60,75,2008,1,TRUE
-497,Seven Dragons,2,5,10,30,2011,1,TRUE
+488,Say Anything Family Edition,3,8,30,30,2011,1,TRUE
+489,Scotland Yard: Hunting Mister X,2,8,15,15,2019,1,TRUE
+490,Scythe,1,8,115,115,2016,1,TRUE
+491,Sea Salt & Paper,2,8,30,45,2022,1,TRUE
+492,Seasons,2,8,60,60,2012,1,TRUE
+493,Secret Hitler,5,8,45,45,2016,1,TRUE
+494,Sentinels of the Multiverse,2,8,30,60,2011,1,TRUE
+495,Sequence,2,8,10,30,1982,1,TRUE
+496,The Settlers of Catan,3,8,60,75,2008,1,TRUE
+497,Seven Dragons,2,8,10,30,2011,1,TRUE
 498,Shadow Hunters,4,8,60,60,2005,1,TRUE
-499,Shadowrift,1,6,45,120,2012,1,TRUE
-500,Shadowrun: Crossfire,1,4,30,60,2014,1,TRUE
-501,Shadows over Camelot,3,7,60,90,2005,1,TRUE
+499,Shadowrift,1,8,45,120,2012,1,TRUE
+500,Shadowrun: Crossfire,1,8,30,60,2014,1,TRUE
+501,Shadows over Camelot,3,8,60,90,2005,1,TRUE
 502,Sherlock Holmes Consulting Detective: The Thames Murders & Other Cases,1,8,60,120,1981,1,TRUE
-503,The Shipwreck Arcana,2,5,10,30,2017,1,TRUE
-504,Shogun,3,5,90,120,2006,1,TRUE
-505,Signorie,2,4,60,120,2015,1,TRUE
+503,The Shipwreck Arcana,2,8,10,30,2017,1,TRUE
+504,Shogun,3,8,90,120,2006,1,TRUE
+505,Signorie,2,8,60,120,2015,1,TRUE
 506,Similo,2,8,10,15,2019,1,TRUE
-507,Skull,3,6,15,45,2011,1,TRUE
-508,Sleeping Queens,2,5,20,20,2005,1,TRUE
-509,Small World,2,5,40,80,2009,1,TRUE
-510,Small World Underground,2,5,30,90,2011,1,TRUE
-511,Smash Up,2,4,45,45,2012,1,TRUE
+507,Skull,3,8,15,45,2011,1,TRUE
+508,Sleeping Queens,2,8,20,20,2005,1,TRUE
+509,Small World,2,8,40,80,2009,1,TRUE
+510,Small World Underground,2,8,30,90,2011,1,TRUE
+511,Smash Up,2,8,45,45,2012,1,TRUE
 512,Snake Oil: Elixir,3,8,30,30,2015,1,TRUE
-513,Sneaks & Snitches,2,5,20,20,2010,1,TRUE
+513,Sneaks & Snitches,2,8,20,20,2010,1,TRUE
 514,Snorta!,3,8,20,20,2004,1,TRUE
-515,So Clover!,3,6,30,30,2021,1,TRUE
-516,Sonora,1,4,30,45,2020,1,TRUE
-517,Space Base,2,5,60,60,2018,1,TRUE
-518,Specter Ops,2,5,60,120,2015,1,TRUE
-519,Spirit Island,1,4,90,120,2017,1,TRUE
+515,So Clover!,3,8,30,30,2021,1,TRUE
+516,Sonora,1,8,30,45,2020,1,TRUE
+517,Space Base,2,8,60,60,2018,1,TRUE
+518,Specter Ops,2,8,60,120,2015,1,TRUE
+519,Spirit Island,1,8,90,120,2017,1,TRUE
 520,Spit It Out!,3,8,20,30,2015,1,TRUE
-521,Splendor,2,4,30,30,2014,1,TRUE
-522,Splendor Duel,2,2,30,30,2022,1,TRUE
-523,Spots,1,4,25,30,2022,1,TRUE
+521,Splendor,2,8,30,30,2014,1,TRUE
+522,Splendor Duel,2,8,30,30,2022,1,TRUE
+523,Spots,1,8,25,30,2022,1,TRUE
 524,Squint,3,8,30,30,2002,1,TRUE
-525,Star Realms,2,2,20,20,2014,1,TRUE
-526,Star Wars: Outer Rim,1,4,120,180,2019,1,TRUE
-527,Steam Time,2,4,90,90,2015,1,TRUE
+525,Star Realms,2,8,20,20,2014,1,TRUE
+526,Star Wars: Outer Rim,1,8,120,180,2019,1,TRUE
+527,Steam Time,2,8,90,90,2015,1,TRUE
 528,Steampunk Rally,2,8,45,60,2015,1,TRUE
-529,Stockpile,2,5,45,45,2015,1,TRUE
-530,Stone Age,2,4,60,90,2008,1,TRUE
-531,Strike,2,5,15,15,2012,1,TRUE
-532,Suburbia,1,4,60,90,2012,1,TRUE
-533,Survive: Escape from Atlantis!,2,4,45,60,1982,1,TRUE
-534,Sushi Go!,2,5,15,15,2013,1,TRUE
-535,Sushi Roll,2,5,20,20,2019,1,TRUE
+529,Stockpile,2,8,45,45,2015,1,TRUE
+530,Stone Age,2,8,60,90,2008,1,TRUE
+531,Strike,2,8,15,15,2012,1,TRUE
+532,Suburbia,1,8,60,90,2012,1,TRUE
+533,Survive: Escape from Atlantis!,2,8,45,60,1982,1,TRUE
+534,Sushi Go!,2,8,15,15,2013,1,TRUE
+535,Sushi Roll,2,8,20,20,2019,1,TRUE
 536,Sushi Roll!,3,8,10,10,2009,1,TRUE
-537,T.I.M.E Stories,2,4,90,90,2015,1,TRUE
-538,Taboo,4,10,20,20,1989,1,TRUE
-539,Tac Tac Jack,2,7,10,10,2008,1,TRUE
-540,Take 5,2,10,45,45,1994,1,TRUE
-541,Takenoko,2,4,45,45,2011,1,TRUE
-542,Tales & Games: The Hare & the Tortoise,2,5,15,20,2011,1,TRUE
-543,Tapple,2,10,30,30,2012,1,TRUE
-544,Targi,2,2,60,60,2012,1,TRUE
+537,T.I.M.E Stories,2,8,90,90,2015,1,TRUE
+538,Taboo,4,8,20,20,1989,1,TRUE
+539,Tac Tac Jack,2,8,10,10,2008,1,TRUE
+540,Take 5,2,8,45,45,1994,1,TRUE
+541,Takenoko,2,8,45,45,2011,1,TRUE
+542,Tales & Games: The Hare & the Tortoise,2,8,15,20,2011,1,TRUE
+543,Tapple,2,8,30,30,2012,1,TRUE
+544,Targi,2,8,60,60,2012,1,TRUE
 545,Telestrations,4,8,30,30,2009,1,TRUE
-546,Tenpenny Parks,1,4,45,75,2022,1,TRUE
-547,Teotihuacan: City of Gods,1,4,90,120,2018,1,TRUE
-548,Terror Below,1,5,45,60,2019,1,TRUE
-549,Terror in Meeple City,2,4,30,30,2013,1,TRUE
-550,Terrorscape,2,4,30,45,2023,1,TRUE
-551,This Game Is Killer: Alien on Board,3,10,10,15,2024,1,TRUE
-552,Those Pesky Humans!,2,4,90,90,2009,1,TRUE
-553,Three Kingdoms Redux,3,3,135,165,2014,1,TRUE
-554,Thunderstone Advance: Towers of Ruin,1,5,45,45,2012,1,TRUE
-555,Thurn and Taxis,2,4,60,60,2006,1,TRUE
-556,Ticket to Ride,2,5,30,60,2004,1,TRUE
-557,Ticket to Ride: Europe,2,5,30,60,2005,1,TRUE
-558,Tides of Time,2,2,20,20,2015,1,TRUE
+546,Tenpenny Parks,1,8,45,75,2022,1,TRUE
+547,Teotihuacan: City of Gods,1,8,90,120,2018,1,TRUE
+548,Terror Below,1,8,45,60,2019,1,TRUE
+549,Terror in Meeple City,2,8,30,30,2013,1,TRUE
+550,Terrorscape,2,8,30,45,2023,1,TRUE
+551,This Game Is Killer: Alien on Board,3,8,10,15,2024,1,TRUE
+552,Those Pesky Humans!,2,8,90,90,2009,1,TRUE
+553,Three Kingdoms Redux,3,8,135,165,2014,1,TRUE
+554,Thunderstone Advance: Towers of Ruin,1,8,45,45,2012,1,TRUE
+555,Thurn and Taxis,2,8,60,60,2006,1,TRUE
+556,Ticket to Ride,2,8,30,60,2004,1,TRUE
+557,Ticket to Ride: Europe,2,8,30,60,2005,1,TRUE
+558,Tides of Time,2,8,20,20,2015,1,TRUE
 559,Tiefe Taschen,4,8,20,50,2016,1,TRUE
-560,Tigris & Euphrates,2,4,60,120,1997,1,TRUE
-561,Tiki Topple,2,4,20,20,2008,1,TRUE
-562,Time's Up!,4,18,90,90,1999,1,TRUE
-563,Time's Up! Title Recall!,4,18,60,60,2008,1,TRUE
+560,Tigris & Euphrates,2,8,60,120,1997,1,TRUE
+561,Tiki Topple,2,8,20,20,2008,1,TRUE
+562,Time's Up!,4,8,90,90,1999,1,TRUE
+563,Time's Up! Title Recall!,4,8,60,60,2008,1,TRUE
 564,Timeline: Events,2,8,15,15,2011,1,TRUE
 565,Timeline: Inventions,2,8,15,15,2010,1,TRUE
 566,Timeline: Music & Cinema,2,8,15,15,2013,1,TRUE
 567,Timeline: Science & Discoveries,2,8,15,15,2011,1,TRUE
-568,Tiny Epic Defenders,1,4,30,30,2015,1,TRUE
-569,Tiny Epic Galaxies,1,5,30,45,2015,1,TRUE
-570,Tobago,2,4,60,60,2009,1,TRUE
+568,Tiny Epic Defenders,1,8,30,30,2015,1,TRUE
+569,Tiny Epic Galaxies,1,8,30,45,2015,1,TRUE
+570,Tobago,2,8,60,60,2009,1,TRUE
 571,Tofu Kingdom,3,8,10,30,2015,1,TRUE
-572,Tokaido,1,5,45,45,2012,1,TRUE
-573,Torres,2,4,60,60,1999,1,TRUE
-574,Tournay,2,4,30,60,2011,1,TRUE
-575,Trekking Through History,1,4,30,60,2022,1,TRUE
-576,Tribes: Dawn of Humanity,2,4,45,45,2018,1,TRUE
-577,Trio,3,6,15,15,2021,1,TRUE
-578,Truffle Shuffle,2,4,15,30,2020,1,TRUE
-579,Tumult Royale,2,4,40,40,2015,1,TRUE
-580,Tutankhamun,2,6,30,30,2021,1,TRUE
-581,Twister,2,4,10,10,1966,1,TRUE
-582,Uglydoll Card Game,2,6,15,15,2006,1,TRUE
-583,Ultimate Werewolf: Deluxe Edition,5,75,30,30,2014,1,TRUE
-584,Undermining,2,5,45,45,2011,1,TRUE
-585,Unlock!: Exotic Adventures,1,6,60,90,2018,1,TRUE
-586,Unlock!: Extraordinary Adventures,1,6,60,90,2022,1,TRUE
-587,Unlock!: Game Adventures,1,6,30,60,2021,1,TRUE
-588,Unlock!: Heroic Adventures,1,6,60,60,2018,1,TRUE
-589,Unlock!: Legendary Adventures,1,6,60,60,2021,1,TRUE
-590,Unlock!: Secret Adventures,1,6,60,60,2017,1,TRUE
-591,UNO Stacko,2,10,20,20,1994,1,TRUE
-592,Unusual Suspects,3,16,20,20,2015,1,TRUE
-593,The Vale of Eternity,2,4,30,45,2023,1,TRUE
-594,Vault Wars,3,5,45,60,2015,1,TRUE
-595,Il Vecchio,2,4,60,60,2012,1,TRUE
-596,Via Nebula,2,4,45,60,2016,1,TRUE
-597,Viceroy,1,4,45,60,2014,1,TRUE
-598,Village Pillage,2,5,20,20,2019,1,TRUE
-599,Vindication,2,5,45,150,2018,1,TRUE
-600,Viticulture,2,6,90,90,2013,1,TRUE
-601,VivaJava: The Coffee Game: The Dice Game,1,4,20,40,2014,1,TRUE
-602,The Voyages of Marco Polo,2,4,40,100,2015,1,TRUE
-603,Warsaw: City of Ruins,2,4,60,60,2016,1,TRUE
-604,Wasteland Express Delivery Service,2,5,90,120,2017,1,TRUE
-605,Welcome to the Dungeon,2,4,30,30,2013,1,TRUE
-606,Werewords,4,10,10,10,2017,1,TRUE
-607,Wheel of Fortune,2,4,60,60,1975,1,TRUE
-608,Whitehall Mystery,2,4,45,60,2017,1,TRUE
-609,Wild Space,1,5,15,40,2020,1,TRUE
-610,Wingspan,1,5,40,70,2019,1,TRUE
+572,Tokaido,1,8,45,45,2012,1,TRUE
+573,Torres,2,8,60,60,1999,1,TRUE
+574,Tournay,2,8,30,60,2011,1,TRUE
+575,Trekking Through History,1,8,30,60,2022,1,TRUE
+576,Tribes: Dawn of Humanity,2,8,45,45,2018,1,TRUE
+577,Trio,3,8,15,15,2021,1,TRUE
+578,Truffle Shuffle,2,8,15,30,2020,1,TRUE
+579,Tumult Royale,2,8,40,40,2015,1,TRUE
+580,Tutankhamun,2,8,30,30,2021,1,TRUE
+581,Twister,2,8,10,10,1966,1,TRUE
+582,Uglydoll Card Game,2,8,15,15,2006,1,TRUE
+583,Ultimate Werewolf: Deluxe Edition,5,8,30,30,2014,1,TRUE
+584,Undermining,2,8,45,45,2011,1,TRUE
+585,Unlock!: Exotic Adventures,1,8,60,90,2018,1,TRUE
+586,Unlock!: Extraordinary Adventures,1,8,60,90,2022,1,TRUE
+587,Unlock!: Game Adventures,1,8,30,60,2021,1,TRUE
+588,Unlock!: Heroic Adventures,1,8,60,60,2018,1,TRUE
+589,Unlock!: Legendary Adventures,1,8,60,60,2021,1,TRUE
+590,Unlock!: Secret Adventures,1,8,60,60,2017,1,TRUE
+591,UNO Stacko,2,8,20,20,1994,1,TRUE
+592,Unusual Suspects,3,8,20,20,2015,1,TRUE
+593,The Vale of Eternity,2,8,30,45,2023,1,TRUE
+594,Vault Wars,3,8,45,60,2015,1,TRUE
+595,Il Vecchio,2,8,60,60,2012,1,TRUE
+596,Via Nebula,2,8,45,60,2016,1,TRUE
+597,Viceroy,1,8,45,60,2014,1,TRUE
+598,Village Pillage,2,8,20,20,2019,1,TRUE
+599,Vindication,2,8,45,150,2018,1,TRUE
+600,Viticulture,2,8,90,90,2013,1,TRUE
+601,VivaJava: The Coffee Game: The Dice Game,1,8,20,40,2014,1,TRUE
+602,The Voyages of Marco Polo,2,8,40,100,2015,1,TRUE
+603,Warsaw: City of Ruins,2,8,60,60,2016,1,TRUE
+604,Wasteland Express Delivery Service,2,8,90,120,2017,1,TRUE
+605,Welcome to the Dungeon,2,8,30,30,2013,1,TRUE
+606,Werewords,4,8,10,10,2017,1,TRUE
+607,Wheel of Fortune,2,8,60,60,1975,1,TRUE
+608,Whitehall Mystery,2,8,45,60,2017,1,TRUE
+609,Wild Space,1,8,15,40,2020,1,TRUE
+610,Wingspan,1,8,40,70,2019,1,TRUE
 611,WINK,3,8,20,20,1994,1,TRUE
-612,Wits & Wagers,3,7,25,25,2005,1,TRUE
-613,Wok and Roll,1,5,30,45,2020,1,TRUE
-614,Word Slam,3,99,45,45,2016,1,TRUE
-615,Word Slam,3,99,45,45,2016,1,TRUE
-616,World of Yo-Ho,2,4,45,90,2016,1,TRUE
-617,World Wonders,1,5,50,70,2023,1,TRUE
-618,World's Fair 1893,2,4,35,45,2016,1,TRUE
-619,Wreck Raiders,1,5,45,45,2019,1,TRUE
-620,Wreckage,2,4,45,45,2003,1,TRUE
-621,XenoShyft: Onslaught,1,4,30,60,2015,1,TRUE
-622,Yamatai,2,4,40,80,2017,1,TRUE
-623,Yardmaster,2,5,20,20,2014,1,TRUE
-624,Yedo,2,5,120,180,2012,1,TRUE
-625,You Robot,4,10,20,20,2009,1,TRUE
-626,Zendo,2,6,15,60,2001,1,TRUE
-627,Zeus on the Loose,2,5,15,15,2006,1,TRUE
-628,Zombie Fluxx,2,6,10,40,2007,1,TRUE
-629,Zooloretto,2,5,45,45,2007,1,TRUE
-630,Justin,1,1,10,20,1200,2,FALSE
-631,Justin,1,1,10,20,1,1,FALSE
-632,Justin,1,1,10,20,1,1,FALSE
-633,Justin,1,2,10,20,5,1,FALSE
-634,Khaleel,1,2,10,20,5,1,TRUE
-635,Phase 10,2,3,10,20,2006,1,TRUE
-636,Okok,1,2,10,20,2006,1,TRUE
+612,Wits & Wagers,3,8,25,25,2005,1,TRUE
+613,Wok and Roll,1,8,30,45,2020,1,TRUE
+614,Word Slam,3,8,45,45,2016,1,TRUE
+615,Word Slam,3,8,45,45,2016,1,TRUE
+616,World of Yo-Ho,2,8,45,90,2016,1,TRUE
+617,World Wonders,1,8,50,70,2023,1,TRUE
+618,World's Fair 1893,2,8,35,45,2016,1,TRUE
+619,Wreck Raiders,1,8,45,45,2019,1,TRUE
+620,Wreckage,2,8,45,45,2003,1,TRUE
+621,XenoShyft: Onslaught,1,8,30,60,2015,1,TRUE
+622,Yamatai,2,8,40,80,2017,1,TRUE
+623,Yardmaster,2,8,20,20,2014,1,TRUE
+624,Yedo,2,8,120,180,2012,1,TRUE
+625,You Robot,4,8,20,20,2009,1,TRUE
+626,Zendo,2,8,15,60,2001,1,TRUE
+627,Zeus on the Loose,2,8,15,15,2006,1,TRUE
+628,Zombie Fluxx,2,8,10,40,2007,1,TRUE
+629,Zooloretto,2,8,45,45,2007,1,TRUE
+630,Justin,1,8,10,20,1200,2,FALSE
+631,Justin,1,8,10,20,1,1,FALSE
+632,Justin,1,8,10,20,1,1,FALSE
+633,Justin,1,8,10,20,5,1,FALSE
+634,Khaleel,1,8,10,20,5,1,TRUE
+635,Phase 10,2,8,10,20,2006,1,TRUE
+636,Okok,1,8,10,20,2006,1,TRUE
