@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include "HashTable.h"
 #include "LinkedList.h"
 #include "Game.h"
 using namespace std;
@@ -31,8 +32,8 @@ public:
 
     void printActiveGames(List<Game>& games);
     // Features available to all users
-    bool borrowGame(List<Game>& games, const string& gameName);
-    bool returnGame(List<Game>& games, int gameId);
+    bool borrowGame(List<Game>& games, HashTable<std::string, List<Game>::NodePtr>& gameTable, const std::string& gameName);
+    bool returnGame(List<Game>& games, HashTable<std::string, List<Game>::NodePtr>& gameTable, int gameId);
     void displayBorrowedAndHistory() const;
 
     void displayGamesPlayableByNPlayers(List<Game>& games);

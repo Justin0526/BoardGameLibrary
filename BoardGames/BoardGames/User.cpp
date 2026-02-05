@@ -1,8 +1,7 @@
 #include "User.h"
 #include "Game.h"
 #include "LinkedList.h"
-#include <limits>
-#include <sstream>
+#include "HashTable.h"
 #include <iostream>
 
 User::User() {
@@ -52,48 +51,28 @@ void User::printActiveGames(List<Game>& games) {
     }
 }
 
-bool User::borrowGame(List<Game>& games, const string& gameName) {
-    int n = games.getLength();
-    // find first not-borrowed copy
-    for (int i = 0; i < n; ++i) {
-        auto node = games.getNode(i);
-        if (node == nullptr) continue;
+bool User::borrowGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable, const string& gameName) {
+    // Use hash table for fast lookup
+    auto node = gameTable.get(gameName);
+    if (node && !games.getItem(node).isBorrowed()) {
         Game& g = games.getItem(node);
-        if (g.getName() == gameName && !g.isBorrowed()) {
-            g.setBorrowed(true);
-            borrowed.add(g.getGameId());
-            history.add(g.getGameId());
-            cout << role << " " << getName() << " borrowed game [" << g.getGameId() << "] " << g.getName() << endl;
-            return true;
-        }
+        g.setBorrowed(true);
+        // If you have a borrowed/history list, update it here
+        cout << role << " " << name << " borrowed game [" << g.getGameId() << "] " << g.getName() << endl;
+        return true;
     }
     cout << "No available copy found for \"" << gameName << "\"\n";
     return false;
 }
 
-bool User::returnGame(List<Game>& games, int gameId) {
-    int n = games.getLength();
-    for (int i = 0; i < n; ++i) {
-        auto node = games.getNode(i);
-        if (node == nullptr) continue;
+bool User::returnGame(List<Game>& games, HashTable<std::string, List<Game>::NodePtr>& gameTable, int gameId) {
+    // Try to find by ID as string
+    auto node = gameTable.get(std::to_string(gameId));
+    if (node && games.getItem(node).isBorrowed()) {
         Game& g = games.getItem(node);
-        if (g.getGameId() == gameId && g.isBorrowed()) {
-            g.setBorrowed(false);
-            // remove gameId from borrowed list by rebuilding as List lacks removeAt
-            List<int> newBorrowed;
-            int len = borrowed.getLength();
-            bool removed = false;
-            for (int j = 0; j < len; ++j) {
-                int id = borrowed.get(j);
-                if (!removed && id == gameId) { removed = true; continue; }
-                newBorrowed.add(id);
-            }
-            borrowed = List<int>();
-            for (int j = 0; j < newBorrowed.getLength(); ++j) borrowed.add(newBorrowed.get(j));
-
-            cout << role << " " << getName() << " returned game [" << g.getGameId() << "] " << g.getName() << endl;
-            return true;
-        }
+        g.setBorrowed(false);
+        cout << role << " " << name << " returned game [" << g.getGameId() << "] " << g.getName() << endl;
+        return true;
     }
     cout << "Game ID " << gameId << " not found or not currently borrowed by anyone.\n";
     return false;

@@ -449,7 +449,7 @@ int main()
                     cout << "Enter game name to borrow: ";
                     string gameName;
                     getline(cin, gameName);
-                    if (loggedInMember->item.borrowGame(games, gameName)) {
+                    if (loggedInMember->item.borrowGame(games, gameTable, gameName)) {
                         // Find the game ID by name
                         int gameId = -1;
                         for (int i = 0; i < games.getLength(); ++i) {
@@ -484,7 +484,7 @@ int main()
                     getline(cin, idStr);
                     try {
                         int id = stoi(idStr);
-                        if (loggedInMember->item.returnGame(games, id)) {
+                        if (loggedInMember->item.returnGame(games, gameTable, id)) {
                             cout << "Return successful.\n";
 
                             writeBorrowRecord(
