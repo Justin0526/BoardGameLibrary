@@ -137,8 +137,12 @@ void displayDetailedBorrowHistory(int memberId, List<Game>& games) {
                 cout << "  Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
                 cout << "  Year Published: " << g.getYearPublished() << "\n";
                 cout << "  Current Status: " << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
-                cout << "Borrow Date: " << record.borrowDate << "\n";
-                cout << "Return Date: " << record.returnDate << "\n";
+                if (record.action == "BORROW") {
+                    cout << "Borrow Date: " << record.borrowDate << "\n";
+                }
+                else if (record.action == "RETURN") {
+                    cout << "Return Date: " << record.returnDate << "\n";
+                }
             } else {
                 cout << "Game ID/Name: " << record.gameId << "\n";
                 cout << "  Game details not found (may have been removed)\n";
@@ -239,7 +243,9 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
                 isActive
             );
             List<Game>::NodePtr gamePtr = games.add(g);
-            gameTable.add(gameId, gamePtr);
+            // index by BOTH id and name
+            gameTable.add(gameId, gamePtr);   // for return / ID lookups
+            gameTable.add(name, gamePtr);     // for borrow-by-name
         }catch (const exception& e) {
             cout << "Parse error: " << e.what() << "\n";
             cout << "Bad line: [" << line << "]\n";
@@ -382,6 +388,7 @@ bool loadRatingsFromCSV(const string& filename, List<Rating>& ratings, HashTable
 
 int main()
 {
+    initializeBorrowRecordsCSV();
   // Initialize borrow record counter from existing records
     borrowRecordCounter = getNextBorrowRecordId();  
 
@@ -478,30 +485,24 @@ int main()
                     cout << "Enter game name to borrow: ";
                     string gameName;
                     getline(cin, gameName);
-                    if (loggedInMember->item.borrowGame(games, gameName)) {
-                        // Find the game ID by name
-                        int gameId = -1;
-                        for (int i = 0; i < games.getLength(); ++i) {
-                            auto node = games.getNode(i);
-                            if (node && games.getItem(node).getName() == gameName) {
-                                gameId = games.getItem(node).getGameId();
-                                break;
-                            }
+                    if (loggedInMember->item.borrowGame(games, gameTable, gameName)) {
+                        // Get game directly from hash table
+                        if (!gameTable.containsKey(gameName)) {
+                            cout << "Borrow failed.\n";
+                            continue;
                         }
-                        if (gameId != -1) {
-                            writeBorrowRecord(
-                                borrowRecordCounter++,
-                                to_string(loggedInMember->item.getUserId()),
-                                to_string(gameId), // <-- always use ID
-                                "BORROW",
-                                getCurrentDate(),
-                                ""
-                            );
-                            cout << "Borrow successful.\n";
-                        }
-                        else {
-                            cout << "Borrow failed (game not found).\n";
-                        }
+
+                        auto node = gameTable.get(gameName);
+                        int gameId = games.getItem(node).getGameId();
+
+                        writeBorrowRecord(
+                            borrowRecordCounter++,
+                            to_string(loggedInMember->item.getUserId()),
+                            to_string(gameId),
+                            "BORROW",
+                            getCurrentDate(),
+                            ""
+                        );
                     }
                     else {
                         cout << "Borrow failed (no available copy or error).\n";
@@ -513,7 +514,7 @@ int main()
                     getline(cin, idStr);
                     try {
                         int id = stoi(idStr);
-                        if (loggedInMember->item.returnGame(games, id)) {
+                        if (loggedInMember->item.returnGame(games, gameTable, id)) {
                             cout << "Return successful.\n";
 
                             writeBorrowRecord(

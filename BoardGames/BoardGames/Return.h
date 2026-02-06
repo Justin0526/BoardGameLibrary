@@ -6,6 +6,11 @@
 class Return {
 public:
     // wrapper that allows returning for any User type
-    static bool returnGame(User& user, List<Game>& games, int gameId);
+    static bool returnGame(
+        User& user,
+        List<Game>& games,
+        HashTable<std::string, List<Game>::NodePtr>& gameTable,
+        int gameId
+    );
 };
 
