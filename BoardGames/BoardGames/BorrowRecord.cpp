@@ -294,3 +294,41 @@ void displayOverallBorrowSummary() {
     cout << "Total return records : " << totalReturns << "\n";
     cout << "Currently borrowed   : " << currentlyBorrowed << "\n";
 }
+
+void displayGameBorrowSummary(string gameId, List<Game>& games) {
+    HashTable<string, GameBorrowStat> stats;
+    int totalBorrows;
+    int totalReturns;
+
+    if (!buildBorrowStatsFromCSV(stats, totalBorrows, totalReturns)) {
+        cout << "ERROR: Cannot open borrow records.\n";
+        return;
+    }
+
+    if (!stats.containsKey(gameId)) {
+        cout << "No borrow/return records found for gameId" << gameId << endl;
+        return;
+    }
+
+    GameBorrowStat s = stats.get(gameId);
+
+    bool isActive = false;
+    string gameName = "(unknown)";
+
+    for (auto n = games.getNode(0); n != nullptr; n = n->next) {
+        Game& g = games.getItem(n);
+        if (g.getGameId() == stoi(gameId)) {
+            gameName = g.getName();
+            isActive = (g.getIsActive() == "TRUE");
+            break;
+        }
+    }
+
+    std::cout << "\n===== GAME SUMMARY =====\n";
+    std::cout << "Game ID          : " << gameId << "\n";
+    std::cout << "Name             : " << gameName << "\n";
+    std::cout << "Borrows          : " << s.borrowCount << "\n";
+    std::cout << "Returns          : " << s.returnCount << "\n";
+    std::cout << "Last Borrow Date : " << (s.lastBorrowDate.empty() ? "-" : s.lastBorrowDate) << "\n";
+    std::cout << "Status           : " << (isActive ? "Active" : "Not Active") << "\n";
+}

@@ -486,8 +486,14 @@ int main()
                     if (summaryOption == 1)
                         displayOverallBorrowSummary();
 
-                    else if (summaryOption == 2)
-                        cout << "Wait";
+                    else if (summaryOption == 2) {
+                        cout << "Enter Game ID: ";
+                        string gameId;
+                        cin >> gameId;
+                        cout << endl;
+
+                        displayGameBorrowSummary(gameId, games);
+                    }
 
                     else
                         break;
