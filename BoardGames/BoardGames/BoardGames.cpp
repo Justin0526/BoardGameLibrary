@@ -66,6 +66,7 @@ void adminMenu() {
     cout << "1. Add a new board game\n";
     cout << "2. Remove a board game\n";
     cout << "3. Add a new member\n";
+    cout << "4. Borrow/Return Summary\n";
     cout << "0. EXIT\n";
 }
 
@@ -383,9 +384,17 @@ bool loadRatingsFromCSV(const string& filename, List<Rating>& ratings, HashTable
         }
     }
     file.close();
+
+    /*printAllRatings(ratings);
+    printGameRatings(gameRatings, ratings);*/
+    // printMemberRatings(memberRatings, ratings);
     return true;
 }
 
+//bool loadBorrowRecordsFromCSV(const string& filename, List<BorrowRow>& rows) {
+//    ifstream file(filename);
+//    if ()
+//}
 int main()
 {
     initializeBorrowRecordsCSV();
@@ -416,6 +425,15 @@ int main()
     HashTable<string, List<List<Rating>::NodePtr>*> gameRatings;
     HashTable<string, List<List<Rating>::NodePtr>*> memberRatings;
     loadRatingsFromCSV("ratings.csv", ratings, ratingTable, gameRatings, memberRatings);
+
+    //cout << "\n=== DEBUG TEST A: VERIFY MEMBER INDEX ===\n";
+    //debugVerifyMemberIndex(ratings, memberRatings);
+
+    //cout << "\n=== DEBUG TEST B: VALIDATE MEMBER POINTERS ===\n";
+    //debugValidateMemberPointers(ratings, memberRatings);
+
+    //printCwdAndFile("ratings.csv");
+    //printCwdAndFile("games.csv");
     
     User globalUser(-1, "global user", "admin");
     int option = -1;
@@ -538,12 +556,12 @@ int main()
                     // Display detailed borrow history with full game information
                     displayDetailedBorrowHistory(loggedInMember->item.getUserId(), games);
                 }
-                else if (mopt == "4") {
+                /*else if (mopt == "4") {
                     writeReview(ratings, gameRatings, members, games, loggedInMember->item.getUserId());
                 }
                 else if (mopt == "5") {
                     displayReviewsForGame(ratings, gameRatings, games);
-                }
+                }*/
                 else { // logout or any other input
                     cout << "Logging out...\n";
                     break;
@@ -599,6 +617,8 @@ int main()
                         cout << "Invalid game ID.\n";
                         continue;
                     }
+
+
                     List<GameCandidate> candidates;
                     globalUser.recommendFromGame(gameId, ratings,candidates, gameRatings, memberRatings, games, gameTable);
                     
@@ -607,7 +627,7 @@ int main()
                         continue;
                     }
 
-                    globalUser.printRecommendedGames(candidates, games, gameTable);
+                     globalUser.printRecommendedGames(candidates, games, gameTable);
 
                     //int players = -1;
                     //int minutes = -1;
@@ -681,4 +701,137 @@ int main()
         else
             cout << "Invalid option!\n";
     }
+}
+
+// -------- DEBUG --------
+void debugVerifyMemberIndex(
+    List<Rating>& ratings,
+    HashTable<string, List<List<Rating>::NodePtr>*>& memberRatings
+) {
+    int totalRatings = ratings.getLength();
+    int missing = 0;
+
+    for (auto n = ratings.getNode(0); n != nullptr; n = n->next) {
+        Rating& r = n->item;
+        string userKey = to_string(r.getUserId());
+
+        if (!memberRatings.containsKey(userKey)) {
+            cout << "[MISSING KEY] userId=" << userKey
+                << " ratingId=" << r.getId()
+                << " gameId=" << r.getGameId() << "\n";
+            missing++;
+            continue;
+        }
+
+        auto listPtr = memberRatings.get(userKey);
+        if (listPtr == nullptr) {
+            cout << "[NULL LIST] userId=" << userKey << "\n";
+            missing++;
+        }
+    }
+
+    cout << "\nMaster ratings: " << totalRatings
+        << " | Missing member index entries: " << missing << "\n";
+}
+
+void debugValidateMemberPointers(
+    List<Rating>& ratings,
+    HashTable<string, List<List<Rating>::NodePtr>*>& memberRatings
+) {
+    int bad = 0;
+
+    memberRatings.forEach([&](const string& userId, List<List<Rating>::NodePtr>* ptrList) {
+        if (!ptrList) {
+            cout << "[NULL PTRLIST] userId=" << userId << "\n";
+            bad++;
+            return;
+        }
+
+        for (auto n = ptrList->getNode(0); n != nullptr; n = n->next) {
+            auto ratingPtr = n->item; // List<Rating>::NodePtr
+
+            // Safest: try to access it
+            try {
+                Rating& r = ratings.getItem(ratingPtr);
+                // sanity: userId should match
+                if (to_string(r.getUserId()) != userId) {
+                    cout << "[MISMATCH] key userId=" << userId
+                        << " but rating.userId=" << r.getUserId()
+                        << " ratingId=" << r.getId() << "\n";
+                    bad++;
+                }
+            }
+            catch (...) {
+                cout << "[BAD PTR] userId=" << userId << "\n";
+                bad++;
+            }
+        }
+        });
+
+    cout << "\nBad pointer/mismatch count: " << bad << "\n";
+}
+
+void printAllRatings(List<Rating>& ratings) {
+    cout << "\n=== ALL RATINGS (Master List) ===\n";
+    int index = 0;
+    for (auto node = ratings.getNode(0); node != nullptr; node = node->next) {
+        cout << node->item << endl;
+    }
+}
+
+void printGameRatings(
+    HashTable<string, List<List<Rating>::NodePtr>*>& gameRatings,
+    List<Rating>& ratings
+) {
+    cout << "\n=== GAME RATINGS INDEX ===\n";
+
+    gameRatings.forEach([&](const string& gameId, List<List<Rating>::NodePtr>* ratingPtrs) {
+        cout << "\nGame ID: " << gameId << "\n";
+
+        if (ratingPtrs == nullptr) {
+            cout << "  (null list)\n";
+            return;
+        }
+
+        int i = 0;
+        for (auto n = ratingPtrs->getNode(0); n != nullptr; n = n->next) {
+            auto ratingNodePtr = n->item;          // List<Rating>::NodePtr
+            Rating& r = ratings.getItem(ratingNodePtr);
+            cout << "  [" << i++ << "] " << r << "\n";
+        }
+        });
+}
+
+void printMemberRatings(
+    HashTable<string, List<List<Rating>::NodePtr>*>& memberRatings,
+    List<Rating>& ratings
+) {
+    cout << "\n=== MEMBER RATINGS INDEX ===\n";
+
+    memberRatings.forEach([&](const string& userId, List<List<Rating>::NodePtr>* ratingPtrs) {
+        cout << "\nUser ID: " << userId << "\n";
+
+        if (ratingPtrs == nullptr) {
+            cout << "  (null list)\n";
+            return;
+        }
+
+        int i = 0;
+        for (auto n = ratingPtrs->getNode(0); n != nullptr; n = n->next) {
+            auto ratingNodePtr = n->item;
+            Rating& r = ratings.getItem(ratingNodePtr);
+            cout << "  [" << i++ << "] " << r << "\n";
+        }
+        });
+}
+
+
+void printCwdAndFile(const string& filename) {
+    namespace fs = std::filesystem;
+    cout << "[CWD] " << fs::current_path() << "\n";
+    cout << "[FILE] " << fs::absolute(filename) << "\n";
+    if (fs::exists(filename))
+        cout << "[SIZE] " << fs::file_size(filename) << " bytes\n";
+    else
+        cout << "[MISSING] file not found\n";
 }

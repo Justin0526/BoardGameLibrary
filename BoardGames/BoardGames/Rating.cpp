@@ -13,3 +13,24 @@ Rating::Rating(int id, int gameId, string gameName, int userId, string username,
       createdAt(createdAt)
 {}
 
+int Rating::getRating() {
+    return this->rating;
+}
+
+int Rating::getUserId() {
+    return this->userId;
+}
+
+int Rating::getGameId() {
+    return this->gameId;
+}
+
+ostream& operator<<(ostream& os, const Rating& r) {
+    os << r.getId() << ", "
+        << r.getGameId() << ", "
+        << r.getGameName() << ", "
+        << r.getUserId() << ", "
+        << r.getUsername() << ", "
+        << r.getRating() << endl;
+    return os;
+}

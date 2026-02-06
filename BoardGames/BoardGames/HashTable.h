@@ -118,21 +118,17 @@ bool HashTable<K, V>::addOrUpdate(const K& key, const V& value) {
 		size++;
 	}
 	else {
-		while (current->next != nullptr) {
+		while (current != nullptr) {
 			if (current->key == key) {
-				break;
+				current->value = value;
+				return true;
 			}
+			if (current->next == nullptr)
+				break;
 			current = current->next;
 		}
-
-		if (current->key == key) {
-			current->value = value;
-			delete newNode;
-		}
-		else {
-			current->next = newNode;
-			size++;
-		}
+		current->next = newNode;
+		size++;
 	}	
 	return true;
 }

@@ -56,6 +56,7 @@ void writeBorrowRecord(
         std::cout << "ERROR: Cannot open file: " << path << std::endl;
         return;
     }
+    std::cout << "[BORROW CSV PATH] " << projectPath.string() << std::endl;
 
     file << recordId << ","
         << memberId << ","
