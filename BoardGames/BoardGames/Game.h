@@ -36,7 +36,6 @@ class Game {
 		// borrow state
 		bool isBorrowed() const;
 		void setBorrowed(bool b);
-
 };
 
 bool byYearAsc(const Game& a, const Game& b);

@@ -4,6 +4,7 @@
 #include "LinkedList.h"
 #include "HashTable.h"
 #include <iostream>
+#include <iomanip>
 
 User::User() {
     userId = 0;
@@ -41,14 +42,100 @@ string User::getRole() const {
     return role;
 }
 
-void User::printActiveGames(List<Game>& games) {
+static string truncateText(const string& s, int width) {
+    if ((int)s.size() <= width)
+        return s;
+
+    if (width <= 3)
+        return s.substr(0, width);
+
+    return s.substr(0, width - 3) + "...";
+}
+
+static int countActiveGames(List<Game>& games) {
+    int count = 0;
     for (int i = 0; i < games.getLength(); i++) {
-        List<Game>::NodePtr node = games.getNode(i);
+        auto node = games.getNode(i);
+        if (!node)
+            continue;
+        Game& g = node->item;
+        if (g.getIsActive() == "TRUE")
+            count++;
+    }
+    return count;
+}
+
+static void printActiveGamesPage(List<Game>& games, int page, int pageSize) {
+    const int totalActive = countActiveGames(games);
+    const int totalPages = (totalActive + pageSize - 1) / pageSize;
+
+    if (totalActive == 0) {
+        cout << "No active games.\n";
+        return;
+    }
+    if (page < 0) page = 0;
+    if (page >= totalPages) page = totalPages - 1;
+
+    const int start = page * pageSize;
+    const int end = start + pageSize; // exclusive
+
+    cout << "\nActive Games (Page " << (page + 1) << "/" << totalPages << ")\n";
+    cout << "--------------------------------------------------------------------------\n";
+    cout << left
+        << setw(6) << "ID"
+        << setw(34) << "Name"
+        << setw(10) << "Players"
+        << setw(12) << "PlayTime"
+        << setw(8) << "Year"
+        << setw(8) << "Copies"
+        << "\n";
+    cout << "--------------------------------------------------------------------------\n";
+
+    int activeIndex = 0;
+    for (int i = 0; i < games.getLength(); i++) {
+        auto node = games.getNode(i);
+        if (!node) continue;
         Game& g = node->item;
 
-        if (g.getIsActive() == "TRUE") {
-            cout << g;
+        if (g.getIsActive() != "TRUE") continue;
+
+        if (activeIndex >= start && activeIndex < end) {
+            string players = to_string(g.getMinPlayer()) + "-" + to_string(g.getMaxPlayer());
+            string time = to_string(g.getMinPlayTime()) + "-" + to_string(g.getMaxPlayTime());
+
+            cout << left
+                << setw(6) << g.getGameId()
+                << setw(34) << truncateText(g.getName(), 33)
+                << setw(10) << players
+                << setw(12) << time
+                << setw(8) << g.getYearPublished()
+                << setw(8) << g.getGameCopy()
+                << "\n";
         }
+
+        activeIndex++;
+        if (activeIndex >= end) break; // stop early once page filled
+    }
+
+    cout << "--------------------------------------------------------------------------\n";
+    cout << "[n] Next  [p] Prev  [q] Quit\n";
+}
+
+void User::printActiveGames(List<Game>& games) {
+    const int pageSize = 20;
+    int page = 0;
+
+    while (true) {
+        printActiveGamesPage(games, page, pageSize);
+
+        cout << "Choice: ";
+        string choice;
+        getline(cin, choice);
+
+        if (choice == "n" || choice == "N") page++;
+        else if (choice == "p" || choice == "P") page--;
+        else if (choice == "q" || choice == "Q" || choice.empty()) break;
+        else cout << "Invalid option.\n";
     }
 }
 

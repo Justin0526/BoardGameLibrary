@@ -27,8 +27,7 @@ void displayMenu() {
     cout << "1. Login as Administrator\n";
     cout << "2. Login as Member\n";
     cout << "3. Display Games\n";
-    cout << "4. Display All Members\n";
-    cout << "5. Recommend Games\n";
+    cout << "4. Recommend Games\n";
     cout << "0. EXIT\n";
 }
 
@@ -153,6 +152,10 @@ void displayDetailedBorrowHistory(int memberId, List<Game>& games) {
     cout << "========================================================\n";
 }
 
+static filesystem::path getDataCSVPath(const string& fileName) {
+    return filesystem::path(__FILE__).parent_path() / "data" / fileName;
+}
+
 // proper CSV line parsing (handles quotes + commas)
 // vector is a dynamic array in C++ , can grow as you push items into it
 static vector<string> parseCsvLine(const string& line) {
@@ -198,9 +201,10 @@ static string stripOuterQuotes(string s) {
 }
 
 bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable) {
-    ifstream file(filename);
+    auto path = getDataCSVPath(filename);
+    ifstream file(path);
     if (!file.is_open()) {
-        cout << "Failed to open file: " << filename << endl;
+        cout << "Failed to open file: " << path << endl;
         return false;
     }
 
@@ -258,9 +262,10 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
 
 bool loadUsersFromCSV(const string& filename, List<Admin>& admins, List<Member>& members, List<User>& users, 
     HashTable<string, List<Admin>::NodePtr>& adminTable, HashTable<string, List<Member>::NodePtr>& memberTable, HashTable<string, List<User>::NodePtr>& userTable) {
-    ifstream file(filename);
+    auto path = getDataCSVPath(filename);
+    ifstream file(path);
     if (!file.is_open()) {
-        cout << "Failed to open file: " << filename << endl;
+        cout << "Failed to open file: " << path << endl;
         return false;
     }
 
@@ -309,9 +314,10 @@ bool loadUsersFromCSV(const string& filename, List<Admin>& admins, List<Member>&
 
 bool loadRatingsFromCSV(const string& filename, List<Rating>& ratings, HashTable<string, List<Rating>::NodePtr>& ratingTable,
     HashTable<string, List<List<Rating>::NodePtr>*>& gameRatings, HashTable<string, List<List<Rating>::NodePtr>*>& memberRatings) {
-    ifstream file(filename);
+    auto path = getDataCSVPath(filename);
+    ifstream file(path);
     if (!file.is_open()) {
-        cout << "Failed to open file: " << filename << endl;
+        cout << "Failed to open file: " << path << endl;
         return false;
     }
 
@@ -607,23 +613,26 @@ int main()
 
                 if (displayOption == 0)
                     cout << "Exiting to main menu...\n";
+
                 else if (displayOption == 1) {
-                    cout << "GameID | Name | MinPlayer | MaxPlayer | MinPlayTime | MaxPlayTime | YearPublished | No. of Copies\n";
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     globalUser.printActiveGames(games);
                 }
-                else if (displayOption == 2)
+
+                else if (displayOption == 2) {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     globalUser.displayGamesPlayableByNPlayers(games);
+                }
+
                 else if (displayOption == 3)
-                    searchGameByNameOrId(games); // <-- call the new function
+                    searchGameByNameOrId(games); 
+
                 else
                     cout << "Invalid option!\n";
             }
         }
-           
-        else if (option == 4)
-            members.print();
 
-        else if (option == 5) {
+        else if (option == 4) {
             int recommendOption = -1;
             while (recommendOption != 0) {
                 recommendGameMenu();

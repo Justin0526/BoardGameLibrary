@@ -159,7 +159,7 @@ T List<T>::get(int index) const {
 	return current->item;
 }
 
-// new: return NodePtr at index (or nullptr if out of range)
+// return NodePtr at index (or nullptr if out of range)
 template <typename T>
 typename List<T>::NodePtr List<T>::getNode(int index) {
 	if (index < 0 || index >= size) return nullptr;

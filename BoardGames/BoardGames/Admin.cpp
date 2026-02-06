@@ -349,7 +349,3 @@ void Admin::addMember(List<Member>& members, HashTable<string, List<Member>::Nod
     cout << "Adding new member...\n";
     cout << name << " added successfully!\n";
 }
-
-void Admin::displayGameBorrowReturnSummary() {
-    cout << "Displaying overall borrow/return summary" << endl;
-}
