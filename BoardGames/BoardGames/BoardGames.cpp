@@ -391,10 +391,6 @@ bool loadRatingsFromCSV(const string& filename, List<Rating>& ratings, HashTable
     return true;
 }
 
-//bool loadBorrowRecordsFromCSV(const string& filename, List<BorrowRow>& rows) {
-//    ifstream file(filename);
-//    if ()
-//}
 int main()
 {
     initializeBorrowRecordsCSV();
@@ -425,6 +421,9 @@ int main()
     HashTable<string, List<List<Rating>::NodePtr>*> gameRatings;
     HashTable<string, List<List<Rating>::NodePtr>*> memberRatings;
     loadRatingsFromCSV("ratings.csv", ratings, ratingTable, gameRatings, memberRatings);
+
+    // ---- GameBorrowStat ----
+    HashTable<string, GameBorrowStat> stats;
 
     //cout << "\n=== DEBUG TEST A: VERIFY MEMBER INDEX ===\n";
     //debugVerifyMemberIndex(ratings, memberRatings);
@@ -464,12 +463,35 @@ int main()
 
                 if (adminOption == 0)
                     cout << "Exiting to main menu...\n";
+
                 else if (adminOption == 1)
                     loggedInAdmin->item.addGame(games, gameTable);
+
                 else if (adminOption == 2)
                     loggedInAdmin->item.removeGame(games, gameTable);
+
                 else if (adminOption == 3)
                     loggedInAdmin->item.addMember(members, memberTable, users, userTable);
+
+                else if (adminOption == 4) {
+                    cout << "----Display Summary of Games borrowed/returned----\n";
+                    cout << "1. Display Overall Summary\n";
+                    cout << "2. Display Summary for a Game\n";
+
+                    int summaryOption = -1;
+                    cout << "Enter your option: ";
+                    cin >> summaryOption;
+                    cout << endl;
+                    
+                    if (summaryOption == 1)
+                        displayOverallBorrowSummary();
+
+                    else if (summaryOption == 2)
+                        cout << "Wait";
+
+                    else
+                        break;
+                }
                 else
                     cout << "Invalid admin operation!\n";
             }
@@ -556,12 +578,12 @@ int main()
                     // Display detailed borrow history with full game information
                     displayDetailedBorrowHistory(loggedInMember->item.getUserId(), games);
                 }
-                /*else if (mopt == "4") {
+                else if (mopt == "4") {
                     writeReview(ratings, gameRatings, members, games, loggedInMember->item.getUserId());
                 }
                 else if (mopt == "5") {
                     displayReviewsForGame(ratings, gameRatings, games);
-                }*/
+                }
                 else { // logout or any other input
                     cout << "Logging out...\n";
                     break;

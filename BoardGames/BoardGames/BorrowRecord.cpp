@@ -9,6 +9,7 @@
 #include <iomanip>
 #include "Game.h"
 #include "LinkedList.h"
+#include "HashTable.h"
 
 using namespace std;
 
@@ -56,7 +57,6 @@ void writeBorrowRecord(
         std::cout << "ERROR: Cannot open file: " << path << std::endl;
         return;
     }
-    std::cout << "[BORROW CSV PATH] " << projectPath.string() << std::endl;
 
     file << recordId << ","
         << memberId << ","
@@ -188,4 +188,109 @@ void restoreGameBorrowStates(List<Game>& games) {
             g.setBorrowed(lastState[id]);
         }
     }
+}
+
+// proper CSV line parsing (handles quotes + commas)
+// vector is a dynamic array in C++ , can grow as you push items into it
+static vector<string> parseCsvLine(const string& line) {
+    vector<string> fields;  // Where we store each column
+    string cur;             // current column we are building character by character
+    bool inQuotes = false;  // are we currently inside " ... " ?
+
+    for (size_t i = 0; i < line.size(); i++) {
+        char c = line[i];
+
+        if (c == '"') {
+            // handle escaped quotes: "" inside quoted field
+            if (inQuotes && i + 1 < line.size() && line[i + 1] == '"') {
+                cur.push_back('"');
+                i++;
+            }
+            else {
+                inQuotes = !inQuotes;
+            }
+        }
+        else if (c == ',' && !inQuotes) {
+            fields.push_back(cur);
+            cur.clear();
+        }
+        else {
+            cur.push_back(c);
+        }
+    }
+    fields.push_back(cur);
+    return fields;
+}
+
+bool buildBorrowStatsFromCSV(HashTable<string, GameBorrowStat>& stats, int& totalBorrows, int& totalReturns) {
+    totalBorrows = 0;
+    totalReturns = 0;
+
+    auto path = getBorrowCSVPath();
+
+    ifstream file(path);
+    if (!file.is_open()) return false;
+
+    string line;
+    // 1) Skip header line
+    if (!getline(file, line))
+        return false;
+
+    while (getline(file, line)) {
+        if (line.empty()) continue;
+
+        vector<string> cols = parseCsvLine(line);
+
+        string recordId = cols[0];
+        string memberId = cols[1];
+        string gameIdStr = cols[2];
+        string action = cols[3];
+        string borrowDate = cols[4];
+        string returnDate = cols[5];
+
+        GameBorrowStat s;
+        if (stats.containsKey(gameIdStr)) {
+            s = stats.get(gameIdStr);
+        }
+
+        if (action == "BORROW") {
+            totalBorrows++;
+            s.borrowCount++;
+            s.lastAction = "BORROW";
+
+            if (!borrowDate.empty() && borrowDate > s.lastBorrowDate) {
+                s.lastBorrowDate = borrowDate;
+            }
+        }
+        else if (action == "RETURN") {
+            totalReturns++;
+            s.returnCount++;
+            s.lastAction = "RETURN";
+        }
+
+        stats.addOrUpdate(gameIdStr, s);
+    }
+    return true;
+}
+
+void displayOverallBorrowSummary() {
+    HashTable<string, GameBorrowStat> stats;
+    int totalBorrows;
+    int totalReturns;
+
+    if (!buildBorrowStatsFromCSV(stats, totalBorrows, totalReturns)) {
+        cout << "ERROR: Cannot open borrow records.\n";
+        return;
+    }
+
+    int currentlyBorrowed = 0;
+    stats.forEach([&](const string&, const GameBorrowStat& s) {
+        if (s.lastAction == "BORROW")
+            currentlyBorrowed++;
+        });
+
+    cout << "\n==== OVERALL SUMMARY ====\n";
+    cout << "Total borrow records : " << totalBorrows << "\n";
+    cout << "Total return records : " << totalReturns << "\n";
+    cout << "Currently borrowed   : " << currentlyBorrowed << "\n";
 }

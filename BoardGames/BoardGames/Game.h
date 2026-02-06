@@ -6,7 +6,6 @@ using namespace std;
 class Game {
 	private:
 		string name;
-		int id;                 // unique id assigned at load time (per copy)
 		int minPlayer;
 		int maxPlayer;
 		int maxPlaytime;
