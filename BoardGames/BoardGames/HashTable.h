@@ -2,6 +2,7 @@
 #include <string>
 #include <optional>
 #include <functional>
+#include <stdexcept>
 
 const int MAX_SIZE = 101;
 
@@ -169,7 +170,7 @@ V HashTable<K, V>::get(const K& key) {
 		current = current->next;
 	}
 	
-	throw runtime_error("Key not found in HashTable");
+	throw std::runtime_error("Key not found in HashTable");
 }
 
 template <typename K, typename V>
