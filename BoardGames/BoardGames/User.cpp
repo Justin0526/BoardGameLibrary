@@ -1,3 +1,25 @@
+/*********************************************************************************
+ * Group         : T01
+ * Team Member   : Khaleel Anis (S10270243)
+ *
+ * File Purpose:
+ * - Implements the User base class.
+ * - Provides shared logic for borrowing, returning, browsing,
+ *   and recommending board games.
+ *
+ * Key Design Notes:
+ * - Borrow/return enforcement is user-centric to prevent
+ *   cross-user interference.
+ * - UI pagination and sorting logic are kept here to
+ *   avoid bloating controller code.
+ * - Recommendation logic is intentionally data-driven,
+ *   using HashTable indexes for performance.
+ *
+ * Constraints / Assumptions:
+ * - Game availability is controlled via a single borrowed flag.
+ * - All data structures (List, HashTable) are custom ADTs.
+ * - CSV persistence is handled externally.
+ *********************************************************************************/
 #include "User.h"
 #include "Member.h"
 #include "Game.h"
