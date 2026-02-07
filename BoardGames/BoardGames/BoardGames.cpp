@@ -27,8 +27,7 @@ void displayMenu() {
     cout << "1. Login as Administrator\n";
     cout << "2. Login as Member\n";
     cout << "3. Display Games\n";
-    cout << "4. Display All Members\n";
-    cout << "5. Recommend Games\n";
+    cout << "4. Recommend Games\n";
     cout << "0. EXIT\n";
 }
 
@@ -84,35 +83,28 @@ void recommendGameMenu() {
     cout << "0. Exit\n";
 }
 
-void searchGameByNameOrId(List<Game>& games) {
+void searchGameByNameOrId(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable) {
     cout << "Enter game name or ID to search: ";
     string input;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, input);
 
-    bool found = false;
-    for (int i = 0; i < games.getLength(); ++i) {
-        auto node = games.getNode(i);
-        if (!node) continue;
-        Game& g = games.getItem(node);
+    if (!gameTable.containsKey(input)) {
+        cout << "Game not found. \n";
+        return;
+    }
 
-        if (g.getName() == input || to_string(g.getGameId()) == input) {
-            cout << "\n--- Game Details ---\n";
-            cout << "ID: " << g.getGameId() << "\n";
-            cout << "Name: " << g.getName() << "\n";
-            cout << "Players: " << g.getMinPlayer() << " - " << g.getMaxPlayer() << "\n";
-            cout << "Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
-            cout << "Year Published: " << g.getYearPublished() << "\n";
-            cout << "Copies: " << g.getGameCopy() << "\n";
-            cout << "Status: " << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
-            cout << "Active: " << g.getIsActive() << "\n";
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
-        cout << "Game not found.\n";
-    }
+    List<Game>::NodePtr gamePtr = gameTable.get(input);
+    Game& g = games.getItem(gamePtr);
+    cout << "\n--- Game Details ---\n";
+    cout << "ID: " << g.getGameId() << "\n";
+    cout << "Name: " << g.getName() << "\n";
+    cout << "Players: " << g.getMinPlayer() << " - " << g.getMaxPlayer() << "\n";
+    cout << "Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
+    cout << "Year Published: " << g.getYearPublished() << "\n";
+    cout << "Copies: " << g.getGameCopy() << "\n";
+    cout << "Status: " << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
+    cout << "Active: " << g.getIsActive() << "\n";
 }
 
 // Function to display detailed borrow history
@@ -151,6 +143,10 @@ void displayDetailedBorrowHistory(int memberId, List<Game>& games) {
         }
     }
     cout << "========================================================\n";
+}
+
+static filesystem::path getDataCSVPath(const string& fileName) {
+    return filesystem::path(__FILE__).parent_path() / "data" / fileName;
 }
 
 // proper CSV line parsing (handles quotes + commas)
@@ -198,9 +194,10 @@ static string stripOuterQuotes(string s) {
 }
 
 bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable) {
-    ifstream file(filename);
+    auto path = getDataCSVPath(filename);
+    ifstream file(path);
     if (!file.is_open()) {
-        cout << "Failed to open file: " << filename << endl;
+        cout << "Failed to open file: " << path << endl;
         return false;
     }
 
@@ -258,9 +255,10 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
 
 bool loadUsersFromCSV(const string& filename, List<Admin>& admins, List<Member>& members, List<User>& users, 
     HashTable<string, List<Admin>::NodePtr>& adminTable, HashTable<string, List<Member>::NodePtr>& memberTable, HashTable<string, List<User>::NodePtr>& userTable) {
-    ifstream file(filename);
+    auto path = getDataCSVPath(filename);
+    ifstream file(path);
     if (!file.is_open()) {
-        cout << "Failed to open file: " << filename << endl;
+        cout << "Failed to open file: " << path << endl;
         return false;
     }
 
@@ -309,9 +307,10 @@ bool loadUsersFromCSV(const string& filename, List<Admin>& admins, List<Member>&
 
 bool loadRatingsFromCSV(const string& filename, List<Rating>& ratings, HashTable<string, List<Rating>::NodePtr>& ratingTable,
     HashTable<string, List<List<Rating>::NodePtr>*>& gameRatings, HashTable<string, List<List<Rating>::NodePtr>*>& memberRatings) {
-    ifstream file(filename);
+    auto path = getDataCSVPath(filename);
+    ifstream file(path);
     if (!file.is_open()) {
-        cout << "Failed to open file: " << filename << endl;
+        cout << "Failed to open file: " << path << endl;
         return false;
     }
 
@@ -391,10 +390,6 @@ bool loadRatingsFromCSV(const string& filename, List<Rating>& ratings, HashTable
     return true;
 }
 
-//bool loadBorrowRecordsFromCSV(const string& filename, List<BorrowRow>& rows) {
-//    ifstream file(filename);
-//    if ()
-//}
 int main()
 {
     initializeBorrowRecordsCSV();
@@ -425,6 +420,9 @@ int main()
     HashTable<string, List<List<Rating>::NodePtr>*> gameRatings;
     HashTable<string, List<List<Rating>::NodePtr>*> memberRatings;
     loadRatingsFromCSV("ratings.csv", ratings, ratingTable, gameRatings, memberRatings);
+
+    // ---- GameBorrowStat ----
+    HashTable<string, GameBorrowStat> stats;
 
     //cout << "\n=== DEBUG TEST A: VERIFY MEMBER INDEX ===\n";
     //debugVerifyMemberIndex(ratings, memberRatings);
@@ -464,12 +462,41 @@ int main()
 
                 if (adminOption == 0)
                     cout << "Exiting to main menu...\n";
+
                 else if (adminOption == 1)
                     loggedInAdmin->item.addGame(games, gameTable);
+
                 else if (adminOption == 2)
                     loggedInAdmin->item.removeGame(games, gameTable);
+
                 else if (adminOption == 3)
                     loggedInAdmin->item.addMember(members, memberTable, users, userTable);
+
+                else if (adminOption == 4) {
+                    cout << "----Display Summary of Games borrowed/returned----\n";
+                    cout << "1. Display Overall Summary\n";
+                    cout << "2. Display Summary for a Game\n";
+
+                    int summaryOption = -1;
+                    cout << "Enter your option: ";
+                    cin >> summaryOption;
+                    cout << endl;
+                    
+                    if (summaryOption == 1)
+                        displayOverallBorrowSummary();
+
+                    else if (summaryOption == 2) {
+                        cout << "Enter Game ID: ";
+                        string gameId;
+                        cin >> gameId;
+                        cout << endl;
+
+                        displayGameBorrowSummary(gameId, games);
+                    }
+
+                    else
+                        break;
+                }
                 else
                     cout << "Invalid admin operation!\n";
             }
@@ -556,12 +583,12 @@ int main()
                     // Display detailed borrow history with full game information
                     displayDetailedBorrowHistory(loggedInMember->item.getUserId(), games);
                 }
-                /*else if (mopt == "4") {
+                else if (mopt == "4") {
                     writeReview(ratings, gameRatings, members, games, loggedInMember->item.getUserId());
                 }
                 else if (mopt == "5") {
                     displayReviewsForGame(ratings, gameRatings, games);
-                }*/
+                }
                 else { // logout or any other input
                     cout << "Logging out...\n";
                     break;
@@ -579,23 +606,26 @@ int main()
 
                 if (displayOption == 0)
                     cout << "Exiting to main menu...\n";
+
                 else if (displayOption == 1) {
-                    cout << "GameID | Name | MinPlayer | MaxPlayer | MinPlayTime | MaxPlayTime | YearPublished | No. of Copies\n";
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     globalUser.printActiveGames(games);
                 }
-                else if (displayOption == 2)
+
+                else if (displayOption == 2) {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     globalUser.displayGamesPlayableByNPlayers(games);
+                }
+
                 else if (displayOption == 3)
-                    searchGameByNameOrId(games); // <-- call the new function
+                    searchGameByNameOrId(games, gameTable); 
+
                 else
                     cout << "Invalid option!\n";
             }
         }
-           
-        else if (option == 4)
-            members.print();
 
-        else if (option == 5) {
+        else if (option == 4) {
             int recommendOption = -1;
             while (recommendOption != 0) {
                 recommendGameMenu();
@@ -627,70 +657,7 @@ int main()
                         continue;
                     }
 
-                     globalUser.printRecommendedGames(candidates, games, gameTable);
-
-                    //int players = -1;
-                    //int minutes = -1;
-                    //char choice;
-
-                    //// -------- Filter by players --------
-                    //while (true) {
-                    //    cout << "Filter by players? (Y/N): ";
-                    //    cin >> choice;
-
-                    //    if (choice == 'Y' || choice == 'y') {
-                    //        cout << "Number of players: ";
-                    //        if (!(cin >> players) || players <= 0) {
-                    //            cin.clear();
-                    //            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    //            cout << "Invalid number of players.\n";
-                    //            players = -1;
-                    //            continue;
-                    //        }
-                    //        break;
-                    //    }
-                    //    else if (choice == 'N' || choice == 'n') {
-                    //        break;
-                    //    }
-                    //    else {
-                    //        cout << "Please enter Y or N.\n";
-                    //    }
-                    //}
-
-                    //// -------- Filter by playtime --------
-                    //while (true) {
-                    //    cout << "Filter by playtime? (Y/N): ";
-                    //    cin >> choice;
-
-                    //    if (choice == 'Y' || choice == 'y') {
-                    //        cout << "Playtime (minutes): ";
-                    //        if (!(cin >> minutes) || minutes <= 0) {
-                    //            cin.clear();
-                    //            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    //            cout << "Invalid playtime.\n";
-                    //            minutes = -1;
-                    //            continue;
-                    //        }
-                    //        break;
-                    //    }
-                    //    else if (choice == 'N' || choice == 'n') {
-                    //        break;
-                    //    }
-                    //    else {
-                    //        cout << "Please enter Y or N.\n";
-                    //    }
-                    //}
-
-                    //// -------- Apply filter & print --------
-                    //List<GameCandidate> filtered;
-                    //globalUser.filterRecommendedCandidates(
-                    //    candidates,
-                    //    games,
-                    //    gameTable,
-                    //    players,
-                    //    minutes,
-                    //    filtered
-                    //);
+                    globalUser.printRecommendedGames(candidates, games, gameTable);
 
                 }
                 else {
