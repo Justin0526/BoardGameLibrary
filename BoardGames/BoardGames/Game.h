@@ -31,13 +31,12 @@ class Game {
 		int minPlaytime;
 		int yearPublished;
 		int gameId;
-		int copy;
 		string isActive;
 		bool borrowed;          // Indicates whether this game copy is currently borrowed
 
 	public:
 		Game();
-		Game(int gameId, string name, int minPlayer, int maxPlayer, int minPlaytime, int maxPlaytime, int yearPublished, int copy, string isActive);
+		Game(int gameId, string name, int minPlayer, int maxPlayer, int minPlaytime, int maxPlaytime, int yearPublished,  string isActive);
 
 		// ---- Basic accessors (game metadata) ----
 		string getName() const;
@@ -47,8 +46,6 @@ class Game {
 		int getMinPlayTime() const;
 		int getYearPublished() const;
 		int getGameId() const;
-		int getGameCopy() const;
-		int setGameCopy(int num);
 		string getIsActive() const;
 		string setIsActive(string active);
 

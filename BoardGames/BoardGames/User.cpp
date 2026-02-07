@@ -95,7 +95,6 @@ static void printActiveGamesPage(List<Game>& games, int page, int pageSize) {
         << setw(10) << "Players"
         << setw(12) << "PlayTime"
         << setw(8) << "Year"
-        << setw(8) << "Copies"
         << "\n";
     cout << "-------------------------------------------------------------------------------\n";
 
@@ -117,7 +116,6 @@ static void printActiveGamesPage(List<Game>& games, int page, int pageSize) {
                 << setw(10) << players
                 << setw(12) << time
                 << setw(8) << g.getYearPublished()
-                << setw(8) << g.getGameCopy()
                 << "\n";
         }
 
@@ -190,7 +188,7 @@ bool User::borrowGame(
 
     Game& g = games.getItem(found);
 
-    if (g.isBorrowed() || g.getGameCopy() <= 0) {
+    if (g.isBorrowed()) {
         cout << "No available copy for \"" << gameName << "\".\n";
         return false;
     }

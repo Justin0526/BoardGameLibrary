@@ -18,10 +18,10 @@
 #include "Game.h"
 
 // Default constructor
-Game::Game() : gameId(1), minPlayer(0), maxPlayer(0), minPlaytime(0), maxPlaytime(0), yearPublished(0),  copy(1), isActive("TRUE"), borrowed(false) {};
+Game::Game() : gameId(1), minPlayer(0), maxPlayer(0), minPlaytime(0), maxPlaytime(0), yearPublished(0), isActive("TRUE"), borrowed(false) {};
 
 // Parameterised constructor
-Game::Game(int gameId, string name, int minPlayer, int maxPlayer, int minPlaytime, int maxPlaytime, int yearPublished, int copy, string isActive)
+Game::Game(int gameId, string name, int minPlayer, int maxPlayer, int minPlaytime, int maxPlaytime, int yearPublished, string isActive)
 	: gameId(gameId),
 	name(name),
 	minPlayer(minPlayer),
@@ -29,7 +29,6 @@ Game::Game(int gameId, string name, int minPlayer, int maxPlayer, int minPlaytim
 	minPlaytime(minPlaytime),
 	maxPlaytime(maxPlaytime),
 	yearPublished(yearPublished),
-	copy (copy),
 	isActive(isActive),
 	borrowed(false) {
 }
@@ -62,15 +61,6 @@ int Game::getYearPublished() const {
 
 int Game::getGameId() const {
 	return this->gameId;
-}
-
-int Game::getGameCopy() const {
-	return this->copy;
-}
-
-// Updates the copy count and returns the updated value.
-int Game::setGameCopy(int num) {
-	return this->copy = num;
 }
 
 string Game::getIsActive() const {
@@ -121,7 +111,6 @@ ostream& operator<<(ostream& os, const Game& g) {
 		g.getMaxPlayer() << ", " <<
 		g.getMinPlayTime() << ", " <<
 		g.getMaxPlayTime() << ", " <<
-		g.getYearPublished() << ", " << 
-		g.getGameCopy() << endl;
+		g.getYearPublished() << endl;
 	return os;
 }

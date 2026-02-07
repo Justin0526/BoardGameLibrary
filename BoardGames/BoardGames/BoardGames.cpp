@@ -102,7 +102,6 @@ void searchGameByNameOrId(List<Game>& games, HashTable<string, List<Game>::NodeP
     cout << "Players: " << g.getMinPlayer() << " - " << g.getMaxPlayer() << "\n";
     cout << "Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
     cout << "Year Published: " << g.getYearPublished() << "\n";
-    cout << "Copies: " << g.getGameCopy() << "\n";
     cout << "Status: " << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
     cout << "Active: " << g.getIsActive() << "\n";
 }
@@ -212,7 +211,7 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
         if (line.empty()) continue;
 
         vector<string> cols = parseCsvLine(line);
-        if (cols.size() != 9) {
+        if (cols.size() != 8) {
             cout << "Bad column count (" << cols.size() << "): [" << line << "]\n";
             continue;
         }
@@ -224,8 +223,7 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
         string minT = cols[4];
         string maxT = cols[5];
         string year = cols[6];
-        string copy = trimCR(cols[7]);
-        string isActive = cols[8];
+        string isActive = trimCR(cols[7]);
 
         // Create object and add to list
         try {
@@ -237,7 +235,6 @@ bool loadGamesFromCSV(const string& filename, List<Game>& games, HashTable<strin
                 stoi(minT),
                 stoi(maxT),
                 stoi(year),
-                stoi(copy),
                 isActive
             );
             List<Game>::NodePtr gamePtr = games.add(g);
