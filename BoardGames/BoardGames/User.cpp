@@ -565,27 +565,35 @@ void User::printRecommendedGames(
         << setw(36) << "Name"
         << setw(8) << "Score"
         << setw(10) << "Support"
+        << setw(8) << "Avg/5"
         << "\n";
-    cout << string(62, '-') << "\n";
+    cout << string(70, '-') << "\n";
+
+    cout << fixed << setprecision(2);
 
     for (auto p = candidates.getNode(0); p != nullptr; p = p->next) {
         GameCandidate& c = candidates.getItem(p);
         const string& gid = c.getGameId();
 
-        if (!gameTable.containsKey(gid)) 
+        if (!gameTable.containsKey(gid))
             continue;
 
         Game& g = games.getItem(gameTable.get(gid));
-        if (g.getIsActive() != "TRUE") 
+        if (g.getIsActive() != "TRUE")
             continue;
+
+        double avg = (double)c.getScore() / c.getSupport();
+
+        ostringstream avgOut;
+        avgOut << avg << "/5";
 
         cout << left
             << setw(8) << gid
             << setw(36) << truncateText(g.getName(), 35)
             << setw(8) << c.getScore()
             << setw(10) << c.getSupport()
+            << setw(8) << avgOut.str()
             << "\n";
-
     }
 }
 
