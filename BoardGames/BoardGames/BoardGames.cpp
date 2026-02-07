@@ -472,7 +472,8 @@ int main()
                 else if (adminOption == 4) {
                     cout << "----Display Summary of Games borrowed/returned----\n";
                     cout << "1. Display Overall Summary\n";
-                    cout << "2. Display Summary for a Game\n";
+                    cout << "2. Display All Games Summary\n";
+                    cout << "3. Display Summary for a Game\n";
 
                     int summaryOption = -1;
                     cout << "Enter your option: ";
@@ -483,6 +484,11 @@ int main()
                         displayOverallBorrowSummary();
 
                     else if (summaryOption == 2) {
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        displayAllGameBorrowSummary(games);
+                    }
+
+                    else if (summaryOption == 3) {
                         cout << "Enter Game ID: ";
                         string gameId;
                         cin >> gameId;

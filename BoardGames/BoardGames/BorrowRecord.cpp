@@ -384,3 +384,108 @@ void displayGameBorrowSummary(string gameId, List<Game>& games) {
     std::cout << "Last Borrow Date : " << (s.lastBorrowDate.empty() ? "-" : s.lastBorrowDate) << "\n";
     std::cout << "Status           : " << (isActive ? "Active" : "Not Active") << "\n";
 }
+
+/*********************************************************************************
+ * Function  : displayAllGameBorrowSummary
+ * Purpose   : Displays borrow/return counts for ALL games found in borrow_records.csv.
+ *
+ * Output    :
+ * - Game ID, Game Name, Borrow Count, Return Count (paginated view)
+ *
+ * Params    :
+ * - games : Game list used to resolve game names for display
+ *
+ * Notes     :
+ * - Uses buildBorrowStatsFromCSV() to aggregate per-game statistics.
+ * - Uses HashTable::forEach with a lambda to collect rows for display.
+ * - Pagination controls: [n] next page, [p] previous page, [q] quit.
+ *********************************************************************************/
+void displayAllGameBorrowSummary(List<Game>& games) {
+    HashTable<string, GameBorrowStat> stats;
+    int totalBorrows = 0, totalReturns = 0;
+
+    if (!buildBorrowStatsFromCSV(stats, totalBorrows, totalReturns)) {
+        cout << "ERROR: Cannot open borrow records.\n";
+        return;
+    }
+
+    // Local helper: truncate a long name to fit a fixed-width column.
+    auto truncateTextLocal = [&](const string& s, int width) -> string {
+        if ((int)s.size() <= width) return s;
+        if (width <= 3) return s.substr(0, width);
+        return s.substr(0, width - 3) + "...";
+        };
+
+    // Collect all rows into a vector for pagination.
+    struct Row {
+        string gameId;
+        string name;
+        int borrows;
+        int returns;
+    };
+
+    vector<Row> rows;
+    rows.reserve(stats.getLength());
+
+    stats.forEach([&](const string& gid, const GameBorrowStat& s) {
+        // Look up name from Game list (fallback to "(unknown)")
+        string gameName = "(unknown)";
+        for (auto n = games.getNode(0); n != nullptr; n = n->next) {
+            Game& g = games.getItem(n);
+            if (to_string(g.getGameId()) == gid) {
+                gameName = g.getName();
+                break;
+            }
+        }
+        rows.push_back({ gid, gameName, s.borrowCount, s.returnCount });
+        });
+
+    if (rows.empty()) {
+        cout << "No borrow/return records found.\n";
+        return;
+    }
+
+    const int pageSize = 10;
+    int page = 0;
+    const int totalPages = (int)((rows.size() + pageSize - 1) / pageSize);
+
+    while (true) {
+        if (page < 0) page = 0;
+        if (page >= totalPages) page = totalPages - 1;
+
+        const int start = page * pageSize;
+        const int end = std::min(start + pageSize, (int)rows.size());
+
+        cout << "\nALL GAME BORROW SUMMARY (Page " << (page + 1) << "/" << totalPages << ")\n";
+        cout << "---------------------------------------------------------------\n";
+        cout << left
+            << setw(10) << "GameID"
+            << setw(36) << "Name"
+            << setw(10) << "Borrows"
+            << setw(10) << "Returns"
+            << "\n";
+        cout << "---------------------------------------------------------------\n";
+
+        for (int i = start; i < end; i++) {
+            cout << left
+                << setw(10) << rows[i].gameId
+                << setw(36) << truncateTextLocal(rows[i].name, 35)
+                << setw(10) << rows[i].borrows
+                << setw(10) << rows[i].returns
+                << "\n";
+        }
+
+        cout << "---------------------------------------------------------------\n";
+        cout << "[n] Next  [p] Prev  [q] Quit\n";
+        cout << "Choice: ";
+
+        string choice;
+        getline(cin, choice);
+
+        if (choice == "n" || choice == "N") page++;
+        else if (choice == "p" || choice == "P") page--;
+        else if (choice == "q" || choice == "Q") break;
+        else cout << "Invalid option.\n";
+    }
+}
+
