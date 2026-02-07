@@ -1,3 +1,21 @@
+/*********************************************************************************
+ * Group         : T01
+ * Team Member   : Justin Tang Jia Ze (S10269496B)
+ *
+ * File Purpose:
+ * - Implements Admin features for managing games and members.
+ *
+ * Key Features:
+ * - Add game: validates inputs, appends to in-memory list + gameTable index, and
+ *   persists the new record into games.csv.
+ * - Remove game: performs soft-delete (isActive="FALSE") and rewrites games.csv.
+ * - Add member: creates new User + Member records, updates hash indexes, and
+ *   persists into users.csv.
+ *
+ * Notes:
+ * - CSV escaping is used to safely store names that may contain quotes/commas.
+ *********************************************************************************/
+
 #include "Admin.h"
 #include <iostream>
 #include <string>
@@ -13,6 +31,8 @@ Admin::Admin(int id, string name)
     : User(id, name, "admin") {
 }
 
+// Helper: Validates that a name contains only alphabets and spaces.
+// Used for member name input sanitisation.
 bool checkInputCharacter(string s) {
     bool valid = true;
     for (char c : s) {
@@ -24,6 +44,7 @@ bool checkInputCharacter(string s) {
     return valid;
 }
 
+// Helper: Returns the current year (used to validate yearPublished input).
 int currentYear() {
     time_t now = time(nullptr);
     tm local{};
@@ -31,6 +52,8 @@ int currentYear() {
     return local.tm_year + 1900;
 }
 
+// Helper: Checks whether a string contains only alphabets and spaces.
+// Returns false if empty.
 bool isAlphabetOnly(const string& s) {
     if (s.empty())
         return false;
@@ -43,6 +66,10 @@ bool isAlphabetOnly(const string& s) {
     return true;
 }
 
+// Helper: Escapes a string for CSV output.
+// - Doubles any existing quotes ( " -> "" )
+// - Wraps the final value in quotes
+// This prevents commas/quotes in names from breaking the CSV format.
 string csvEscape(const string& s) {
     string out = s;
     size_t pos = 0;
@@ -53,6 +80,19 @@ string csvEscape(const string& s) {
     return "\"" + out + "\"";    // wrap in quotes
 }
 
+/*********************************************************************************
+ * Function  : Admin::addGame
+ * Purpose   : Allows an admin to add a new game into the system.
+ *
+ * Effects   :
+ * - Adds Game object into the games list (in-memory)
+ * - Adds index entry into gameTable (fast lookup)
+ * - Appends a new row into games.csv (persistent storage)
+ *
+ * Notes     :
+ * - Inputs are validated for numeric ranges (players, playtime, year).
+ * - Uses csvEscape() to safely write the game name into CSV.
+ *********************************************************************************/
 void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable) {
     // Allow admin to fill in fields
     cout << "----Add a game----\n";
@@ -150,110 +190,60 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
 
         cout << "Year published: ";
     }
+    Game lastGame = games.get(games.getLength() - 1);
+    int newGameId = lastGame.getGameId() + 1;
+    string isActive = "TRUE";
 
-    List<Game>::NodePtr gamePtr = gameTable.get(name);
+    Game g(newGameId + 1, name, minPlayer, maxPlayer, minPlayTime, maxPlayTime, yearPublished, isActive);
+    
+    // Insert into in-memory list and update hash index for fast future lookups.
+    List<Game>::NodePtr gamePtr = games.add(g);
+    gameTable.add(to_string(newGameId), gamePtr);
 
-    int copies = 1;
-    if (gamePtr != nullptr && gamePtr->item.getIsActive() == "TRUE") {
+    // fstream - include read (ios::in), write(ios::out), append (ios::app) modes
+    // ofstream - write only (will overwrite the file if it already exists!)
+    // ifstream - read only
+    fstream file;
+    file.open("games.csv", ios::app);
+    file 
+        << newGameId << ","
+        << csvEscape(name) << ','
+        << minPlayer << ","
+        << maxPlayer << ","
+        << minPlayTime << ","
+        << maxPlayTime << ","
+        << yearPublished << ","
+        << "TRUE";
 
-        string option;
-        cout << "You already have " << gamePtr->item.getGameCopy() << " copies\n";
-        cout << "Do you want to add one more? (Y/N): ";
+    file.close();
 
-        // Validation loop for copies option (accepts lowercase/uppercase)
-        while (true) {
-            getline(cin, option);
-
-            // Trim to first non-space character (basic trim)
-            size_t first = option.find_first_not_of(" \t\r\n");
-            if (first == string::npos) {
-                cout << "Invalid option! Please enter Y or N: ";
-                continue;
-            }
-
-            char c = option[first];
-            c = static_cast<char>(toupper(static_cast<unsigned char>(c)));
-
-            if (c == 'Y') {
-                copies = gamePtr->item.getGameCopy() + 1;
-                gamePtr->item.setGameCopy(copies);
-
-                // overwrite
-                ofstream file("games.csv", ios::trunc);
-
-                //write header 
-                file << "gameId,name,minPlayer,maxPlayer,minPlayTime,maxPlaytime,yearPublished,copy,isActive\n";
-                for (List<Game>::NodePtr node = games.getNode(0); node != nullptr; node = node->next) {
-                    const Game& g = node->item;
-                    file << g.getGameId() << ","
-                        << csvEscape(g.getName()) << ","
-                        << g.getMinPlayer() << ","
-                        << g.getMaxPlayer() << ","
-                        << g.getMinPlayTime() << ","
-                        << g.getMaxPlayTime() << ","
-                        << g.getYearPublished() << ","
-                        << g.getGameCopy() << ","
-                        << g.getIsActive()
-                        << "\n";
-                }
-                cout << "Copies updated successfully! Now you have " << copies << " copies.\n";
-                file.close();
-                break;
-            }
-            else if (c == 'N') {
-                cout << "Not adding game. Exiting...\n";
-                break;
-            }
-            else {
-                cout << "Invalid option! Please enter Y or N: ";
-            }
-        }
-
-    }
-    else {
-        Game lastGame = games.get(games.getLength() - 1);
-        int newGameId = lastGame.getGameId() + 1;
-        string isActive = "TRUE";
-
-        Game g(newGameId + 1, name, minPlayer, maxPlayer, minPlayTime, maxPlayTime, yearPublished, copies, isActive);
-        List<Game>::NodePtr gamePtr = games.add(g);
-        gameTable.add(to_string(newGameId), gamePtr);
-
-        // fstream - include read (ios::in), write(ios::out), append (ios::app) modes
-        // ofstream - write only (will overwrite the file if it already exists!)
-        // ifstream - read only
-        fstream file;
-        file.open("games.csv", ios::app);
-        file 
-            << newGameId << ","
-            << csvEscape(name) << ','
-            << minPlayer << ","
-            << maxPlayer << ","
-            << minPlayTime << ","
-            << maxPlayTime << ","
-            << yearPublished << ","
-            << copies << ","
-            << "TRUE";
-
-        file.close();
-
-        cout << "Game added successfully! (" << name << ")\n";
-    }
+    cout << "Game added successfully! (" << name << ")\n";
 }
 
+/*********************************************************************************
+ * Function  : Admin::removeGame
+ * Purpose   : Soft-deletes a game by setting isActive = "FALSE".
+ *
+ * Effects   :
+ * - Updates the in-memory Game node (isActive flag)
+ * - Rewrites games.csv to reflect the updated active status
+ *
+ * Notes     :
+ * - Soft-delete keeps the record for history/audit while hiding it from active views.
+ *********************************************************************************/
 void Admin::removeGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable) {
     cout << "---- Remove a game ----\n";
 
-    string name;
-    cout << "Name of game: ";
+    string gameId;
+    cout << "Enter GameID: ";
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    getline(cin, name);
-    List<Game>::NodePtr gamePtr = gameTable.get(name);
+    getline(cin, gameId);
+    List<Game>::NodePtr gamePtr = gameTable.get(gameId);
     if (gamePtr != nullptr && gamePtr->item.getIsActive() != "TRUE") {
         for (List<Game>::NodePtr node = games.getNode(0); node != nullptr; node = node->next) {
-            if (node->item.getName() == name && node->item.getIsActive() == "TRUE") {
+            if (to_string(node->item.getGameId()) == gameId && node->item.getIsActive() == "TRUE") {
                 gamePtr = node;
                 break;
             }
@@ -264,11 +254,12 @@ void Admin::removeGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>
         cout << "Deleting " << gamePtr->item.getName() << "...\n";
         
         gamePtr->item.setIsActive("FALSE");
-        // overwrite
+
+        // Rewrite the entire CSV file so the updated isActive status is persisted.
         ofstream file("games.csv", ios::trunc);
 
         //write header 
-        file << "gameId,name,minPlayer,maxPlayTime,minPlayTime,maxPlaytime,yearPublished,copy,isActive\n";
+        file << "gameId,name,minPlayer,maxPlayer,minPlayTime,maxPlaytime,yearPublished,isActive\n";
 
         for (List<Game>::NodePtr node = games.getNode(0); node != nullptr; node = node->next) {
             const Game& g = node->item;
@@ -280,7 +271,6 @@ void Admin::removeGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>
                     << g.getMinPlayTime() << ","
                     << g.getMaxPlayTime() << ","
                     << g.getYearPublished() << ","
-                    << g.getGameCopy() << ","
                     << "FALSE"
                     << "\n";
             }
@@ -292,20 +282,32 @@ void Admin::removeGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>
                     << g.getMinPlayTime() << ","
                     << g.getMaxPlayTime() << ","
                     << g.getYearPublished() << ","
-                    << g.getGameCopy() << ","
                     << g.getIsActive()
                     << "\n";
             }
         }
         file.close();
 
-        cout << "Successfully deleted " << name << endl;
+        cout << "Successfully deleted " << gamePtr->item.getName() << " (ID " << gameId << ")\n";
     }
     else {
-        cout << "Invalid game name! Please enter a valid game name\n";
+        cout << "Invalid game ID! Please enter a valid game ID.\n";
     }
 }
 
+/*********************************************************************************
+ * Function  : Admin::addMember
+ * Purpose   : Adds a new member into the system (User + Member records).
+ *
+ * Effects   :
+ * - Inserts a new User (role = "member") into users list and userTable index
+ * - Inserts a new Member into members list and memberTable index
+ * - Appends a new record into users.csv for persistence
+ *
+ * Notes     :
+ * - Member name is validated to contain only alphabets and spaces.
+ * - Uses csvEscape() to safely store the member name in CSV.
+ *********************************************************************************/
 void Admin::addMember(List<Member>& members, HashTable<string, List<Member>::NodePtr>& memberTable, 
     List<User>& users, HashTable<string, List<User>::NodePtr>& userTable) {
     cout << "---- Add a new member ----\n" << endl;
@@ -315,6 +317,7 @@ void Admin::addMember(List<Member>& members, HashTable<string, List<Member>::Nod
     while (true) {
         cout << "Name of member: ";
         getline(cin, name);
+        // Validate member name: letters/spaces only, not empty.
         bool validName = checkInputCharacter(name);
 
         if (name.empty()) {
@@ -348,8 +351,4 @@ void Admin::addMember(List<Member>& members, HashTable<string, List<Member>::Nod
 
     cout << "Adding new member...\n";
     cout << name << " added successfully!\n";
-}
-
-void Admin::displayGameBorrowReturnSummary() {
-    cout << "Displaying overall borrow/return summary" << endl;
 }

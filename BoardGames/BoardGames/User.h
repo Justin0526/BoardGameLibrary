@@ -39,7 +39,11 @@ public:
     bool returnGame(List<Game>& games, HashTable<std::string, List<Game>::NodePtr>& gameTable, int gameId);
     void displayBorrowedAndHistory() const;
 
+    // Displays recommended game candidates and allows user-selected sorting.
     void displayGamesPlayableByNPlayers(List<Game>& games);
+
+    // Generates game recommendations based on collaborative filtering.
+    // Uses ratings from similar users to compute candidate scores and support.
     void recommendFromGame(
         int gameId, 
         List<Rating>& ratings, 
@@ -48,14 +52,6 @@ public:
         HashTable<string, List<List<Rating>::NodePtr>*>& memberRatings,
         List<Game>& games, 
         HashTable<string, List<Game>::NodePtr>& gameTable);
-
-    void filterRecommendedCandidates(
-        List<GameCandidate>& in, 
-        List<Game>& games, 
-        HashTable<string, List<Game>::NodePtr>& gameTable,
-        int desiredPlayers, 
-        int desiredMinutes, 
-        List<GameCandidate>& out);
 
     void printRecommendedGames(
         List<GameCandidate>& candidates, 

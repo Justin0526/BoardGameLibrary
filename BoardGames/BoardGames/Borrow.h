@@ -14,4 +14,3 @@ public:
         const std::string& gameName
     );
 };
-

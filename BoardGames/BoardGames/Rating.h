@@ -4,6 +4,8 @@
 #include <ctime>
 using namespace std;
 
+// Rating:
+// Represents a single user rating + optional review for a specific game.
 class Rating
 {
 	private:
@@ -30,4 +32,4 @@ class Rating
 		const std::string& getCreatedAt() const { return createdAt; }
 };
 
-
+ostream& operator<<(ostream& os, const Rating& r);
