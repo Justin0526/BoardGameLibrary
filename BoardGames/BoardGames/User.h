@@ -36,6 +36,11 @@ public:
     void printActiveGames(List<Game>& games);
     // Features available to all users
     bool borrowGame(List<Game>& games, HashTable<std::string, List<Game>::NodePtr>& gameTable, const std::string& gameName);
+    bool borrowGameById(
+        List<Game>& games,
+        HashTable<string, List<Game>::NodePtr>& gameTable,
+        int gameId
+    );
     bool returnGame(List<Game>& games, HashTable<std::string, List<Game>::NodePtr>& gameTable, int gameId);
     void displayBorrowedAndHistory() const;
 

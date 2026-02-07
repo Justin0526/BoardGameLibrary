@@ -170,7 +170,7 @@ bool User::borrowGame(
     HashTable<string, List<Game>::NodePtr>& /*gameTable*/,
     const string& gameName
 ) {
-    // Find game by NAME using LinkedList
+    // Find game by NAME
     List<Game>::NodePtr found = nullptr;
 
     for (int i = 0; i < games.getLength(); ++i) {
@@ -187,18 +187,59 @@ bool User::borrowGame(
     }
 
     Game& g = games.getItem(found);
+    int gid = g.getGameId();
 
-    if (g.isBorrowed()) {
-        cout << "No available copy for \"" << gameName << "\".\n";
+    // Check availability using borrowed list ONLY
+    for (int i = 0; i < borrowed.getLength(); ++i) {
+        if (borrowed.get(i) == gid) {
+            cout << "No available copy for \"" << gameName << "\".\n";
+            return false;
+        }
+    }
+
+    // Borrow
+    g.setBorrowed(true);        // optional UI state
+    borrowed.add(gid);          // authoritative state
+    history.add(gid);           // audit trail
+
+    cout << role << " " << name
+        << " borrowed game [" << gid << "] "
+        << g.getName() << endl;
+
+    return true;
+}
+
+bool User::borrowGameById(
+    List<Game>& games,
+    HashTable<string, List<Game>::NodePtr>& gameTable,
+    int gameId
+) {
+    string key = to_string(gameId);
+
+    if (!gameTable.containsKey(key)) {
+        cout << "Game ID " << gameId << " not found.\n";
         return false;
     }
 
+    auto node = gameTable.get(key);
+    Game& g = games.getItem(node);
+
+    // Check availability
+    for (int i = 0; i < borrowed.getLength(); ++i) {
+        if (borrowed.get(i) == gameId) {
+            cout << "No available copy for game ID " << gameId << ".\n";
+            return false;
+        }
+    }
+
+    // Borrow
     g.setBorrowed(true);
-    borrowed.add(g.getGameId());
-    history.add(g.getGameId());
+    borrowed.add(gameId);
+    history.add(gameId);
+
     cout << role << " " << name
-        << " borrowed game [" << g.getGameId()
-        << "] " << g.getName() << endl;
+        << " borrowed game [" << gameId << "] "
+        << g.getName() << endl;
 
     return true;
 }

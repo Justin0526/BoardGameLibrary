@@ -6,3 +6,5 @@ recordId,memberId,gameId,action,borrowDate,returnDate
 5,5,626,RETURN,,2026-02-06
 6,3,1,BORROW,2026-02-07,
 7,5,1,RETURN,,2026-02-07
+8,3,626,BORROW,2026-02-08,
+9,4,626,RETURN,,2026-02-08

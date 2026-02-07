@@ -519,8 +519,8 @@ int main()
             // member menu
             while (true) {
                 cout << "\nMember Menu\n";
-                cout << "1) Borrow a game by name\n";
-                cout << "2) Return a game by id\n";
+                cout << "1) Borrow a game by ID\n";
+                cout << "2) Return a game by ID\n";
                 cout << "3) View my borrowed/history\n";
 				cout << "4) Write a review for a game\n";
 				cout << "5) View reviews for a game\n";
@@ -530,30 +530,35 @@ int main()
                 if (!getline(cin, mopt)) { mopt = "0"; }
 
                 if (mopt == "1") {
-                    cout << "Enter game name to borrow: ";
-                    string gameName;
-                    getline(cin, gameName);
-                    if (loggedInMember->item.borrowGame(games, gameTable, gameName)) {
-                        // Get game directly from hash table
-                        if (!gameTable.containsKey(gameName)) {
-                            cout << "Borrow failed.\n";
+                    cout << "Enter game ID to borrow: ";
+                    string idStr;
+                    getline(cin, idStr);
+                    try {
+                        int gameId = stoi(idStr);
+                        // Find the game node by ID
+                        string gameIdStr = to_string(gameId);
+                        if (!gameTable.containsKey(gameIdStr)) {
+                            cout << "Game ID not found.\n";
                             continue;
                         }
-
-                        auto node = gameTable.get(gameName);
-                        int gameId = games.getItem(node).getGameId();
-
-                        writeBorrowRecord(
-                            borrowRecordCounter++,
-                            to_string(loggedInMember->item.getUserId()),
-                            to_string(gameId),
-                            "BORROW",
-                            getCurrentDate(),
-                            ""
-                        );
+                        if (loggedInMember->item.borrowGameById(games, gameTable, gameId)) {
+                            auto node = gameTable.get(gameIdStr);
+                            int realGameId = games.getItem(node).getGameId();
+                            writeBorrowRecord(
+                                borrowRecordCounter++,
+                                to_string(loggedInMember->item.getUserId()),
+                                to_string(realGameId),
+                                "BORROW",
+                                getCurrentDate(),
+                                ""
+                            );
+                        }
+                        else {
+                            cout << "Borrow failed (no available copy or error).\n";
+                        }
                     }
-                    else {
-                        cout << "Borrow failed (no available copy or error).\n";
+                    catch (...) {
+                        cout << "Invalid game ID.\n";
                     }
                 }
                 else if (mopt == "2") {
