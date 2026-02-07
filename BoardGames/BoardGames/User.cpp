@@ -42,6 +42,8 @@ string User::getRole() const {
     return role;
 }
 
+// Helper: Truncate a long string to fit a fixed column width.
+// If truncated, appends "..." to keep table alignment clean.
 static string truncateText(const string& s, int width) {
     if ((int)s.size() <= width)
         return s;
@@ -52,6 +54,8 @@ static string truncateText(const string& s, int width) {
     return s.substr(0, width - 3) + "...";
 }
 
+// Helper: Counts how many games are currently active (isActive == "TRUE").
+// Used to compute total pages for pagination.
 static int countActiveGames(List<Game>& games) {
     int count = 0;
     for (int i = 0; i < games.getLength(); i++) {
@@ -65,6 +69,10 @@ static int countActiveGames(List<Game>& games) {
     return count;
 }
 
+// Helper: Prints one page of active games in a formatted table view.
+// Uses iomanip manipulators:
+// - left  : left-align columns
+// - setw  : set fixed column width for alignment
 static void printActiveGamesPage(List<Game>& games, int page, int pageSize) {
     const int totalActive = countActiveGames(games);
     const int totalPages = (totalActive + pageSize - 1) / pageSize;
@@ -80,7 +88,7 @@ static void printActiveGamesPage(List<Game>& games, int page, int pageSize) {
     const int end = start + pageSize; // exclusive
 
     cout << "\nActive Games (Page " << (page + 1) << "/" << totalPages << ")\n";
-    cout << "--------------------------------------------------------------------------\n";
+    cout << "-------------------------------------------------------------------------------\n";
     cout << left
         << setw(6) << "ID"
         << setw(34) << "Name"
@@ -89,7 +97,7 @@ static void printActiveGamesPage(List<Game>& games, int page, int pageSize) {
         << setw(8) << "Year"
         << setw(8) << "Copies"
         << "\n";
-    cout << "--------------------------------------------------------------------------\n";
+    cout << "-------------------------------------------------------------------------------\n";
 
     int activeIndex = 0;
     for (int i = 0; i < games.getLength(); i++) {
@@ -117,15 +125,35 @@ static void printActiveGamesPage(List<Game>& games, int page, int pageSize) {
         if (activeIndex >= end) break; // stop early once page filled
     }
 
-    cout << "--------------------------------------------------------------------------\n";
+    cout << "-------------------------------------------------------------------------------\n";
     cout << "[n] Next  [p] Prev  [q] Quit\n";
 }
 
+/*********************************************************************************
+ * Function  : User::printActiveGames
+ * Purpose   : Displays all active games (soft-delete aware) using pagination.
+ *
+ * Notes     :
+ * - Filters out inactive games (isActive != "TRUE").
+ * - Supports navigation: [n] next page, [p] previous page, [q] quit.
+ * - Uses helper functions: countActiveGames() and printActiveGamesPage().
+ *********************************************************************************/
 void User::printActiveGames(List<Game>& games) {
     const int pageSize = 20;
     int page = 0;
 
+    const int totalActive = countActiveGames(games);
+    const int totalPages = (totalActive + pageSize - 1) / pageSize;
+
+    if (totalActive == 0) {
+        cout << "No active games.\n";
+        return;
+    }
+
     while (true) {
+        if (page < 0) page = 0;
+        if (page >= totalPages) page = totalPages - 1;
+
         printActiveGamesPage(games, page, pageSize);
 
         cout << "Choice: ";
@@ -134,7 +162,7 @@ void User::printActiveGames(List<Game>& games) {
 
         if (choice == "n" || choice == "N") page++;
         else if (choice == "p" || choice == "P") page--;
-        else if (choice == "q" || choice == "Q" || choice.empty()) break;
+        else if (choice == "q" || choice == "Q") break;
         else cout << "Invalid option.\n";
     }
 }
@@ -227,13 +255,21 @@ void User::displayBorrowedAndHistory() const {
     }
 }
 
+/*********************************************************************************
+ * Function  : User::displayGamesPlayableByNPlayers
+ * Purpose   : Filters games that can support a user-specified player count (N)
+ *             and optionally sorts them before displaying only active results.
+ *
+ * Notes     :
+ * - Filtering uses List<Game>::filter(...) with a lambda predicate.
+ * - Sorting (optional) uses List<Game>::sort(cmp) with comparator functions.
+ *********************************************************************************/
 void User::displayGamesPlayableByNPlayers(List<Game>& games) {
     cout << "---- Display a list of games that can be played by a given number of players ----\n";
     // Ask user for number of players
     string input;
     int n;
     cout << "Number of player(s): ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     while (true) {
         getline(cin, input);
@@ -262,6 +298,7 @@ void User::displayGamesPlayableByNPlayers(List<Game>& games) {
 
         cout << "Enter your option: ";
         cin >> option;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << endl;
 
         if (option == 0) {
@@ -299,8 +336,10 @@ void User::displayGamesPlayableByNPlayers(List<Game>& games) {
 
     }
   
-    // Filter games into new list
-    // [&]: lambda to capture variables from surrounding scope by reference, in this case it is int n
+    // Lambda predicate for filtering:
+    // [&] captures local variables by reference (here: n).
+    // The predicate returns true if the game supports N players:
+    // minPlayer <= n <= maxPlayer.
     List<Game> filtered = games.filter([&](const Game& g) {
         return n >= g.getMinPlayer() && n <= g.getMaxPlayer();
     });
@@ -309,11 +348,33 @@ void User::displayGamesPlayableByNPlayers(List<Game>& games) {
     if (cmp != nullptr) {
         filtered.sort(cmp);
     }
-    cout << "Name | MinPlayer | MaxPlayer | MaxPlayTime | MinPlayTime | YearPublished\n";
     // print
     printActiveGames(filtered);
 }
 
+/*********************************************************************************
+ * Function  : User::recommendFromGame
+ * Purpose   : Generates recommendation candidates based on collaborative filtering.
+ *
+ * High-Level Logic:
+ * 1) Identify "fans" who rated the target game >= ratingCutoff.
+ * 2) For each fan, scan their other high-rated games (>= ratingCutoff).
+ * 3) Aggregate candidate scores (sum of ratings) and support (number of fans).
+ * 4) Output candidates as GameCandidate objects into outCandidates.
+ *
+ * Params    :
+ * - gameId         : Target game ID to recommend from
+ * - ratings        : Master list of all Rating objects
+ * - outCandidates  : Output list to be cleared and filled with candidates
+ * - gameRatings    : Index (gameId -> list of rating node pointers for that game)
+ * - memberRatings  : Index (userId -> list of rating node pointers by that user)
+ * - games          : Game list for resolving game names
+ * - gameTable      : Index (gameId -> Game node pointer) for fast lookup
+ *
+ * Notes     :
+ * - Uses HashTable to aggregate candidateScore and candidateSupport by candId.
+ * - outCandidates is cleared at the start to avoid shallow-copy issues.
+ *********************************************************************************/
 void User::recommendFromGame(
     int gameId,
     List<Rating>& ratings, 
@@ -396,7 +457,8 @@ void User::recommendFromGame(
     //    << " totalFanRatingsScanned=" << totalFanRatingsScanned
     //    << " totalCandidateAdds=" << totalCandidateAdds << "\n";
 
-    // Iterate through candidateScore hash table
+    // Convert aggregated hash-table results into a List<GameCandidate> for sorting/display.
+    // Lambda captures external tables/lists (candidateSupport, gameTable, games, outCandidates).
     candidateScore.forEach([&](const string& candId, int score) {
         totalCandidateScoreKeys++;
         if (!candidateSupport.containsKey(candId)) return;
@@ -417,6 +479,15 @@ void User::recommendFromGame(
 
 }
 
+/*********************************************************************************
+ * Function  : User::printRecommendedGames
+ * Purpose   : Displays recommended game candidates and allows user-selected sorting.
+ *
+ * Notes     :
+ * - Sorting uses List<GameCandidate>::sort(cmp) with comparator functions.
+ * - Filters out inactive games using gameTable lookup + isActive check.
+ * - Uses truncateText() to keep table columns aligned.
+ *********************************************************************************/
 void User::printRecommendedGames(
     List<GameCandidate>& candidates,
     List<Game>& games,
@@ -491,64 +562,36 @@ void User::printRecommendedGames(
         candidates.sort(cmp);
     }
 
-    cout << "GameID | Name | Score | Support\n";
+    cout << "\n" << left
+        << setw(8) << "GameID"
+        << setw(36) << "Name"
+        << setw(8) << "Score"
+        << setw(10) << "Support"
+        << "\n";
+    cout << string(62, '-') << "\n";
 
     for (auto p = candidates.getNode(0); p != nullptr; p = p->next) {
         GameCandidate& c = candidates.getItem(p);
         const string& gid = c.getGameId();
 
-        if (!gameTable.containsKey(gid)) {
-            cout << "[SKIP] candidate gameId=" << gid
-                << " (not found in gameTable)\n";
+        if (!gameTable.containsKey(gid)) 
             continue;
-        }
 
         Game& g = games.getItem(gameTable.get(gid));
+        if (g.getIsActive() != "TRUE") 
+            continue;
 
-        cout << gid << " | "
-            << g.getName() << " | "
-            << c.getScore() << " | "
-            << c.getSupport() << "\n";
+        cout << left
+            << setw(8) << gid
+            << setw(36) << truncateText(g.getName(), 35)
+            << setw(8) << c.getScore()
+            << setw(10) << c.getSupport()
+            << "\n";
+
     }
 }
 
 ostream& operator<<(ostream& os, const User& u) {
     os << u.getName() << " [User ID: " << u.getUserId() << "]" << endl;
     return os;
-}
-
-void User::filterRecommendedCandidates(
-    List<GameCandidate>& in,
-    List<Game>& games,
-    HashTable<string, List<Game>::NodePtr>& gameTable,
-    int desiredPlayers,      // pass -1 if not filtering by players
-    int desiredMinutes,      // pass -1 if not filtering by time
-    List<GameCandidate>& out // output list
-) {
-    out.clear();
-
-    for (auto p = in.getNode(0); p != nullptr; p = p->next) {
-        GameCandidate& c = in.getItem(p);
-        const string& gid = c.getGameId();
-
-        // if game doesn't exist in table (soft deleted or mismatch), skip it
-        if (!gameTable.containsKey(gid)) continue;
-
-        List<Game>::NodePtr gNode = gameTable.get(gid);
-        Game& g = games.getItem(gNode);
-
-        // players filter
-        if (desiredPlayers != -1) {
-            if (!(desiredPlayers >= g.getMinPlayer() && desiredPlayers <= g.getMaxPlayer()))
-                continue;
-        }
-
-        // playtime filter  
-        if (desiredMinutes != -1) {
-            if (!(desiredMinutes >= g.getMinPlayTime() && desiredMinutes <= g.getMaxPlayTime()))
-                continue;
-        }
-
-        out.add(c); // copies GameCandidate 
-    }
 }

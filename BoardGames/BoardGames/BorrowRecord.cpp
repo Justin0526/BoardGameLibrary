@@ -190,8 +190,11 @@ void restoreGameBorrowStates(List<Game>& games) {
     }
 }
 
-// proper CSV line parsing (handles quotes + commas)
-// vector is a dynamic array in C++ , can grow as you push items into it
+// Justin
+// Parses a single CSV row into columns while supporting:
+// - quoted fields ("...") that may contain commas
+// - escaped quotes ("") inside quoted fields
+// Returns a vector of column strings in the same order as the CSV.
 static vector<string> parseCsvLine(const string& line) {
     vector<string> fields;  // Where we store each column
     string cur;             // current column we are building character by character
@@ -222,6 +225,28 @@ static vector<string> parseCsvLine(const string& line) {
     return fields;
 }
 
+// Justin
+/*********************************************************************************
+ * Function  : buildBorrowStatsFromCSV
+ * Purpose   : Reads borrow_records.csv and aggregates per-game statistics into a
+ *             HashTable keyed by gameId.
+ *
+ * Params    :
+ * - stats        : Output table (gameId -> GameBorrowStat) to be filled/updated
+ * - totalBorrows : Output count of BORROW actions across all records
+ * - totalReturns : Output count of RETURN actions across all records
+ *
+ * Returns   :
+ * - bool : true if file was read successfully, false if file could not be opened
+ *
+ * Notes     :
+ * - Uses separate chaining HashTable for fast updates by gameId.
+ * - lastBorrowDate tracks the most recent borrowDate seen for each game.
+ * - CSV file path resolution is handled by getBorrowCSVPath() (Khaleel).
+ *
+ * Time Complexity:
+ * - O(R) average, where R is number of records (each line processed once).
+ *********************************************************************************/
 bool buildBorrowStatsFromCSV(HashTable<string, GameBorrowStat>& stats, int& totalBorrows, int& totalReturns) {
     totalBorrows = 0;
     totalReturns = 0;
@@ -273,6 +298,19 @@ bool buildBorrowStatsFromCSV(HashTable<string, GameBorrowStat>& stats, int& tota
     return true;
 }
 
+// Justin
+/*********************************************************************************
+ * Function  : displayOverallBorrowSummary
+ * Purpose   : Displays an overall borrow/return summary across all games.
+ *
+ * Output    :
+ * - Total borrow records
+ * - Total return records
+ * - Currently borrowed count (games whose lastAction is BORROW)
+ *
+ * Notes     :
+ * - Uses HashTable::forEach with a lambda to count "currently borrowed".
+ *********************************************************************************/
 void displayOverallBorrowSummary() {
     HashTable<string, GameBorrowStat> stats;
     int totalBorrows;
@@ -283,6 +321,7 @@ void displayOverallBorrowSummary() {
         return;
     }
 
+    // Count games that are currently considered borrowed based on their latest action.
     int currentlyBorrowed = 0;
     stats.forEach([&](const string&, const GameBorrowStat& s) {
         if (s.lastAction == "BORROW")
@@ -295,6 +334,19 @@ void displayOverallBorrowSummary() {
     cout << "Currently borrowed   : " << currentlyBorrowed << "\n";
 }
 
+/*********************************************************************************
+ * Function  : displayGameBorrowSummary
+ * Purpose   : Displays borrow/return statistics for a specific gameId, including
+ *             game name and active status looked up from the Game list.
+ *
+ * Params    :
+ * - gameId : The target gameId (string form, used as HashTable key)
+ * - games  : Game list used to resolve name/status for display
+ *
+ * Notes     :
+ * - Stats are computed by reading borrow_records.csv and aggregating by gameId.
+ * - Game name/status is obtained by scanning games to match stoi(gameId).
+ *********************************************************************************/
 void displayGameBorrowSummary(string gameId, List<Game>& games) {
     HashTable<string, GameBorrowStat> stats;
     int totalBorrows;
@@ -306,7 +358,7 @@ void displayGameBorrowSummary(string gameId, List<Game>& games) {
     }
 
     if (!stats.containsKey(gameId)) {
-        cout << "No borrow/return records found for gameId" << gameId << endl;
+        cout << "No borrow/return records found for gameId " << gameId << endl;
         return;
     }
 

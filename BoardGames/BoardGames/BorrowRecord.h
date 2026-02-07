@@ -16,6 +16,7 @@ struct BorrowHistoryRecord {
     string returnDate;
 };
 
+// Structure for GameBorrowStat
 struct GameBorrowStat {
     int borrowCount = 0;
     int returnCount = 0;

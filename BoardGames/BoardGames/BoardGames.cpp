@@ -83,35 +83,28 @@ void recommendGameMenu() {
     cout << "0. Exit\n";
 }
 
-void searchGameByNameOrId(List<Game>& games) {
+void searchGameByNameOrId(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable) {
     cout << "Enter game name or ID to search: ";
     string input;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, input);
 
-    bool found = false;
-    for (int i = 0; i < games.getLength(); ++i) {
-        auto node = games.getNode(i);
-        if (!node) continue;
-        Game& g = games.getItem(node);
+    if (!gameTable.containsKey(input)) {
+        cout << "Game not found. \n";
+        return;
+    }
 
-        if (g.getName() == input || to_string(g.getGameId()) == input) {
-            cout << "\n--- Game Details ---\n";
-            cout << "ID: " << g.getGameId() << "\n";
-            cout << "Name: " << g.getName() << "\n";
-            cout << "Players: " << g.getMinPlayer() << " - " << g.getMaxPlayer() << "\n";
-            cout << "Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
-            cout << "Year Published: " << g.getYearPublished() << "\n";
-            cout << "Copies: " << g.getGameCopy() << "\n";
-            cout << "Status: " << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
-            cout << "Active: " << g.getIsActive() << "\n";
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
-        cout << "Game not found.\n";
-    }
+    List<Game>::NodePtr gamePtr = gameTable.get(input);
+    Game& g = games.getItem(gamePtr);
+    cout << "\n--- Game Details ---\n";
+    cout << "ID: " << g.getGameId() << "\n";
+    cout << "Name: " << g.getName() << "\n";
+    cout << "Players: " << g.getMinPlayer() << " - " << g.getMaxPlayer() << "\n";
+    cout << "Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
+    cout << "Year Published: " << g.getYearPublished() << "\n";
+    cout << "Copies: " << g.getGameCopy() << "\n";
+    cout << "Status: " << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
+    cout << "Active: " << g.getIsActive() << "\n";
 }
 
 // Function to display detailed borrow history
@@ -625,7 +618,7 @@ int main()
                 }
 
                 else if (displayOption == 3)
-                    searchGameByNameOrId(games); 
+                    searchGameByNameOrId(games, gameTable); 
 
                 else
                     cout << "Invalid option!\n";
@@ -664,70 +657,7 @@ int main()
                         continue;
                     }
 
-                     globalUser.printRecommendedGames(candidates, games, gameTable);
-
-                    //int players = -1;
-                    //int minutes = -1;
-                    //char choice;
-
-                    //// -------- Filter by players --------
-                    //while (true) {
-                    //    cout << "Filter by players? (Y/N): ";
-                    //    cin >> choice;
-
-                    //    if (choice == 'Y' || choice == 'y') {
-                    //        cout << "Number of players: ";
-                    //        if (!(cin >> players) || players <= 0) {
-                    //            cin.clear();
-                    //            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    //            cout << "Invalid number of players.\n";
-                    //            players = -1;
-                    //            continue;
-                    //        }
-                    //        break;
-                    //    }
-                    //    else if (choice == 'N' || choice == 'n') {
-                    //        break;
-                    //    }
-                    //    else {
-                    //        cout << "Please enter Y or N.\n";
-                    //    }
-                    //}
-
-                    //// -------- Filter by playtime --------
-                    //while (true) {
-                    //    cout << "Filter by playtime? (Y/N): ";
-                    //    cin >> choice;
-
-                    //    if (choice == 'Y' || choice == 'y') {
-                    //        cout << "Playtime (minutes): ";
-                    //        if (!(cin >> minutes) || minutes <= 0) {
-                    //            cin.clear();
-                    //            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    //            cout << "Invalid playtime.\n";
-                    //            minutes = -1;
-                    //            continue;
-                    //        }
-                    //        break;
-                    //    }
-                    //    else if (choice == 'N' || choice == 'n') {
-                    //        break;
-                    //    }
-                    //    else {
-                    //        cout << "Please enter Y or N.\n";
-                    //    }
-                    //}
-
-                    //// -------- Apply filter & print --------
-                    //List<GameCandidate> filtered;
-                    //globalUser.filterRecommendedCandidates(
-                    //    candidates,
-                    //    games,
-                    //    gameTable,
-                    //    players,
-                    //    minutes,
-                    //    filtered
-                    //);
+                    globalUser.printRecommendedGames(candidates, games, gameTable);
 
                 }
                 else {
