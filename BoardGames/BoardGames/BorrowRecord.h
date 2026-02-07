@@ -41,4 +41,5 @@ void restoreGameBorrowStates(List<Game>& games);
 bool buildBorrowStatsFromCSV(HashTable<string, GameBorrowStat>& stats, int& totalBorrows, int& totalReturns);
 void displayOverallBorrowSummary();
 void displayGameBorrowSummary(string gameId, List<Game>& games);
+void displayAllGameBorrowSummary(List<Game>& games);
 std::string getCurrentDate();
