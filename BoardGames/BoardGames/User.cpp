@@ -244,34 +244,53 @@ bool User::borrowGameById(
     return true;
 }
 
-bool User::returnGame(List<Game>& games, HashTable<std::string, List<Game>::NodePtr>& gameTable, int gameId) {
-    // Try to find by ID as string
+bool User::returnGame(
+    List<Game>& games,
+    HashTable<std::string, List<Game>::NodePtr>& gameTable,
+    int gameId
+) {
     auto node = gameTable.get(std::to_string(gameId));
-    if (node && games.getItem(node).isBorrowed()) {
-        Game& g = games.getItem(node);
-        g.setBorrowed(false);
-        // Remove gameId from borrowed list (List<int> has remove(NodePtr), so we find the node)
-        List<int>::NodePtr target = nullptr;
-        for (int i = 0; i < borrowed.getLength(); ++i) {
-            auto p = borrowed.getNode(i);
-            if (p && borrowed.getItem(p) == gameId) {
-                target = p;
-                break;
-            }
-        }
-        if (target != nullptr) {
-            borrowed.remove(target);
-        }
-
-        // Add to history log
-        history.add(gameId);
-        history.add(g.getGameId());
-        cout << role << " " << name << " returned game [" << g.getGameId() << "] " << g.getName() << endl;
-        return true;
+    if (!node) {
+        cout << "Game ID " << gameId << " not found.\n";
+        return false;
     }
-    cout << "Game ID " << gameId << " not found or not currently borrowed by anyone.\n";
-    return false;
+
+    if (!games.getItem(node).isBorrowed()) {
+        cout << "Game is not currently borrowed.\n";
+        return false;
+    }
+
+    // Must belong to THIS user
+    bool ownedByUser = false;
+    List<int>::NodePtr target = nullptr;
+
+    for (int i = 0; i < borrowed.getLength(); ++i) {
+        auto p = borrowed.getNode(i);
+        if (p && borrowed.getItem(p) == gameId) {
+            ownedByUser = true;
+            target = p;
+            break;
+        }
+    }
+
+    if (!ownedByUser) {
+        cout << "You cannot return a game you did not borrow.\n";
+        return false;
+    }
+
+    // Proceed with return
+    Game& g = games.getItem(node);
+    g.setBorrowed(false);
+    borrowed.remove(target);
+    history.add(gameId);
+
+    cout << role << " " << name
+        << " returned game [" << gameId << "] "
+        << g.getName() << endl;
+
+    return true;
 }
+
 
 void User::displayBorrowedAndHistory() const {
     cout << role << ": " << getName() << " (ID:" << getUserId() << ")\n";
