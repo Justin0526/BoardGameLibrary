@@ -22,8 +22,13 @@
 #include <sstream>
 #include <fstream>
 #include <ctime>
+#include <filesystem>
 
 using namespace std;
+
+static filesystem::path getDataCSVPath(const string& fileName) {
+    return filesystem::path(__FILE__).parent_path() / "data" / fileName;
+}
 
 Admin::Admin() : User() {}
 
@@ -203,19 +208,26 @@ void Admin::addGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>& g
     // fstream - include read (ios::in), write(ios::out), append (ios::app) modes
     // ofstream - write only (will overwrite the file if it already exists!)
     // ifstream - read only
-    fstream file;
-    file.open("games.csv", ios::app);
-    file 
+    auto path = getDataCSVPath("games.csv");
+
+    ofstream file(path, ios::app);
+    if (!file.is_open()) {
+        cout << "Failed to open file for append: " << path << endl;
+        return;
+    }
+
+    file
         << newGameId << ","
-        << csvEscape(name) << ','
+        << csvEscape(name) << ","
         << minPlayer << ","
         << maxPlayer << ","
         << minPlayTime << ","
         << maxPlayTime << ","
         << yearPublished << ","
-        << "TRUE";
+        << "TRUE" << "\n";
 
     file.close();
+
 
     cout << "Game added successfully! (" << name << ")\n";
 }
@@ -240,6 +252,12 @@ void Admin::removeGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     getline(cin, gameId);
+    
+    if (!gameTable.containsKey(gameId)) {
+        cout << "Invalid ID!\n";
+        return;
+    }
+
     List<Game>::NodePtr gamePtr = gameTable.get(gameId);
     if (gamePtr != nullptr && gamePtr->item.getIsActive() != "TRUE") {
         for (List<Game>::NodePtr node = games.getNode(0); node != nullptr; node = node->next) {
@@ -256,35 +274,26 @@ void Admin::removeGame(List<Game>& games, HashTable<string, List<Game>::NodePtr>
         gamePtr->item.setIsActive("FALSE");
 
         // Rewrite the entire CSV file so the updated isActive status is persisted.
-        ofstream file("games.csv", ios::trunc);
+        auto path = getDataCSVPath("games.csv");
+        ofstream file(path, ios::trunc);
+        if (!file.is_open()) {
+            cout << "Failed to open file for rewrite: " << path << endl;
+            return;
+        }
 
         //write header 
         file << "gameId,name,minPlayer,maxPlayer,minPlayTime,maxPlaytime,yearPublished,isActive\n";
 
-        for (List<Game>::NodePtr node = games.getNode(0); node != nullptr; node = node->next) {
+        for (auto node = games.getNode(0); node != nullptr; node = node->next) {
             const Game& g = node->item;
-            if (gamePtr->item.getGameId() == node->item.getGameId()) {
-                file << g.getGameId() << ","
-                    << csvEscape(g.getName()) << ","
-                    << g.getMinPlayer() << ","
-                    << g.getMaxPlayer() << ","
-                    << g.getMinPlayTime() << ","
-                    << g.getMaxPlayTime() << ","
-                    << g.getYearPublished() << ","
-                    << "FALSE"
-                    << "\n";
-            }
-            else {
-                file << g.getGameId() << ","
-                    << csvEscape(g.getName()) << ","
-                    << g.getMinPlayer() << ","
-                    << g.getMaxPlayer() << ","
-                    << g.getMinPlayTime() << ","
-                    << g.getMaxPlayTime() << ","
-                    << g.getYearPublished() << ","
-                    << g.getIsActive()
-                    << "\n";
-            }
+            file << g.getGameId() << ","
+                << csvEscape(g.getName()) << ","
+                << g.getMinPlayer() << ","
+                << g.getMaxPlayer() << ","
+                << g.getMinPlayTime() << ","
+                << g.getMaxPlayTime() << ","
+                << g.getYearPublished() << ","
+                << g.getIsActive() << "\n";
         }
         file.close();
 
@@ -340,12 +349,17 @@ void Admin::addMember(List<Member>& members, HashTable<string, List<Member>::Nod
     List<Member>::NodePtr memberPtr = members.add(newMember);
     memberTable.add(name, memberPtr);
 
-    fstream file;
-    file.open("users.csv", ios::app);
+    auto path = getDataCSVPath("users.csv");
+    ofstream file(path, ios::app);
+
+    if (!file.is_open()) {
+        cout << "Failed to open users.csv for append: " << path << endl;
+        return;
+    }
+
     file << id + 1 << ","
-        << csvEscape(name) << ','
-        << "member"  
-        << "\n";
+        << csvEscape(name) << ","
+        << "member\n";
 
     file.close();
 

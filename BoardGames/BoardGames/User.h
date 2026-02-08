@@ -77,18 +77,21 @@ public:
     // Generates game recommendations based on collaborative filtering.
     // Uses ratings from similar users to compute candidate scores and support.
     void recommendFromGame(
-        int gameId, 
-        List<Rating>& ratings, 
-        List<GameCandidate>& outcandidates, 
-        HashTable<string, List<List<Rating>::NodePtr>*>& gameRatings, 
+        int gameId,
+        List<Rating>& ratings,
+        List<GameCandidate>& outcandidates,
+        HashTable<string, List<List<Rating>::NodePtr>*>& gameRatings,
         HashTable<string, List<List<Rating>::NodePtr>*>& memberRatings,
-        List<Game>& games, 
+        List<Game>& games,
         HashTable<string, List<Game>::NodePtr>& gameTable);
 
     void printRecommendedGames(
-        List<GameCandidate>& candidates, 
-        List<Game>& games, HashTable<string, 
+        List<GameCandidate>& candidates,
+        List<Game>& games, HashTable<string,
         List<Game>::NodePtr>& gameTable);
+
+    void searchGameByNameOrId(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable);
+
 };
 
 ostream& operator<<(std::ostream& os, const User& u);

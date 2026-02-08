@@ -83,29 +83,6 @@ void recommendGameMenu() {
     cout << "0. Exit\n";
 }
 
-void searchGameByNameOrId(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable) {
-    cout << "Enter game name or ID to search: ";
-    string input;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getline(cin, input);
-
-    if (!gameTable.containsKey(input)) {
-        cout << "Game not found. \n";
-        return;
-    }
-
-    List<Game>::NodePtr gamePtr = gameTable.get(input);
-    Game& g = games.getItem(gamePtr);
-    cout << "\n--- Game Details ---\n";
-    cout << "ID: " << g.getGameId() << "\n";
-    cout << "Name: " << g.getName() << "\n";
-    cout << "Players: " << g.getMinPlayer() << " - " << g.getMaxPlayer() << "\n";
-    cout << "Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
-    cout << "Year Published: " << g.getYearPublished() << "\n";
-    cout << "Status: " << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
-    cout << "Active: " << g.getIsActive() << "\n";
-}
-
 // Function to display detailed borrow history
 void displayDetailedBorrowHistory(int memberId, List<Game>& games) {
     vector<BorrowHistoryRecord> borrowHistory;
@@ -128,7 +105,13 @@ void displayDetailedBorrowHistory(int memberId, List<Game>& games) {
                 cout << "  Players: " << g.getMinPlayer() << " - " << g.getMaxPlayer() << " players\n";
                 cout << "  Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
                 cout << "  Year Published: " << g.getYearPublished() << "\n";
-                cout << "  Current Status: " << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
+                cout << "  Current Status: ";
+                if (g.getIsActive() != "TRUE") {
+                    cout << "NOT ACTIVE\n";
+                }
+                else {
+                    cout << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
+                }
                 if (record.action == "BORROW") {
                     cout << "Borrow Date: " << record.borrowDate << "\n";
                 }
@@ -485,7 +468,7 @@ int main()
 
                     else if (summaryOption == 2) {
                         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        displayAllGameBorrowSummary(games);
+                        displayAllGameBorrowSummary(games, gameTable);
                     }
 
                     else if (summaryOption == 3) {
@@ -494,7 +477,7 @@ int main()
                         cin >> gameId;
                         cout << endl;
 
-                        displayGameBorrowSummary(gameId, games);
+                        displayGameBorrowSummary(gameId, games, gameTable);
                     }
 
                     else
@@ -626,7 +609,7 @@ int main()
                 }
 
                 else if (displayOption == 3)
-                    searchGameByNameOrId(games, gameTable); 
+                    globalUser.searchGameByNameOrId(games, gameTable); 
 
                 else
                     cout << "Invalid option!\n";

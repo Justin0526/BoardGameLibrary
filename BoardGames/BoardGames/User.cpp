@@ -1,6 +1,6 @@
 /*********************************************************************************
  * Group         : T01
- * Team Member   : Khaleel Anis (S10270243)
+ * Team Member   : Khaleel Anis (S10270243), Justin Tang (S10269496B)
  *
  * File Purpose:
  * - Implements the User base class.
@@ -64,6 +64,7 @@ string User::getRole() const {
     return role;
 }
 
+// Justin
 // Helper: Truncate a long string to fit a fixed column width.
 // If truncated, appends "..." to keep table alignment clean.
 static string truncateText(const string& s, int width) {
@@ -76,6 +77,7 @@ static string truncateText(const string& s, int width) {
     return s.substr(0, width - 3) + "...";
 }
 
+// Justin
 // Helper: Counts how many games are currently active (isActive == "TRUE").
 // Used to compute total pages for pagination.
 static int countActiveGames(List<Game>& games) {
@@ -91,7 +93,8 @@ static int countActiveGames(List<Game>& games) {
     return count;
 }
 
-// Helper: Prints one page of active games in a formatted table view.
+// Justin
+// Helper: Prints one page of active games in a formatted table view. 
 // Uses iomanip manipulators:
 // - left  : left-align columns
 // - setw  : set fixed column width for alignment
@@ -146,11 +149,12 @@ static void printActiveGamesPage(List<Game>& games, int page, int pageSize) {
     }
 
     cout << "-------------------------------------------------------------------------------\n";
-    cout << "[n] Next  [p] Prev  [q] Quit\n";
+    cout << "[n] Next  [p] Prev  [f] First  [l] Last  [q] Quit\n";
 }
 
 /*********************************************************************************
- * Function  : User::printActiveGames
+ * Justin
+ * Function  : User::printActiveGames 
  * Purpose   : Displays all active games (soft-delete aware) using pagination.
  *
  * Notes     :
@@ -182,11 +186,14 @@ void User::printActiveGames(List<Game>& games) {
 
         if (choice == "n" || choice == "N") page++;
         else if (choice == "p" || choice == "P") page--;
+        else if (choice == "f" || choice == "F") page = 0;
+        else if (choice == "l" || choice == "L") page = totalPages - 1;
         else if (choice == "q" || choice == "Q") break;
         else cout << "Invalid option.\n";
     }
 }
 
+// Khaleel
 bool User::borrowGame(
     List<Game>& games,
     HashTable<string, List<Game>::NodePtr>& /*gameTable*/,
@@ -231,6 +238,7 @@ bool User::borrowGame(
     return true;
 }
 
+// Khaleel
 bool User::borrowGameById(
     List<Game>& games,
     HashTable<string, List<Game>::NodePtr>& gameTable,
@@ -245,6 +253,11 @@ bool User::borrowGameById(
 
     auto node = gameTable.get(key);
     Game& g = games.getItem(node);
+
+    if (g.getIsActive() == "FALSE") {
+        cout << "GAME ID " << gameId << " not found.\n";
+        return false;
+    }
 
     // Check availability
     for (int i = 0; i < borrowed.getLength(); ++i) {
@@ -266,6 +279,7 @@ bool User::borrowGameById(
     return true;
 }
 
+// Khaleel
 bool User::returnGame(
     List<Game>& games,
     HashTable<std::string, List<Game>::NodePtr>& gameTable,
@@ -336,6 +350,7 @@ void User::displayBorrowedAndHistory() const {
 }
 
 /*********************************************************************************
+ * Justin
  * Function  : User::displayGamesPlayableByNPlayers
  * Purpose   : Filters games that can support a user-specified player count (N)
  *             and optionally sorts them before displaying only active results.
@@ -433,6 +448,7 @@ void User::displayGamesPlayableByNPlayers(List<Game>& games) {
 }
 
 /*********************************************************************************
+ * Justin
  * Function  : User::recommendFromGame
  * Purpose   : Generates recommendation candidates based on collaborative filtering.
  *
@@ -475,7 +491,7 @@ void User::recommendFromGame(
     HashTable<string, int> candidateSupport;
 
     // Parameters
-    int ratingCutoff = 4;
+    int ratingCutoff = 8;
     int minSupport = 2;
     int topN = 10;
 
@@ -560,6 +576,7 @@ void User::recommendFromGame(
 }
 
 /*********************************************************************************
+ * Justin
  * Function  : User::printRecommendedGames
  * Purpose   : Displays recommended game candidates and allows user-selected sorting.
  *
@@ -647,7 +664,7 @@ void User::printRecommendedGames(
         << setw(36) << "Name"
         << setw(8) << "Score"
         << setw(10) << "Support"
-        << setw(8) << "Avg/5"
+        << setw(8) << "Avg/10"
         << "\n";
     cout << string(70, '-') << "\n";
 
@@ -667,7 +684,7 @@ void User::printRecommendedGames(
         double avg = (double)c.getScore() / c.getSupport();
 
         ostringstream avgOut;
-        avgOut << avg << "/5";
+        avgOut << avg << "/10";
 
         cout << left
             << setw(8) << gid
@@ -678,6 +695,36 @@ void User::printRecommendedGames(
             << "\n";
     }
 }
+
+void User::searchGameByNameOrId(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable) {
+    cout << "Enter game name or ID to search: ";
+    string input;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, input);
+
+    if (!gameTable.containsKey(input)) {
+        cout << "Game not found. \n";
+        return;
+    }
+
+    List<Game>::NodePtr gamePtr = gameTable.get(input);
+    Game& g = games.getItem(gamePtr);
+    cout << "\n--- Game Details ---\n";
+    cout << "ID: " << g.getGameId() << "\n";
+    cout << "Name: " << g.getName() << "\n";
+    cout << "Players: " << g.getMinPlayer() << " - " << g.getMaxPlayer() << "\n";
+    cout << "Play Time: " << g.getMinPlayTime() << " - " << g.getMaxPlayTime() << " minutes\n";
+    cout << "Year Published: " << g.getYearPublished() << "\n";
+    cout << "Current Status: ";
+    if (g.getIsActive() != "TRUE") {
+        cout << "NOT ACTIVE\n";
+    }
+    else {
+        cout << (g.isBorrowed() ? "BORROWED" : "AVAILABLE") << "\n";
+    }
+    cout << "Active: " << g.getIsActive() << "\n";
+}
+
 
 ostream& operator<<(ostream& os, const User& u) {
     os << u.getName() << " [User ID: " << u.getUserId() << "]" << endl;

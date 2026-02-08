@@ -35,7 +35,7 @@
 using namespace std;
 
 /*********************************************************************************
- * Function  : getBorrowCSVPath
+ * Function  : getBorrowCSVPath 
  * Purpose   : Resolves the absolute path to borrow_records.csv in a
  *             build-configuration-safe manner.
  *
@@ -451,7 +451,7 @@ void displayOverallBorrowSummary() {
  * - Stats are computed by reading borrow_records.csv and aggregating by gameId.
  * - Game name/status is obtained by scanning games to match stoi(gameId).
  *********************************************************************************/
-void displayGameBorrowSummary(string gameId, List<Game>& games) {
+void displayGameBorrowSummary(string gameId, List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable) {
     HashTable<string, GameBorrowStat> stats;
     int totalBorrows;
     int totalReturns;
@@ -471,13 +471,11 @@ void displayGameBorrowSummary(string gameId, List<Game>& games) {
     bool isActive = false;
     string gameName = "(unknown)";
 
-    for (auto n = games.getNode(0); n != nullptr; n = n->next) {
-        Game& g = games.getItem(n);
-        if (g.getGameId() == stoi(gameId)) {
-            gameName = g.getName();
-            isActive = (g.getIsActive() == "TRUE");
-            break;
-        }
+    if (gameTable.containsKey(gameId)) {
+        auto gamePtr = gameTable.get(gameId);
+        Game& g = gamePtr->item;
+        gameName = g.getName();
+        isActive = (g.getIsActive() == "TRUE");
     }
 
     std::cout << "\n===== GAME SUMMARY =====\n";
@@ -504,7 +502,7 @@ void displayGameBorrowSummary(string gameId, List<Game>& games) {
  * - Uses HashTable::forEach with a lambda to collect rows for display.
  * - Pagination controls: [n] next page, [p] previous page, [q] quit.
  *********************************************************************************/
-void displayAllGameBorrowSummary(List<Game>& games) {
+void displayAllGameBorrowSummary(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable) {
     HashTable<string, GameBorrowStat> stats;
     int totalBorrows = 0, totalReturns = 0;
 
@@ -534,12 +532,9 @@ void displayAllGameBorrowSummary(List<Game>& games) {
     stats.forEach([&](const string& gid, const GameBorrowStat& s) {
         // Look up name from Game list (fallback to "(unknown)")
         string gameName = "(unknown)";
-        for (auto n = games.getNode(0); n != nullptr; n = n->next) {
-            Game& g = games.getItem(n);
-            if (to_string(g.getGameId()) == gid) {
-                gameName = g.getName();
-                break;
-            }
+        if (gameTable.containsKey(gid)) {
+            auto ptr = gameTable.get(gid);
+            gameName = ptr->item.getName();
         }
         rows.push_back({ gid, gameName, s.borrowCount, s.returnCount });
         });
@@ -580,7 +575,7 @@ void displayAllGameBorrowSummary(List<Game>& games) {
         }
 
         cout << "---------------------------------------------------------------\n";
-        cout << "[n] Next  [p] Prev  [q] Quit\n";
+        cout << "[n] Next  [p] Prev  [f] First  [l] Last  [q] Quit\n";
         cout << "Choice: ";
 
         string choice;
@@ -589,6 +584,8 @@ void displayAllGameBorrowSummary(List<Game>& games) {
         if (choice == "n" || choice == "N") page++;
         else if (choice == "p" || choice == "P") page--;
         else if (choice == "q" || choice == "Q") break;
+        else if (choice == "f" || choice == "F") page = 0;
+        else if (choice == "l" || choice == "L") page = totalPages - 1;
         else cout << "Invalid option.\n";
     }
 }

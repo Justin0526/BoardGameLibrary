@@ -1,6 +1,6 @@
 /*********************************************************************************
  * Group         : T01
- * Team Member   : Khaleel Anis (S10270243)
+ * Team Member   : Khaleel Anis (S10270243), Justin (S10269496B)
  *
  * File Purpose:
  * - Declares data structures and helper functions for tracking
@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include "HashTable.h" 
+#include "LinkedList.h"
 using namespace std;
 
 // Forward declarations
@@ -38,6 +39,7 @@ struct BorrowHistoryRecord {
     string returnDate;
 };
 
+// Justin
 // Aggregated statistics for a single game.
 struct GameBorrowStat {
     int borrowCount = 0;
@@ -69,7 +71,7 @@ bool buildBorrowStatsFromCSV(HashTable<string, GameBorrowStat>& stats, int& tota
 
 // ---- Reporting / summaries ----
 void displayOverallBorrowSummary();
-void displayGameBorrowSummary(string gameId, List<Game>& games);
-void displayAllGameBorrowSummary(List<Game>& games);
+void displayGameBorrowSummary(string gameId, List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable);
+void displayAllGameBorrowSummary(List<Game>& games, HashTable<string, List<Game>::NodePtr>& gameTable);
 // ---- Utility ----
 std::string getCurrentDate();
