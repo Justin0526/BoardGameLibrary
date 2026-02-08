@@ -62,7 +62,6 @@ void initializeBorrowRecordsCSV();
 int getNextBorrowRecordId();
 
 // ---- Borrow history loading ----
-void loadMemberBorrowHistory(int memberId, vector<string>& borrowHistory);
 void loadMemberBorrowHistoryDetailed(int memberId, List<Game>& games, vector<BorrowHistoryRecord>& borrowHistory);
 
 // ---- State restoration & statistics ----

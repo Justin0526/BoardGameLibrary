@@ -35,7 +35,6 @@ protected:
     // ---- Identity & role ----
     int userId;
     string name;
-    string password;
     string role;
 
     // ---- Borrowing state ----
@@ -47,11 +46,7 @@ protected:
 public:
     // ---- Constructors ----
     User();
-    User(int id, string name, string password, string role);
     User(int id, string name, string role);
-
-    // ---- Authentication ----
-    bool login(string inputName, string inputPassword) const;
 
     // ---- Accessors ----
     int getUserId() const;

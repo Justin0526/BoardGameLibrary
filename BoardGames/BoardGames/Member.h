@@ -29,7 +29,6 @@ class Game; // Forward declaration to reduce header coupling
 class Member : public User {
 public:
     Member();
-    Member(int id, string name, string password);
     Member(int id, string name);
 
     // Displays the list of games borrowed and returned by this member.
