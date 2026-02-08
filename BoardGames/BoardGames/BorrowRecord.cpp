@@ -1,3 +1,24 @@
+/*********************************************************************************
+ * Group         : T01
+ * Team Member   : Khaleel Anis (S10270243)
+ *
+ * File Purpose:
+ * - Implements CSV-based persistence, recovery, and reporting
+ *   for game borrow and return records.
+ *
+ * Key Design Notes:
+ * - borrow_records.csv is always resolved relative to this file
+ *   to avoid runtime working-directory issues.
+ * - Game borrow states are reconstructed on startup by replaying
+ *   the latest action per game.
+ * - All reporting features derive their data from CSV to ensure
+ *   consistency with persisted records.
+ *
+ * Constraints / Assumptions:
+ * - CSV rows are append-only and processed sequentially.
+ * - Latest action per game determines its current borrowed state.
+ * - Custom HashTable and List ADTs are used throughout.
+ *********************************************************************************/
 #include "BorrowRecord.h"
 #include <fstream>
 #include <iostream>
@@ -13,11 +34,34 @@
 
 using namespace std;
 
-// Always resolve the SAME borrow_records.csv
+/*********************************************************************************
+ * Function  : getBorrowCSVPath
+ * Purpose   : Resolves the absolute path to borrow_records.csv in a
+ *             build-configuration-safe manner.
+ *
+ * Returns   :
+ * - filesystem::path : Absolute path to borrow_records.csv
+ *
+ * Notes     :
+ * - Uses __FILE__ to anchor path resolution to this source file.
+ * - Prevents issues where Debug/Release or different run directories
+ *   resolve different CSV locations.
+ *********************************************************************************/
 static std::filesystem::path getBorrowCSVPath() {
     return std::filesystem::path(__FILE__).parent_path() / "data" / "borrow_records.csv";
 }
 
+/*********************************************************************************
+ * Function  : getCurrentDate
+ * Purpose   : Generates the current system date in YYYY-MM-DD format.
+ *
+ * Returns   :
+ * - string : Current date formatted for CSV storage and display.
+ *
+ * Notes     :
+ * - Uses platform-specific localtime handling for portability.
+ * - Date format aligns with borrow_records.csv schema.
+ *********************************************************************************/
 std::string getCurrentDate() {
     auto now = std::chrono::system_clock::now();
     std::time_t t = std::chrono::system_clock::to_time_t(now);
@@ -32,6 +76,15 @@ std::string getCurrentDate() {
     return buf;
 }
 
+/*********************************************************************************
+ * Function  : initializeBorrowRecordsCSV
+ * Purpose   : Ensures borrow_records.csv exists and is initialised with headers.
+ *
+ * Notes     :
+ * - Called during system startup.
+ * - Creates the CSV file only if it does not already exist.
+ * - Prevents accidental overwrites of historical borrow data.
+ *********************************************************************************/
 void initializeBorrowRecordsCSV() {
     auto path = getBorrowCSVPath();
 
@@ -42,6 +95,22 @@ void initializeBorrowRecordsCSV() {
     }
 }
 
+/*********************************************************************************
+ * Function  : writeBorrowRecord
+ * Purpose   : Appends a single borrow or return action to borrow_records.csv.
+ *
+ * Params    :
+ * - recordId   : Unique sequential record identifier
+ * - memberId   : ID of the member performing the action
+ * - gameId     : ID of the game being borrowed or returned
+ * - action     : Either "BORROW" or "RETURN"
+ * - borrowDate : Date of borrow action (YYYY-MM-DD)
+ * - returnDate : Date of return action or empty string
+ *
+ * Notes     :
+ * - Appends records to preserve full historical audit trail.
+ * - CSV format is consistent with analytics and restoration logic.
+ *********************************************************************************/
 void writeBorrowRecord(
     int recordId,
     const std::string& memberId,
@@ -68,6 +137,17 @@ void writeBorrowRecord(
     file.close();
 }
 
+/*********************************************************************************
+ * Function  : getNextBorrowRecordId
+ * Purpose   : Computes the next unique borrow record ID from the CSV file.
+ *
+ * Returns   :
+ * - int : Next available record ID
+ *
+ * Notes     :
+ * - Scans existing records to find the maximum ID.
+ * - Returns 1 if the file is empty or cannot be opened.
+ *********************************************************************************/
 int getNextBorrowRecordId() {
     auto path = getBorrowCSVPath();
 
@@ -94,6 +174,19 @@ int getNextBorrowRecordId() {
     return maxId + 1;
 }
 
+/*********************************************************************************
+ * Function  : loadMemberBorrowHistoryDetailed
+ * Purpose   : Loads detailed borrow/return history for a specific member.
+ *
+ * Params    :
+ * - memberId      : Target member ID
+ * - games         : Game list used to resolve game details
+ * - borrowHistory : Output vector populated with borrow history records
+ *
+ * Notes     :
+ * - Filters CSV records by memberId.
+ * - Resolves Game pointers for richer display output.
+ *********************************************************************************/
 void loadMemberBorrowHistoryDetailed(
     int memberId,
     List<Game>& games,
@@ -146,6 +239,17 @@ void loadMemberBorrowHistoryDetailed(
     }
 }
 
+/*********************************************************************************
+ * Function  : restoreGameBorrowStates
+ * Purpose   : Restores each game's borrowed state based on the latest CSV action.
+ *
+ * Params    :
+ * - games : Game list whose borrow flags will be updated
+ *
+ * Notes     :
+ * - Last action per game determines current state.
+ * - Ensures consistency after application restart.
+ *********************************************************************************/
 void restoreGameBorrowStates(List<Game>& games) {
     auto path = getBorrowCSVPath();
     std::ifstream file(path);

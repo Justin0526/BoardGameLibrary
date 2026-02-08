@@ -1,3 +1,25 @@
+/*********************************************************************************
+ * Group         : T01
+ * Team Member   : Khaleel Anis (S10270243)
+ *
+ * File Purpose:
+ * - Implements the User base class.
+ * - Provides shared logic for borrowing, returning, browsing,
+ *   and recommending board games.
+ *
+ * Key Design Notes:
+ * - Borrow/return enforcement is user-centric to prevent
+ *   cross-user interference.
+ * - UI pagination and sorting logic are kept here to
+ *   avoid bloating controller code.
+ * - Recommendation logic is intentionally data-driven,
+ *   using HashTable indexes for performance.
+ *
+ * Constraints / Assumptions:
+ * - Game availability is controlled via a single borrowed flag.
+ * - All data structures (List, HashTable) are custom ADTs.
+ * - CSV persistence is handled externally.
+ *********************************************************************************/
 #include "User.h"
 #include "Member.h"
 #include "Game.h"
@@ -170,7 +192,7 @@ bool User::borrowGame(
     HashTable<string, List<Game>::NodePtr>& /*gameTable*/,
     const string& gameName
 ) {
-    // Find game by NAME using LinkedList
+    // Find game by NAME
     List<Game>::NodePtr found = nullptr;
 
     for (int i = 0; i < games.getLength(); ++i) {
@@ -187,50 +209,110 @@ bool User::borrowGame(
     }
 
     Game& g = games.getItem(found);
+    int gid = g.getGameId();
 
-    if (g.isBorrowed()) {
-        cout << "No available copy for \"" << gameName << "\".\n";
-        return false;
+    // Check availability using borrowed list ONLY
+    for (int i = 0; i < borrowed.getLength(); ++i) {
+        if (borrowed.get(i) == gid) {
+            cout << "No available copy for \"" << gameName << "\".\n";
+            return false;
+        }
     }
 
-    g.setBorrowed(true);
-    borrowed.add(g.getGameId());
-    history.add(g.getGameId());
+    // Borrow
+    g.setBorrowed(true);        // optional UI state
+    borrowed.add(gid);          // authoritative state
+    history.add(gid);           // audit trail
+
     cout << role << " " << name
-        << " borrowed game [" << g.getGameId()
-        << "] " << g.getName() << endl;
+        << " borrowed game [" << gid << "] "
+        << g.getName() << endl;
 
     return true;
 }
 
-bool User::returnGame(List<Game>& games, HashTable<std::string, List<Game>::NodePtr>& gameTable, int gameId) {
-    // Try to find by ID as string
-    auto node = gameTable.get(std::to_string(gameId));
-    if (node && games.getItem(node).isBorrowed()) {
-        Game& g = games.getItem(node);
-        g.setBorrowed(false);
-        // Remove gameId from borrowed list (List<int> has remove(NodePtr), so we find the node)
-        List<int>::NodePtr target = nullptr;
-        for (int i = 0; i < borrowed.getLength(); ++i) {
-            auto p = borrowed.getNode(i);
-            if (p && borrowed.getItem(p) == gameId) {
-                target = p;
-                break;
-            }
-        }
-        if (target != nullptr) {
-            borrowed.remove(target);
-        }
+bool User::borrowGameById(
+    List<Game>& games,
+    HashTable<string, List<Game>::NodePtr>& gameTable,
+    int gameId
+) {
+    string key = to_string(gameId);
 
-        // Add to history log
-        history.add(gameId);
-        history.add(g.getGameId());
-        cout << role << " " << name << " returned game [" << g.getGameId() << "] " << g.getName() << endl;
-        return true;
+    if (!gameTable.containsKey(key)) {
+        cout << "Game ID " << gameId << " not found.\n";
+        return false;
     }
-    cout << "Game ID " << gameId << " not found or not currently borrowed by anyone.\n";
-    return false;
+
+    auto node = gameTable.get(key);
+    Game& g = games.getItem(node);
+
+    // Check availability
+    for (int i = 0; i < borrowed.getLength(); ++i) {
+        if (borrowed.get(i) == gameId) {
+            cout << "No available copy for game ID " << gameId << ".\n";
+            return false;
+        }
+    }
+
+    // Borrow
+    g.setBorrowed(true);
+    borrowed.add(gameId);
+    history.add(gameId);
+
+    cout << role << " " << name
+        << " borrowed game [" << gameId << "] "
+        << g.getName() << endl;
+
+    return true;
 }
+
+bool User::returnGame(
+    List<Game>& games,
+    HashTable<std::string, List<Game>::NodePtr>& gameTable,
+    int gameId
+) {
+    auto node = gameTable.get(std::to_string(gameId));
+    if (!node) {
+        cout << "Game ID " << gameId << " not found.\n";
+        return false;
+    }
+
+    if (!games.getItem(node).isBorrowed()) {
+        cout << "Game is not currently borrowed.\n";
+        return false;
+    }
+
+    // Must belong to THIS user
+    bool ownedByUser = false;
+    List<int>::NodePtr target = nullptr;
+
+    for (int i = 0; i < borrowed.getLength(); ++i) {
+        auto p = borrowed.getNode(i);
+        if (p && borrowed.getItem(p) == gameId) {
+            ownedByUser = true;
+            target = p;
+            break;
+        }
+    }
+
+    if (!ownedByUser) {
+        cout << "You cannot return a game you did not borrow.\n";
+        return false;
+    }
+
+    // Proceed with return
+    Game& g = games.getItem(node);
+    g.setBorrowed(false);
+    borrowed.remove(target);
+    history.add(gameId);
+
+    cout << role << " " << name
+        << " returned game [" << gameId << "] "
+        << g.getName() << endl;
+
+    return true;
+}
+
 
 void User::displayBorrowedAndHistory() const {
     cout << role << ": " << getName() << " (ID:" << getUserId() << ")\n";

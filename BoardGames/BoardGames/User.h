@@ -1,3 +1,22 @@
+/*********************************************************************************
+ * Group         : T01
+ * Team Member   : Khaleel Anis (S10270243)
+ *
+ * File Purpose:
+ * - Declares the User base class.
+ * - Encapsulates shared behaviour for all system users
+ *   (Members and Administrators).
+ *
+ * Key Design Notes:
+ * - Acts as the central authority for borrowing and returning logic.
+ * - Maintains per-user state via borrowed and history lists.
+ * - Designed to be extended by derived classes (e.g. Member, Admin).
+ *
+ * Constraints / Assumptions:
+ * - User objects are created from CSV data and persist in memory.
+ * - Borrowed state is enforced at runtime and mirrored to CSV logs.
+ * - One physical copy per game is assumed.
+ *********************************************************************************/
 #ifndef USER_H
 #define USER_H
 
@@ -7,35 +26,48 @@
 #include "HashTable.h"
 #include "LinkedList.h"
 #include "Game.h"
-#include "HashTable.h"
 #include "Rating.h"
 #include "GameCandidate.h"
 using namespace std;
 
 class User {
 protected:
+    // ---- Identity & role ----
     int userId;
     string name;
     string password;
     string role;
 
+    // ---- Borrowing state ----
+    // borrowed : games currently borrowed by this user
+    // history  : audit trail of all borrow/return actions
     List<int> borrowed;
     List<int> history;
 
 public:
+    // ---- Constructors ----
     User();
     User(int id, string name, string password, string role);
     User(int id, string name, string role);
 
+    // ---- Authentication ----
     bool login(string inputName, string inputPassword) const;
 
+    // ---- Accessors ----
     int getUserId() const;
     string getName() const;
     string getRole() const;
 
+    // ---- Game browsing ----
     void printActiveGames(List<Game>& games);
-    // Features available to all users
+
+    // ---- Borrow / Return operations ----
     bool borrowGame(List<Game>& games, HashTable<std::string, List<Game>::NodePtr>& gameTable, const std::string& gameName);
+    bool borrowGameById(
+        List<Game>& games,
+        HashTable<string, List<Game>::NodePtr>& gameTable,
+        int gameId
+    );
     bool returnGame(List<Game>& games, HashTable<std::string, List<Game>::NodePtr>& gameTable, int gameId);
     void displayBorrowedAndHistory() const;
 
